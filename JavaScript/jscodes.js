@@ -1,4 +1,4 @@
-/*
+
 //Every line of JavaScript code must be in script tag
 
 alert("Welcome!! Press ok ");  //alert on the browser
