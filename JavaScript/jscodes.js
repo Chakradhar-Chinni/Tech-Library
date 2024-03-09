@@ -9,7 +9,7 @@ var a = 10 // variable declaration
 Comment blocks for para-graphs
 */
 
-/* Switch case in Java Script
+// Switch case in Java Script
 var num = 4;
 switch(num)
 {
@@ -31,7 +31,6 @@ switch(num)
     default:
         document.write("Enter appropriate value");
 }
-*/ 
 
 /* Functions 
 Note: -> After a function is created the function
