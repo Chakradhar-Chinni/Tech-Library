@@ -1,0 +1,158 @@
+------------------------------------------------------------------------------------------
+selectors for css
+selectors are used for grabbing HTML elements
+there are many selectors, every selector end goal is same
+
+Element Selector:
+<h1>text in h1</h1>
+<p>text in p</p>
+
+h1{
+	color: blue;
+}
+
+p{
+	color: blue;
+}
+
+class selector:
+. is used for class selector
+<p class="aclass">text inside class</p>
+
+.aclass{
+	color: blue;
+}
+
+id selector:
+# is used for id selector            
+<p id="sometext">Text here</p>
+
+#sometext{
+	color:blue;
+}
+
+------------------------------------------------------------------------------------------
+
+Classes & ID's in HTML
+
+class & id have their unique functionality, 
+
+Generally, ids are used for single elements that appear on the page for only once(header, footer ...)
+It is better to use classes for controlling multiple types of styling elements
+
+a HTML selector can have both class & id
+
+------------------------------------------------------------------------------------------
+
+Specifivity & when to use selectors
+
+> (override)
+In-line style > id > class > tag  [v.imp css factor]
+
+if a div tag has class and id then it follows id only, because id overrides class
+
+------------------------------------------------------------------------------------------
+
+PseudoSelectors 
+- used for responsiveness
+- used a lot in animations
+------------------------------------------------------------------------------------------
+
+AdvancedSelectors
+
+------------------------------------------------------------------------------------------
+Attribute Selectors
+
+------------------------------------------------------------------------------------------
+The CSS General Rule
+
+selector{
+	property: value;
+	property2: value2;
+}
+
+css block: code inside the curly braces
+
+------------------------------------------------------------------------------------------
+Types of Colors
+color codes
+actual color name
+rgb values
+0-min; 255-max
+tip:
+r: (255,0,0)
+g: (0,255,0)
+b: (0,0,255)
+
+------------------------------------------------------------------------------------------
+coloring text
+.para-1{
+	color: green;
+	color: #eb6834;
+	color: rgb(235, 104, 52);
+}
+
+------------------------------------------------------------------------------------------
+Background Colors
+
+just like coloring text, background-color can be applied using hex,rgb,actual color
+
+------------------------------------------------------------------------------------------
+Images / URL's in CSS
+
+using image via url: 
+body{
+	background: url("https://ramboll.com/-/media/images/rgr/markets/planning/1920x1080-huftonpluscrow_048.jpg");
+}
+
+using image from storage:
+body{
+	background: url("../office-modern.jpg");
+}
+
+------------------------------------------------------------------------------------------
+other background properties
+
+while inserting images using css then images repeats by default, so code as:
+
+#land-image{
+	height: 400px;
+	width: 50%;
+	background: url("../office-modern.jpg");
+	background-size: cover;
+}
+
+background-size: cover; ensures not to repeat images, adjust height,width accordingly
+------------------------------------------------------------------------------------------
+Opacity / Transparency
+
+in rgba 'a' denotes opacity, range: 0 to 1
+
+background: rgba(235, 64, 52, 0.2);
+------------------------------------------------------------------------------------------
+Gradients
+- Mix of two or more colors
+- Linear Gradients
+Syntax:
+background-image: linear-gradient(direction, color-stop1, color-stop2, ...);
+
+#grad {
+	background-image: linear-gradient( red , yellow);
+  }
+
+  background-image: linear-gradient(to right,red, yellow);
+
+  . can add many colors to the gradient.
+  . for other directions and angles refer w3schools.
+
+------------------------------------------------------------------------------------------
+Types of Units: Absolute:Independent, Relative: Dependent
+
+Use % as unit to increase responsiveness
+Learn More: https://www.w3schools.com/css/css_positioning.asp
+
+-----------------------------------------
+Text Manipulation using tags
+.side-heading{
+	font-size: 300px;  
+}
