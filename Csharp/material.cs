@@ -1,8 +1,8 @@
 - using System - just like import in other programming languages
 - using namespace - to bundle classes under same file
 
-- Console.WriteLine() - enters on new line
-- Console.Write() - enters on same line
+- Console.WriteLine() - prints on a new line and moves cursor to next line
+- Console.Write() - prints on the same line and keeps the cursor on sameline after printing
 
 - //single line comment
 - /* */  multi line comment
