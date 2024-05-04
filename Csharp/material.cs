@@ -134,3 +134,22 @@ public void AcceptPayment(int CreditCard){
 public void AcceptPayment(int DebitCard){
 // Implementation for payment by Debit Card
 }
+-- Certification freecodecamp & Microsoft--
+  Console.Write();
+ Console.WriteLine();
+--data types
+string for words, phrases, or any alphanumeric data for presentation, not calculation
+char for a single alphanumeric character
+int for a whole number
+decimal for a number with a fractional component
+bool for a true/false value
+
+--Variables
+Variables are containers to store data
+declare variable with its data type and use it
+naming conventions - use camelCase (underscores are not best in variable names as some programming languages uses it for different reasons)
+int accountNumber
+string queryResultFromSql
+reserved keywords cannot be used as variable names 
+
+
