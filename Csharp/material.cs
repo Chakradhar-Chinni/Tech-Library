@@ -143,6 +143,7 @@ char for a single alphanumeric character
 int for a whole number
 decimal for a number with a fractional component
 bool for a true/false value
+var keyword must be initialized not just declaring
 
 --Variables
 Variables are containers to store data
@@ -186,4 +187,11 @@ using string interpolation & directive - first use interpolation then directive 
 // char str = '"';
 // Console.Write($@"{str}he\llo{str} ");
 
+When string concatenation involves math operation, then include math variables in () to readability
+// string firstName = "Bob";
+// int widgetsSold = 7;
+// Console.WriteLine(firstName + " sold " + (widgetsSold + 7) + " widgets.");
 
+--download & install software
+download visual studio code https://code.visualstudio.com/
+download dotnet SDK, verify using cmd > dotnet --version
