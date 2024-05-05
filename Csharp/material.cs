@@ -152,4 +152,20 @@ int accountNumber
 string queryResultFromSql
 reserved keywords cannot be used as variable names 
 
+--String Formatting
+\ escape sequence
+\t tab space
+\n new line
+@ directive
+
+Console.Write("Hello \"World\"!"); - using \ escape sequence to print ""
+Console.Write(" "+Convert.ToChar(35)+"World"+Convert.ToChar(35)+"!"); - using ASCII value to print ""
+
+file paths also contain \ but compiler understands it as escape sequence instead of path, to solve this problem use \\ so compiler treats it as \
+Console.WriteLine("c:\\source\\repos"); - compiler treats as c:\source\repos
+if this is given to compiler, Console.Write(@"C:\source"); then error will be as Unrecognized escape sequence because compiler thinks \s as escape sequence
+
+A better way to handle both escape sequence and filePath is to use directive@ (called as verbatim string literal)
+Console.Write(@"C:\source");
+just add @
 
