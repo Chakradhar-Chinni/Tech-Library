@@ -167,5 +167,23 @@ if this is given to compiler, Console.Write(@"C:\source"); then error will be as
 
 A better way to handle both escape sequence and filePath is to use directive@ (called as verbatim string literal)
 Console.Write(@"C:\source");
-just add @
+just add @ (so that everything gets printed as it is including \n \t)
+
+-String Concatenation
+combing two strings or combining string with string literal
+// string firstName = "Bob";
+// string message = "Hello " + firstName;
+// string text = "Hello" + "!";
+
+String Interpolation can be used for concatenation
+$
+after declaring variables use $ and refer variable names inside {}
+// string one = "One";
+// string two = "Two";
+// String text = $"{one}{two}";
+// Console.WriteLine($"Hello {text} boss{text}!");
+using string interpolation & directive - first use interpolation then directive (higher precedence)
+// char str = '"';
+// Console.Write($@"{str}he\llo{str} ");
+
 
