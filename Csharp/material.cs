@@ -171,7 +171,7 @@ Console.Write(@"C:\source");
 just add @ (so that everything gets printed as it is including \n \t)
 
 -String Concatenation
-combing two strings or combining string with string literal
+combining two strings or combining string with string literal
 // string firstName = "Bob";
 // string message = "Hello " + firstName;
 // string text = "Hello" + "!";
