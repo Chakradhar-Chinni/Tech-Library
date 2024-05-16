@@ -210,3 +210,28 @@ save: saves the code to file
 dotnet build: generates new build with saved code. also creates new .exe , .dll in \TestProject\bin\Debug\net7.0\
 dotnet run: runs the program
 
+class libraries
+many class libraries are available for different purposes. In below example, WriteLine is a method in Console class. All, data types are also part of class
+  Console.WriteLine("Hello");
+
+Calling methods 
+Start by typing the class name. In this case, the class name is Console.
+Add the member access operator, the . symbol.
+Add the method's name. In this case, the method's name is WriteLine.
+Add the method invocation operator, which is a set of parentheses ().
+Finally, specify the arguments that are passed to the method, if there are any, between the parentheses of the method invocation operator. In this case, you specify the text that you want the Console.WriteLine() method to write to the console (for example, "Hello World!").
+
+depending on the method, we may need to pass input parameters and accept return value
+
+stateful method: depends on values stored in memory 
+stateless method: doesn't depend on values stored in memory
+
+ fun fact: Random.Next() is stateful because the design depends on date time. does some fraction and seeds to algorithm to get random value
+
+   
+
+  
+  
+
+  
+
