@@ -195,3 +195,18 @@ When string concatenation involves math operation, then include math variables i
 --download & install software
 download visual studio code https://code.visualstudio.com/
 download dotnet SDK, verify using cmd > dotnet --version
+
+create a folder & open in VScode
+ create new dotne project using the cmd: dotnet new console -o ./CsharpProjects/TestProject
+ The driver: dotnet in this example.
+ The command: new console in this example.
+ The command arguments: -o ./CsharpProjects/TestProject in this example.
+program.cs is main file, write sample code here
+VsCode > right click on project > click on Integrated terminal to open the path in termiinal
+
+save > dotnet build > dotnet run
+
+save: saves the code to file
+dotnet build: generates new build with saved code. also creates new .exe , .dll in \TestProject\bin\Debug\net7.0\
+dotnet run: runs the program
+
