@@ -197,7 +197,7 @@ download visual studio code https://code.visualstudio.com/
 download dotnet SDK, verify using cmd > dotnet --version
 
 create a folder & open in VScode
- create new dotne project using the cmd: dotnet new console -o ./CsharpProjects/TestProject
+ create new dotnet project using the cmd: dotnet new console -o ./CsharpProjects/TestProject
  The driver: dotnet in this example.
  The command: new console in this example.
  The command arguments: -o ./CsharpProjects/TestProject in this example.
@@ -223,11 +223,24 @@ Finally, specify the arguments that are passed to the method, if there are any, 
 
 depending on the method, we may need to pass input parameters and accept return value
 
-stateful method: depends on values stored in memory 
-stateless method: doesn't depend on values stored in memory
+stateful(Instance) method: 
+    depends on values stored in memory, also can create or update data in memory
+    stateful methods requires object creation
+stateless(static) method:
+    doesn't depend on values stored in memory or change anything in memory. 
+    Stateless methods can be accessed directly with out using objects [ClassName.Method()]
 
- fun fact: Random.Next() is stateful because the design depends on date time. does some fraction and seeds to algorithm to get random value
+ fun fact: Random.Next() is stateful because the design depends on date,time. It does some fraction and seeds to algorithm to get random value
 
+ --Creating Instance of class 
+   //Random dice = new Random();
+   //Random dice = new(); //simplified way of creating object called as target-typed new expression.
+   instance of a class is called an object.The new operator does several important things:
+    It first requests an address in the computer's memory large enough to store a new object based on the Random class.
+    It creates the new object, and stores it at the memory address.
+    It returns the memory address so that it can be saved in the dice variable.
+  
+  
    
 
   
