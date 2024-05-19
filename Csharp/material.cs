@@ -239,7 +239,21 @@ stateless(static) method:
     It first requests an address in the computer's memory large enough to store a new object based on the Random class.
     It creates the new object, and stores it at the memory address.
     It returns the memory address so that it can be saved in the dice variable.
-  
+
+-- Methods
+void methods : executes code but doesn't return any value
+Methods can be designed to return any data type or another class
+- Often times, the terms 'parameter' and 'argument' are used interchangeably. However, 'parameter' refers to the variable that's being used inside the method. An 'argument' is the value that's passed when the method is called.
+-An overloaded method is defined with multiple method signatures. Overloaded methods provide different ways to call the method or provide different types of data.
+- Console.Clear()
+--Intellisense can help to code more quickly.
+
+  Random dice = new Random();
+int roll1 = dice.Next(1,10);
+int roll2 = dice.Next(1,10);
+int roll3 = dice.Next(1,10);
+
+Console.WriteLine($"Rolls : { roll1} {roll2} {roll3 }");
   
    
 
