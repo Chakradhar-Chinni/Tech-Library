@@ -247,15 +247,31 @@ Methods can be designed to return any data type or another class
 -An overloaded method is defined with multiple method signatures. Overloaded methods provide different ways to call the method or provide different types of data.
 - Console.Clear()
 --Intellisense can help to code more quickly.
-
+--code block {} codewritten inside{} is called code block (terminology)
   Random dice = new Random();
 int roll1 = dice.Next(1,10);
 int roll2 = dice.Next(1,10);
 int roll3 = dice.Next(1,10);
 
 Console.WriteLine($"Rolls : { roll1} {roll2} {roll3 }");
-  
-   
+
+--Array
+using System;
+{
+    String[] myarray = new string[6];
+    
+    for(int i=0;i<=4;i++)
+    {
+        myarray[i] = i.ToString();
+    }
+    myarray[5]="Last index in array";
+
+    Console.WriteLine($"{myarray[0]}, {myarray[1]}, {myarray[2]}, {myarray[3]}, {myarray[4]}, {myarray[5]}");
+
+    //initialize values in array while creating 
+    string[] data = { "A123", "B456", "C789" };
+    Console.WriteLine(data[0]);
+}
 
   
   
