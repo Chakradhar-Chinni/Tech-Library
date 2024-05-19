@@ -255,7 +255,7 @@ int roll3 = dice.Next(1,10);
 
 Console.WriteLine($"Rolls : { roll1} {roll2} {roll3 }");
 
---Array
+-- String Array initialization 2 types , accessing elements using for loop, using Interpolation to print array elements
 using System;
 {
     String[] myarray = new string[6];
