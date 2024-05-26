@@ -297,8 +297,10 @@ using System;
     foreach(int i in array)    {
         Console.Write(i + " ");    }
 }
-  
-  
+
+Writing readable code is as important as writing efficient code. In Agile environment, after writing code it may be passed to other group for enhancing it, so its best to follow naming conventions & best practices while developing
+
+-- Variable Naming Conventions: use camel case ex: thisIsCamelCase. Avoid Under Scores (_) as they serve different purpose, avoid short form names- use full readable name, avoid numbers/special characters/keywords. Best Examples that even fits into Complex projects/ frameworks: char userOption; int gameScore; float particlesPerMillion; bool processedCustomer;
 
   
 
