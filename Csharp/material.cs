@@ -274,6 +274,16 @@ using System;
   foreach(string i in myarray) {
         Console.Write(i+ "|"); }
 }
+-- exercise with string array
+using System;
+{
+   String[] duplicates = {"B123","C234","A345","C15","B177","G3003","C235","B179"};
+
+   foreach(string i in duplicates){
+        if(i.StartsWith('B')) {
+        Console.Write(i+"|"); }
+    }
+}
 -- int Array initialization
 using System;
 {
