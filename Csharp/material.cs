@@ -302,5 +302,7 @@ Writing readable code is as important as writing efficient code. In Agile enviro
 
 -- Variable Naming Conventions: use camel case ex: thisIsCamelCase. Avoid Under Scores (_) as they serve different purpose, avoid short form names- use full readable name, avoid numbers/special characters/keywords. Best Examples that even fits into Complex projects/ frameworks: char userOption; int gameScore; float particlesPerMillion; bool processedCustomer;
 
-  
+-- Using code comments: use comments to write meaningful notes, explaining the complexity of code block, trying alternative solutions (remember to update comments if code is updated else it wouldbe meaning less) using comments to explain c# concepts is bad practice
+
+-- use whitespaces for readability, clearness
 
