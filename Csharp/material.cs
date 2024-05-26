@@ -269,6 +269,10 @@ using System;
     //initialize values in array while creating 
     string[] data = { "A123", "B456", "C789" };
     Console.WriteLine(data[0]);
+  
+  onsole.WriteLine("Printing using for each \n ");
+  foreach(string i in myarray) {
+        Console.Write(i+ "|"); }
 }
 -- int Array initialization
 using System;
@@ -277,6 +281,11 @@ using System;
     for(int i=0;i<=9;i++){
         array[i] = I; }
     Console.WriteLine($"{array[0]} , {array[3]}");    
+
+  //for each is simple to use & better when array size is dynamic
+    Console.WriteLine("Printing using for each \n ");
+    foreach(int i in array)    {
+        Console.Write(i + " ");    }
 }
   
   
