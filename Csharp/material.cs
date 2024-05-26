@@ -228,7 +228,7 @@ stateful(Instance) method:
     stateful methods requires object creation
 stateless(static) method:
     doesn't depend on values stored in memory or change anything in memory. 
-    Stateless methods can be accessed directly with out using objects [ClassName.Method()]
+    Stateless methods can be accessed directly with out using objects [ClassName.Method()]. Eg: Console.WriteLine()
 
  fun fact: Random.Next() is stateful because the design depends on date,time. It does some fraction and seeds to algorithm to get random value
 
@@ -260,10 +260,8 @@ using System;
 {
     String[] myarray = new string[6];
     
-    for(int i=0;i<=4;i++)
-    {
-        myarray[i] = i.ToString();
-    }
+    for(int i=0;i<=4;i++) {
+        myarray[i] = i.ToString();}
     myarray[5]="Last index in array";
 
     Console.WriteLine($"{myarray[0]}, {myarray[1]}, {myarray[2]}, {myarray[3]}, {myarray[4]}, {myarray[5]}");
@@ -272,7 +270,14 @@ using System;
     string[] data = { "A123", "B456", "C789" };
     Console.WriteLine(data[0]);
 }
-
+-- int Array initialization
+using System;
+{
+    int[] array = new int[10];
+    for(int i=0;i<=9;i++){
+        array[i] = I; }
+    Console.WriteLine($"{array[0]} , {array[3]}");    
+}
   
   
 
