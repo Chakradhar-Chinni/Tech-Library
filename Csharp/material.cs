@@ -306,3 +306,37 @@ Writing readable code is as important as writing efficient code. In Agile enviro
 
 -- use whitespaces for readability, clearness
 
+--Expression: if (myName == "Luiz")
+--Evaluating inside print statemet  
+Console.WriteLine("a" == "a"); //True
+Console.WriteLine("a" == "A"); //False
+Console.WriteLine(1 == 2); //False
+
+string myValue = "a";
+Console.WriteLine(myValue == "a"); //True
+
+--Using inequality operator
+Console.WriteLine("a" != "a"); //False
+Console.WriteLine("a" != "A"); //True
+Console.WriteLine(1 != 2); //True
+
+string myValue = "a";
+Console.WriteLine(myValue != "a"); //False
+
+--Using comparisons
+Console.WriteLine(1 > 2); //False
+Console.WriteLine(1 < 2); //True
+Console.WriteLine(1 >= 1); //True
+Console.WriteLine(1 <= 1); //True
+
+-- logical negation /unary operator / not operator
+  string pangram = "The quick brown fox jumps over the lazy dog.";
+Console.WriteLine(!pangram.Contains("fox")); //False
+Console.WriteLine(!pangram.Contains("cow")); //True
+
+--Conditional Operator
+COnditional operator can be used instead on nested if conditions fits in
+  Syntax: <evaluate this condition> ? <if condition is true, return this value> : <if condition is false, return this value>
+int saleAmount = 1001;
+int discount = saleAmount > 1000 ? 100 : 50;
+Console.WriteLine($"Discount: {discount}");
