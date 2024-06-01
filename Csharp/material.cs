@@ -340,3 +340,39 @@ COnditional operator can be used instead on nested if conditions fits in
 int saleAmount = 1001;
 int discount = saleAmount > 1000 ? 100 : 50;
 Console.WriteLine($"Discount: {discount}");
+
+--Code blocks and variable scope
+bool flag = true;
+if (flag) {
+    int value = 10;
+    Console.WriteLine($"Inside the code block: {value}"); }
+Console.WriteLine($"Outside the code block: {value}");
+
+Output: Program.cs(7,46): error CS0103: The name 'value' does not exist in the current context
+
+Code:
+bool flag = true;
+int value = 0;
+if (flag){
+    Console.WriteLine($"Inside the code block: {value}");}
+value = 10;
+Console.WriteLine($"Outside the code block: {value}");
+Output:
+Inside the code block: 0
+Outside the code block: 10
+
+-- Switch Case
+switch (fruit)
+{
+    case "apple":
+        Console.WriteLine($"App will display information for apple.");
+        break;
+
+    case "banana":
+        Console.WriteLine($"App will display information for banana.");
+        break;
+
+    case "cherry":
+        Console.WriteLine($"App will display information for cherry.");
+        break;
+}
