@@ -376,3 +376,22 @@ switch (fruit)
         Console.WriteLine($"App will display information for cherry.");
         break;
 }
+-Code Example
+using System;
+{
+string text="10-MN-L";
+string[] model = text.Split('-');
+int id = int.Parse(model[0]);
+
+switch(id) {
+    case 13:
+        Console.WriteLine("its 13");
+        break;
+    case 10:
+        Console.WriteLine("its 10");
+        break;
+    default:
+        Console.WriteLine("None");
+        break;
+    }
+}
