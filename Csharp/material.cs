@@ -395,3 +395,64 @@ switch(id) {
         break;
     }
 }
+-- while loop
+int i=10;
+while(i<=10) {
+    Console.Write(i+"|");
+    i++; }
+-- do while loop : guarantees that loop executes atleast once (ctrl+esc to exit)
+using System;
+{
+    int i=10;
+    do{
+        Console.Write("Hi");
+    }while(i!=10);
+}
+The for statement: executes its body while a specified Boolean expression (the 'condition') evaluates to true.
+The foreach statement: enumerates the elements of a collection and executes its body for each element of the collection.
+The do-while statement: conditionally executes its body one or more times.
+The while statement: conditionally executes its body zero or more times.
+
+-- Working with data
+Choosing right data type is important to save Heap memory space and to avoid loss of data
+Signed & Unsigneddata types
+Output
+Signed integral types:
+sbyte  : -128 to 127
+short  : -32768 to 32767
+int    : -2147483648 to 2147483647
+long   : -9223372036854775808 to 9223372036854775807
+
+Unsigned integral types:
+byte   : 0 to 255
+ushort : 0 to 65535
+uint   : 0 to 4294967295
+ulong  : 0 to 18446744073709551615
+```
+Floating point types:
+float  : -3.402823E+38 to 3.402823E+38 (with ~6-9 digits of precision)
+double : -1.79769313486232E+308 to 1.79769313486232E+308 (with ~15-17 digits of precision)
+decimal: -79228162514264337593543950335 to 79228162514264337593543950335 (with 28-29 digits of precision)
+
+While creating a instance of a class, new keyword creates memory inside heap
+
+The term widening conversion means that you're attempting to convert a value from a data type that could hold less information to a data type that can hold more information. In this case, a value stored in a variable of type int converted to a variable of type decimal, doesn't lose information. Since any int value can easily fit inside of a decimal, the compiler performs the conversion.
+
+
+  int myInt = 3;
+Console.WriteLine($"int: {myInt}");
+
+decimal myDecimal = myInt;
+Console.WriteLine($"decimal: {myDecimal}");
+
+If decimal value is assigned to int, it leads to loss of data like below example
+decimal myDecimal = 3.14m;
+Console.WriteLine($"decimal: {myDecimal}");
+
+int myInt = (int)myDecimal;
+Console.WriteLine($"int: {myInt}");
+
+-- Widening Conversion VS Narrowing Conversion
+The term narrowing conversion means that you're attempting to convert a value from a data type that can hold more information to a data type that can hold less information. Widening COnversion is exact opposite of it.
+
+  
