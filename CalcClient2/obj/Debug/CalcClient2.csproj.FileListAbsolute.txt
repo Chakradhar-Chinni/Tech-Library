@@ -1,0 +1,7 @@
+D:\Dotnet DLLs\CalcClient2\bin\Debug\CalcClient2.pdb
+D:\Dotnet DLLs\CalcClient2\obj\Debug\CalcClient2.csproj.AssemblyReference.cache
+D:\Dotnet DLLs\CalcClient2\obj\Debug\CalcClient2.csproj.CoreCompileInputs.cache
+D:\Dotnet DLLs\CalcClient2\obj\Debug\CalcClient2.pdb
+D:\Dotnet DLLs\CalcClient2\bin\Debug\CalcClient2.dll.config
+D:\Dotnet DLLs\CalcClient2\bin\Debug\CalcClient2.dll
+D:\Dotnet DLLs\CalcClient2\obj\Debug\CalcClient2.dll
