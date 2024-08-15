@@ -1,0 +1,22 @@
+using System;
+using System.IO;
+namespace csvFileGenerator{
+    class csvGenerator    {
+        static void Main(String[] args)
+        {
+            var fileLocation = @"D:\Files\File15.txt";
+
+            //create one file
+            using(FileStream fs = File.Create(fileLocation)) { }        
+
+            //creating more than one file using array & loop
+            string[] filenames = { "file1", "file2", "file3" };            
+            
+            foreach(var item in filenames)            {
+                var filePath = $@"D:\Files\{item}.csv";
+                using (FileStream fs = File.Create(filePath)) {}
+            }
+
+            //Console.WriteLine($"File Created at : {Path.GetFullPath(filePath)}");
+        }
+    }}
