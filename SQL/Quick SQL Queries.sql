@@ -43,4 +43,11 @@
 		DBCC CHECKIDENT ('TABLE_NAME', RESEED, 0);
 --Notes--
 	1. SET UPDLOCK while doing any SQL operation so other transactions won't happen at same time
-UPDATE Table23 WITH (UPDLOCK)
+		UPDATE Table23 WITH (UPDLOCK)
+	2. get list of stored procedures in database (check recently modified PROC)
+		SELECT 
+		    name AS ProcedureName,
+		    SCHEMA_NAME(schema_id) AS SchemaName,
+		    create_date AS CreationDate,
+		    modify_date AS LastModifiedDate
+		FROM sys.procedures ORDER BY LastModifiedDate DESC
