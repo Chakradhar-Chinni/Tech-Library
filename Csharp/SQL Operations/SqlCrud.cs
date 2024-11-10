@@ -34,7 +34,7 @@ public void ReadFromTable() {
 3. command object from SqlCommand class is created with query,scon
 
 /*---------------------------- 
-Update existing SQL Data Table 
+Update values in existing SQL Data Table 
 ------------------------------*/
 public void WriteToTable()
 {
@@ -60,5 +60,34 @@ public void WriteToTable()
         }
         finally{
             Console.WriteLine("---Execution is Completed---");}
+    }
+}
+
+/*---------------------------- 
+Update column Name in SQL Data Table 
+------------------------------*/
+
+public void ModifyColumnNames()
+{
+    string SqlConnectionString = "";
+    
+     //using Interpolation to achieve dynamicness
+    string TableName = "table23";
+    string OldColumnName = "Ratings";
+    string NewColumnName = "Rating";
+    string query = $"EXEC sp_rename '{TableName}.{OldColumnName}','{NewColumnName}','COLUMN' ";
+    //string query = "EXEC sp_rename 'table23.Rating Comments','Ratings','COLUMN' ";
+
+    using (SqlConnection scon = new SqlConnection(SqlConnectionString))
+    {
+        SqlCommand command = new SqlCommand (query, scon);
+        try
+        {
+            scon.Open();
+            command.ExecuteNonQuery();
+            Console.WriteLine("Column Renamed sucessfully");
+        }
+        catch(Exception ex) {Console.WriteLine(ex.Message);}
+        finally { Console.WriteLine("\n---Execution Completed---"); }
     }
 }
