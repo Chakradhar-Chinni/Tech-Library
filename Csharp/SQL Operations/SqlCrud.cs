@@ -1,4 +1,7 @@
- public void ReadFromTable() {
+/*---------------------------- 
+Read data from SQL Data Table
+------------------------------*/
+public void ReadFromTable() {
      string SqlConnectionString = "";
      string query = "SELECT * FROM Purchasing.Vendor";
   
@@ -30,6 +33,9 @@
 2.scon object is used to connect to SQL database. scon is created from SqlConnection class
 3. command object from SqlCommand class is created with query,scon
 
+/*---------------------------- 
+Update existing SQL Data Table 
+------------------------------*/
 public void WriteToTable()
 {
     string SqlConnectionString = "";
