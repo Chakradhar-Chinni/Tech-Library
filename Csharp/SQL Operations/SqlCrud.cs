@@ -1,9 +1,10 @@
  public void ReadFromTable() {
      string SqlConnectionString = "";
-
+     string query = "SELECT * FROM Purchasing.Vendor";
+  
      using (SqlConnection scon = new SqlConnection(SqlConnectionString))
      {
-         SqlCommand command = new SqlCommand("SELECT * FROM Purchasing.Vendor", scon);
+         SqlCommand command = new SqlCommand(query, scon);
          
          try {
              scon.Open();
@@ -25,4 +26,6 @@
      }
  }
 
-//the SqlConnection object scon is created inside a using statement. When the code execution leaves the using block, the Dispose method of SqlConnection is called automatically, which closes the connection.
+1.When the code execution leaves the using block, the Dispose method of SqlConnection,SqlDataReader is called automatically, which closes the connection.
+2.scon object is used to connect to SQL database. scon is created from SqlConnection class
+3. command object from SqlCommand class is created with query,scon
