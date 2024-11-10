@@ -34,7 +34,8 @@
 	10. Read SQL Server logs
 		EXEC xp_readerrorlog;
 	11. UPDATE Column name
-		EXEC sp_rename 'dbo.table_name.old_column_name', 'new_column_name', 'COLUMN';
+		Sql Server: EXEC sp_rename 'dbo.table_name.old_column_name', 'new_column_name', 'COLUMN';
+		App: ALTER TABLE table_name RENAME COLUMN old_name to new_name;
 	12. Add new columns 
 		ALTER TABLE table_name
 		ADD column_name1 data_type1,
