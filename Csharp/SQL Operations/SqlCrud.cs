@@ -29,3 +29,30 @@
 1.When the code execution leaves the using block, the Dispose method of SqlConnection,SqlDataReader is called automatically, which closes the connection.
 2.scon object is used to connect to SQL database. scon is created from SqlConnection class
 3. command object from SqlCommand class is created with query,scon
+
+public void WriteToTable()
+{
+    string SqlConnectionString = "";
+    string query = "UPDATE Purchasing.Vendor SET Name=@Name,AccountNumber=@AccountNumber WHERE BusinessEntityID=1492";
+
+    using(SqlConnection scon = new SqlConnection(SqlConnectionString))
+    {
+        SqlCommand command = new SqlCommand(query, scon);
+        
+        command.Parameters.AddWithValue("@Name", "Australia Bike Retailer, CO");
+        command.Parameters.AddWithValue("@AccountNumber", "AUSTRALI0004");
+
+        try 
+        {   
+            scon.Open();
+            int RowsAffected = command.ExecuteNonQuery();
+            Console.WriteLine("Rows Affected: " + RowsAffected);
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine("Exception is: "+ ex.Message);
+        }
+        finally{
+            Console.WriteLine("---Execution is Completed---");}
+    }
+}
