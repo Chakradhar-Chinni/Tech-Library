@@ -91,3 +91,42 @@ public void ModifyColumnNames()
         finally { Console.WriteLine("\n---Execution Completed---"); }
     }
 }
+/*-------------------------
+calling Sql Stored Procedure without params using c#
+--------------------------*/
+public void callProcedure()
+{
+    string SqlConnectionString = "";
+    string query = "exec uspGetJiraRestApiConfiguration";
+    using (SqlConnection scon = new SqlConnection(SqlConnectionString))
+    {
+        SqlCommand command = new SqlCommand(query, scon);
+        try
+        {
+            scon.Open();
+            using(SqlDataReader reader = command.ExecuteReader())
+            {
+                //use the below approach when column details are known
+                while (reader.Read())
+                {
+                    Console.WriteLine(reader[1].ToString() + "\t" + reader[2].ToString() + "\t" + reader[3].ToString());
+                }
+                //use this approach when sql table is dymanic
+                //while(reader.Read())
+                //{
+                //    object[] values = new object[reader.FieldCount];
+                //    reader.GetValues(values);
+
+                //    for(int i=0;i<values.Length;i++)
+                //    {
+                //        Console.WriteLine(values[i]+"\t");
+                //    }
+                //}
+            }
+            //command.ExecuteNonQuery();
+            Console.WriteLine("Procedure execution completed");
+        }
+        catch (Exception ex) { Console.WriteLine("Exception Occured: " + ex.Message); }
+        finally { Console.WriteLine("\nProgam Execution Completed"); }
+    }
+}
