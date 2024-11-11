@@ -29,9 +29,11 @@ public void ReadFromTable() {
      }
  }
 
-1.When the code execution leaves the using block, the Dispose method of SqlConnection,SqlDataReader is called automatically, which closes the connection.
+1.When the code execution leaves the using block, the Dispose method of SqlConnection,SqlDataReader is called automatically, which closes the connection and manages resources effectively
 2.scon object is used to connect to SQL database. scon is created from SqlConnection class
 3. command object from SqlCommand class is created with query,scon
+4. comman.ExecuteReader() will execute the query and store the result to reader object of SqlDataReader class
+5. Read() in SqlDataReader class is used in while loop as it advances the cursor to next row. Initially, the cursor points to previous rows of 0th index or -1 index
 
 /*---------------------------- 
 Update values in existing SQL Data Table 
@@ -128,5 +130,30 @@ public void callProcedure()
         }
         catch (Exception ex) { Console.WriteLine("Exception Occured: " + ex.Message); }
         finally { Console.WriteLine("\nProgam Execution Completed"); }
+    }
+}
+
+/*-------------------------
+calling Sql Stored Procedure with params using c#
+--------------------------*/
+public void callProcedurewithParams()
+{
+    string SqlConnectionString = "";
+    string countryName = "ITALY";
+    string query = $"exec [dbo].[uspGetCountryCode] @issuerCountry={countryName}";
+    using (SqlConnection scon = new SqlConnection(SqlConnectionString))
+    {
+        SqlCommand command = new SqlCommand(query,scon);
+
+        try {
+            scon.Open();
+            using(SqlDataReader reader = command.ExecuteReader())
+            {
+                while(reader.Read()) {
+                    Console.WriteLine(reader[0].ToString()); }    
+            }
+            Console.WriteLine("Procedure is called successfully");
+        }
+        catch (Exception ex) { Console.WriteLine(ex.Message); }
     }
 }
