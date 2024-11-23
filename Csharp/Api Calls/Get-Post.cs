@@ -19,7 +19,7 @@ namespace eSystems
                 HttpResponseMessage response = await client.GetAsync(url);                
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Response:\n is {responseBody}");
+                Console.WriteLine($"Response:\n {responseBody}");
             }
             catch(Exception e) { Console.WriteLine(e.Message); }
         }
