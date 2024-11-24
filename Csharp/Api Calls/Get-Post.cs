@@ -48,8 +48,7 @@ namespace eSystemsApp
 2. private static readonly HttpClient client = new HttpClient(); - This line declares and initializes a HttpClient instance as a 
    static, read-only field within the class. This ensures that the same HttpClient instance is reused throughout the lifetime of the 
    application, which is a good practice to avoid socket exhaustion and improve performance.
-3. public async Task MakeGetRequest() - asysn= method type; Task= method return type. This is an asynchronous method that performs some 
-   operations without blocking the calling thread. It returns a Task to indicate the asynchronous nature of the method, allowing other 
+3. public async Task MakeGetRequest() - asysc= its a modifier which indicates method is async and allows the use of await keyword; Task= method return type. This is an asynchronous method that performs some operations without blocking the calling thread. It returns a Task to indicate the asynchronous nature of the method, allowing other 
    code to await its completion.
 */
 /**************************
