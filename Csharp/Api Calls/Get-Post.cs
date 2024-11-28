@@ -3,10 +3,10 @@ Approach 1 - Making API calls using HttpClient
 Approach 2 - Making API calls with using() statement
 
 Approach 1,2 are both efficient, approach 1 is better when making multiple API calls.
-*/
+********************  End Index  ****************************/
 
 /*****************************************************
-Making a GET request using C# without authentication
+Approach 1 | Making a GET request using C# without authentication
 *******************************************************/
 //ApiManager.cs
 using System;
@@ -59,29 +59,33 @@ namespace eSystemsApp
 */
 
 /*******************************************************
-Making a GET request using C# with Basic Authentication
+Approach 1 | Making a GET request using C# with Basic Authentication
 *******************************************************/
-public async Task BasicAuthGetRequest()
-{
-    Console.WriteLine("BasicAuthGetRequest\n");
-    try {
-        //Authentication
-        var username = "";
-        var password = "";
-        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{username}:{password}"));
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
-
-        string url = "";
-        HttpResponseMessage response = await client.GetAsync(url);
-        response.EnsureSuccessStatusCode();
-        string responseBody = await response.Content.ReadAsStringAsync();
-        Console.WriteLine($"API Response: {responseBody}");
+public class ApiManager
+    {
+        private static readonly HttpClient client = new HttpClient();
+        public async Task BasicAuthGetRequest()
+        {
+            Console.WriteLine("BasicAuthGetRequest\n");
+            try {
+                //Authentication
+                var username = "";
+                var password = "";
+                var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{username}:{password}"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+        
+                string url = "";
+                HttpResponseMessage response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"API Response: {responseBody}");
+            }
+            catch(Exception ex) { Console.WriteLine(ex.Message); }
+        }
     }
-    catch(Exception ex) { Console.WriteLine(ex.Message); }
-}
 
 /******************************************************
-Making a POST request using C# without authentication
+Approach 1 | Making a POST request using C# without authentication
 ******************************************************/
 //ApiManager.cs
 public class ApiManager
@@ -123,3 +127,36 @@ namespace eSystemsApp
         }
     }
 }
+
+/******************************************************
+Approach 2 | Making a GET request using C# with Basic authentication
+******************************************************/
+//ApiClass.cs
+public async Task doGetRequest()
+{
+    try 
+    { 
+        using(HttpClient client = new HttpClient()) 
+        {
+            string url = "https://jsonplaceholder.typicode.com/posts/12";
+            HttpResponseMessage response = await client.GetAsync(url);
+
+            if(response.IsSuccessStatusCode) {
+                string responseData = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Status: {response.StatusCode} \n Response: {responseData}"); }
+            else {
+                string errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Status: {response.StatusCode} \n Error Content: {errorContent}"); }
+        }
+    }
+    catch ( Exception ex ) { Console.WriteLine(ex.Message); }
+}
+
+
+//Program.cs
+static async Task Main(String[] args)
+{
+    ApiCalls apiCalls = new ApiCalls();
+    await apiCalls.doGetRequest();
+}
+
