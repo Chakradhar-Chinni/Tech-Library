@@ -1,6 +1,6 @@
-/**************************
-Making a GET request using C#
-**************************/
+/*****************************************************
+Making a GET request using C# without authentication
+*******************************************************/
 //ApiManager.cs
 using System;
 using System.Net.Http;
@@ -73,9 +73,9 @@ public async Task BasicAuthGetRequest()
     catch(Exception ex) { Console.WriteLine(ex.Message); }
 }
 
-/**************************
-Making a POST request using C#
-**************************/
+/******************************************************
+Making a POST request using C# without authentication
+******************************************************/
 //ApiManager.cs
 public class ApiManager
 {
