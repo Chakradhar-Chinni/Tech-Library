@@ -50,6 +50,29 @@ namespace eSystemsApp
 3. public async Task MakeGetRequest() - asysc= its a modifier which indicates method is async and allows the use of await keyword; Task= method return type. This is an asynchronous method that performs some operations without blocking the calling thread. It returns a Task to indicate the asynchronous nature of the method, allowing other 
    code to await its completion.
 */
+
+/*******************************************************
+Making a GET request using C# with Basic Authentication
+*******************************************************/
+public async Task BasicAuthGetRequest()
+{
+    Console.WriteLine("BasicAuthGetRequest\n");
+    try {
+        //Authentication
+        var username = "";
+        var password = "";
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{username}:{password}"));
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+
+        string url = "";
+        HttpResponseMessage response = await client.GetAsync(url);
+        response.EnsureSuccessStatusCode();
+        string responseBody = await response.Content.ReadAsStringAsync();
+        Console.WriteLine($"API Response: {responseBody}");
+    }
+    catch(Exception ex) { Console.WriteLine(ex.Message); }
+}
+
 /**************************
 Making a POST request using C#
 **************************/
