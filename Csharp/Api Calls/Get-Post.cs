@@ -1,3 +1,10 @@
+/****************   Index  *************************
+Approach 1 - Making API calls using HttpClient
+Approach 2 - Making API calls with using() statement
+
+Approach 1,2 are both efficient, approach 1 is better when making multiple API calls.
+*/
+
 /*****************************************************
 Making a GET request using C# without authentication
 *******************************************************/
