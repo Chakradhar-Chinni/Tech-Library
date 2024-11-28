@@ -43,8 +43,7 @@ namespace eSystemsApp
 }
 /*
 1. await apimanager.MakeGetRequest(); - This line calls the MakeGetRequest method on the apiManager instance and waits for it to   
-   complete asynchronously. The await keyword ensures that the calling method does not block while waiting for 
-   MakeGetRequest to finish.
+   complete asynchronously. The await keyword ensures that the caller method waiting for MakeGetRequest to finish. In fire-and-forget scenarios, proper error handling should be coded.
 2. private static readonly HttpClient client = new HttpClient(); - This line declares and initializes a HttpClient instance as a 
    static, read-only field within the class. This ensures that the same HttpClient instance is reused throughout the lifetime of the 
    application, which is a good practice to avoid socket exhaustion and improve performance.
