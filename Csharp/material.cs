@@ -12,7 +12,10 @@
 
 - DataTypes
     - every variable must have a dataType
-    - bool=1bit, char=2bytes, string=2bytes per character, int, float=4bytes, double, long = 8 bytes
+    - Primitive Data Types: bool=1bit, char=2bytes, string=2bytes per character, int, float=4bytes, double, long = 8 bytes
+    - User Defined Data Types: Classes, Structs, Enums, Records, Interfaces, Delegates
+    - var : var name ='Bob' compiler determines the data type of variables with var type. Scope is local to methods. Often used in   
+            Anonymous types and LINQ queries
     
 - Type Casting/ Type Conversion
     - Implicit Casting (automatically) - converting a smaller type to a larger type size
