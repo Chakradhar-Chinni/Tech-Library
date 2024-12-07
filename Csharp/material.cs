@@ -139,7 +139,32 @@ public void AcceptPayment(int DebitCard){
 }
 
 --Plural Sight C# Path--
-- Understanding Value Types & Reference Types
+  - Understanding Value Types & Reference Types
+    Value Types: Allocated on Stack. int float char double. They have fixed allocation on stack which is provided by complier
+    Reference Types: Allocated on Heap. Stack contains pointer to memory adddress
+    1. Objects holds the heap memory address of the class. Objects are stored on Stack itself
+    2. Strings are reference Types meaning its stored on managed heap memory.
+      2a. Immutable: Strings are immutable so any change to existing string will create a new string object in memory. Garbage collector (gc) cleans up unwanted     
+          strings. gc collects short lived string quickly while long-lived strings impacts heap performance
+      2b. Storage: strings are stored as swquential read-only collection of Char objects. Each char in string occupies 2 byts as C# uses UTF-16 encoding
+      2c. Interning: .NET runtime uses Interning to ensure identical string literals are stored only once in the intern pool which reduces memory overhead.
+          example:
+              string greeting = "Hello, World!";
+              string anotherGreeting = "Hello, World!";  
+              // Both variables point to the same memory location due to string interning
+              bool areSame = object.ReferenceEquals(greeting, anotherGreeting); // true
+      2d. When to use StringBuilder? for frequent string concatenations memory usage and performace issues arises as each concatenation creates a new string. So use   
+          stringBuilder. StringBuilder is mutable meaning content can be modified on the StringBuilder instance without creating a new instance every time. It has an            Internal buffer to resize only when necessary. uses methods of stringBuilder class. Also, after doing all operations convert the StringBuilder to String               data type to interact with other parts of code and .NET framework that expect immutable string
+                          StringBuilder sb = new StringBuilder();
+                          sb.Append("Hello, ");
+                          sb.Append("World!");
+                          sb.AppendLine(); // Adds a newline character
+                          string result = sb.ToString(); // Convert the StringBuilder to a string
+      2e. String Interpolation also creates some memory overhead(see example below) as it creates temporary objects and integer values are boxed to objects.
+          example: string name = "John";
+                  string greeting = $"Hello, {name}!";
+                  // Internally, above statement is translated into .Format() or .Concat()
+                  string greeting = string.Format("Hello, {0}!", name);
   
 
 -- Certification freecodecamp & Microsoft--
