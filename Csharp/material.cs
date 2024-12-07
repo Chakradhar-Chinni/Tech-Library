@@ -166,6 +166,13 @@ public void AcceptPayment(int DebitCard){
                   // Internally, above statement is translated into .Format() or .Concat()
                   string greeting = string.Format("Hello, {0}!", name);
   
+- Custom Types
+  1. VS > View > Object Browser > right click view name spaces > Observe all the in-built namespaces with method details
+  2 .Community also develops libraries which can be installed via NuGet packages. For examples NewtonSoft Json. After installing this 3rd party, it would be also   
+     visible under Object Browser. (GlobalUsings.cs file will be at debug/net6.0)
+  
+- Enumerators
+  
 
 -- Certification freecodecamp & Microsoft--
   Console.Write();
