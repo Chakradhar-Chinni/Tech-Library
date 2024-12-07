@@ -35,7 +35,7 @@
 - Operators
     - Arithmetic: +-*/ ++ —
     - Assignment = += -= *=
-    - Comparisions < > ≤ ≥  == ≠
+    - Comparisions/Relational < > ≤ ≥  == ≠
     - Logical &&  || ! (using logical operators can give boolean results, ex: print(10>15) )
 - Math
     - Math.Max(5,10) | Math.Min(v1,v2) | Math.sqrt(v1)
@@ -47,9 +47,9 @@
         - string new = txt + data or string new = string.Concat(txt, data)
     - Interpolation
         - string value = $”{txt} {data}”;
-    - methods
-    - IndexOf(”E”)
+    - methods    
     - mystring[1]
+    - String Parsing: Split(), SubString(), IndexOf(), LastIndexOf(), Regex.Match(), Join()
 
 - Conditionals
   - if else
