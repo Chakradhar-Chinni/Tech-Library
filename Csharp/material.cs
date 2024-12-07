@@ -170,6 +170,14 @@ public void AcceptPayment(int DebitCard){
   1. VS > View > Object Browser > right click view name spaces > Observe all the in-built namespaces with method details
   2 .Community also develops libraries which can be installed via NuGet packages. For examples NewtonSoft Json. After installing this 3rd party, it would be also   
      visible under Object Browser. (GlobalUsings.cs file will be at debug/net6.0)
+ 
+- notes
+int num1; //declared but not initialized
+int num1=10; //declared & initialized
+//similarly, assume there is a Employee class
+public Employee emp; // emp of type Employee is declared
+public Employee emp = new Employee(); //initialized
+
   
 - Enumerators
   
