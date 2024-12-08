@@ -210,6 +210,32 @@ switch (day)
  Struct is a user-definend type, a lightweight alternative to class. Struct donot support inheritance and are stored 
  as value type on stack memory.
  
+- Static Data Understanding
+//Employee.cs
+ public class Employee
+ {
+     public int eid;
+     public string name;
+     public static string department = "Sales"; //static field
+     public static void sendGreetings() { Console.WriteLine("Welcome"); } // staic method
+ }
+//Porgram.cs
+Employee emp1;
+emp1 = new Employee();
+emp1.name = "Alex";
+emp1.eid = 362254;
+Console.WriteLine($"{emp1.name} {emp1.eid} {Employee.department}"); // Alex 362254 Sales
+
+Employee.department = "Clients";
+Console.WriteLine($"{emp1.name} {emp1.eid} {Employee.department}"); // Alex 362254 Clients
+
+Employee.sendGreetings(); // calling static method using className instead of instance name
+
+1. Static fields are not available for instances they are at class level only
+2. department is static field, so the same static value applies for all instances of Employee class.Value can be 
+    updated using className Employee.department=""
+3. static methods also are at Class level, so class Name should be used to call a static method
+   
 -- Certification freecodecamp & Microsoft--
   Console.Write();
  Console.WriteLine();
