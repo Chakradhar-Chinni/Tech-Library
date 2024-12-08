@@ -29,7 +29,8 @@
 
 - User Input
     - `Console.ReadLine()` to get user input.
-    - `Console.ReadLine()` method returns a `string`. Therefore, you cannot get information from another data type, such as `int`, so use below format
+    - `Console.ReadLine()` method returns a `string`. Therefore, you cannot get information from another data type,   
+       such as `int`, so use below format
         - `int age = Convert.ToInt32(Console.ReadLine());`
 
 - Operators
@@ -179,8 +180,32 @@ public Employee emp; // emp of type Employee is declared
 public Employee emp = new Employee(); //initialized
 
   
-- Enumerators
-  
+- Enumerators (Enums)
+  Enums are a way to define set of named constants (read-only variables). Values of enum members must be integers
+  Enums can be used in variable declarations, method parameters, return types, and switch statements just like any   
+  other data type.
+  //Constants.cs
+  namespace eSystems
+  {
+    enum Weeks { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday}
+    enum HttpStatus { ServerError = 500, Success = 400, ReDirection = 300 }
+  }
+  //Program.cs
+ Console.WriteLine((int)Weeks.Thursday); //returns 3
+ Console.WriteLine((int)HttpStatus.ServerError); //returns 500
+
+//Using Enums in a switch case
+  int day = (int)Weeks.Monday;
+switch (day)
+{
+    case (int)Weeks.Monday:
+        Console.WriteLine("Its Monday");
+        break;
+    case (int)Weeks.Tuesday:
+        Console.WriteLine("Its Tuesday");
+        break;
+}
+
 
 -- Certification freecodecamp & Microsoft--
   Console.Write();
