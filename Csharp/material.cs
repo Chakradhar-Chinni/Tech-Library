@@ -207,8 +207,12 @@ switch (day)
 }
 
 - Struct
- Struct is a user-definend type, a lightweight alternative to class. Struct donot support inheritance and are stored 
- as value type on stack memory.
+1. Struct is a user-definend type, a lightweight alternative to class. Struct donot support inheritance and are stored 
+  as value type on stack memory.
+2. Static fields are not available for instances they are at class level only
+3. department is static field, so the same static value applies for all instances of Employee class.Value can be 
+    updated using className Employee.department=""
+4. static methods also are at Class level, so class Name should be used to call a static method
  
 - Static Data Understanding
 //Employee.cs
@@ -231,10 +235,19 @@ Console.WriteLine($"{emp1.name} {emp1.eid} {Employee.department}"); // Alex 3622
 
 Employee.sendGreetings(); // calling static method using className instead of instance name
 
-1. Static fields are not available for instances they are at class level only
-2. department is static field, so the same static value applies for all instances of Employee class.Value can be 
-    updated using className Employee.department=""
-3. static methods also are at Class level, so class Name should be used to call a static method
+
+
+-- Nullable Types
+1. Primitive data types cannot hold a null value as they are value types which uses Stack.
+2. Its possible to make the primitive data type as null using Nullable operator ? 
+3. default value can be assigned using ?? if value of a variable is NULL. (lets say database returns NULL 
+   for discountPrice) This can be handled by giving default value to variable using null-coalescing operator ??
+
+  int? number; // int is nullable
+  number = null; //null is assigned
+  int num1 = number ?? 23; // ?? checks if leftHand side value is null,if null right hand side value will be assigned
+
+
    
 -- Certification freecodecamp & Microsoft--
   Console.Write();
