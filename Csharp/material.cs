@@ -206,7 +206,10 @@ switch (day)
         break;
 }
 
-
+- Struct
+ Struct is a user-definend type, a lightweight alternative to class. Struct donot support inheritance and are stored 
+ as value type on stack memory.
+ 
 -- Certification freecodecamp & Microsoft--
   Console.Write();
  Console.WriteLine();
