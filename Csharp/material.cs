@@ -236,7 +236,6 @@ Console.WriteLine($"{emp1.name} {emp1.eid} {Employee.department}"); // Alex 3622
 Employee.sendGreetings(); // calling static method using className instead of instance name
 
 
-
 -- Nullable Types
 1. Primitive data types cannot hold a null value as they are value types which uses Stack.
 2. Its possible to make the primitive data type as null using Nullable operator ? 
@@ -247,6 +246,11 @@ Employee.sendGreetings(); // calling static method using className instead of in
   number = null; //null is assigned
   int num1 = number ?? 23; // ?? checks if leftHand side value is null,if null right hand side value will be assigned
 
+
+-- Records
+new reference type from c# 9
+prefer records to contain just data, if there is a need to use methods go for classes
+features: immutability, concise, value-based equality
 
    
 -- Certification freecodecamp & Microsoft--
