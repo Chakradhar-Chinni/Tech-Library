@@ -335,7 +335,39 @@ public void updateAddress(string updatedAddress) { //method
 - Abstraction
 
 - Inheritance
-Classes can reuse functionalities from other class. Lower development time because of code reusability
+1. Classes can reuse functionalities from other class. Lower development time because of code reusability
+2. Parent/Base class Child/Derived class
+  [Recap] Access Modifiers: public, private, protected
+3. private type cannot be accessed by any child classes.
+
+  Syntax
+  public class ParentClass {}  
+  public class ChildClass : ParentClass {}
+
+public class Vehicle
+{
+    public string Brand { get; set; }
+    public void Honk()
+    {
+        Console.WriteLine("tuut.. tuuy...");
+    }        
+}
+public class Car : Vehicle
+{
+    public string CarName { get; set; }
+}
+
+public class Bike  : Vehicle
+{
+    public String BikeName { get; set; }
+}
+
+//Program.cs
+Vehicle v1 = new Vehicle();
+v1.Brand = "ford";
+Console.WriteLine($"{v1.Brand}");
+v1.Honk();
+    
 
 - Polymorphism
 Multiple forms can be 
