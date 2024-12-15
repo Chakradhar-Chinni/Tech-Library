@@ -206,6 +206,8 @@ switch (day)
         break;
 }
 
+
+
 - Struct
 1. Struct is a user-definend type, a lightweight alternative to class. Struct donot support inheritance and are stored 
   as value type on stack memory.
@@ -213,6 +215,8 @@ switch (day)
 3. department is static field, so the same static value applies for all instances of Employee class.Value can be 
     updated using className Employee.department=""
 4. static methods also are at Class level, so class Name should be used to call a static method
+
+
  
 - Static Data Understanding
 //Employee.cs
@@ -234,6 +238,7 @@ Employee.department = "Clients";
 Console.WriteLine($"{emp1.name} {emp1.eid} {Employee.department}"); // Alex 362254 Clients
 
 Employee.sendGreetings(); // calling static method using className instead of instance name
+
 
 
 -- Nullable Types
@@ -274,10 +279,55 @@ String[] duplicates = {"B123","C234","A345","C15","B177","G3003","C235","B179"};
         Console.Write(i+"|"); }     }
 
 
+
 -- Collections
 1. Collections are flexible as size can expand or shrink during runtime. Size need not be defined during creation time
 
 Syntax: List<int> employees = new List<int>();
+
+
+
+-- Object Oriented Programming OOPS
+Structure: Classes, Objects, Methods, Properties
+Four Pillars: Encapsulation, Abstraction, Inheritance, Polymorphism
+
+- Encapsulation
+1. Hides internal implemetation & data. Exposes only required information
+
+public class Student
+{
+    private int age;
+    private string address;    
+    public int Age 
+    {
+        get { return age; }            
+        set  {
+            if (value < 0) { age = 12; }
+            age = value;  }
+    }
+    public string Address
+    {
+        get { return address; }
+        set { address = value; }           
+    }
+}
+
+Program.cs
+Student s1;
+s1 = new Student();
+
+s1.Age = 21;
+s1.Address = "Hogwarts";
+Console.WriteLine($"age: {s1.Age} and address: { s1.Address}");
+
+- Abstraction
+
+- Inheritance
+Classes can reuse functionalities from other class. Lower development time because of code reusability
+
+- Polymorphism
+Multiple forms can be 
+
 
 
 -- Certification freecodecamp & Microsoft--
