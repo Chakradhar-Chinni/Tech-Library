@@ -294,6 +294,7 @@ Four Pillars: Encapsulation, Abstraction, Inheritance, Polymorphism
 - Encapsulation
 1. Hides internal implemetation & data. Exposes only required information
 
+//using get & set 
 public class Student
 {
     private int age;
@@ -319,6 +320,17 @@ s1 = new Student();
 s1.Age = 21;
 s1.Address = "Hogwarts";
 Console.WriteLine($"age: {s1.Age} and address: { s1.Address}");
+
+//using get & private set
+private string address;
+public string Address {
+    get { return address; }
+    private set { address = value; } }
+
+public Student(string initialAddress) { address = initialAddress;    } //constructor
+
+public void updateAddress(string updatedAddress) { //method
+    address = "changed to " + updatedAddress; }
 
 - Abstraction
 
