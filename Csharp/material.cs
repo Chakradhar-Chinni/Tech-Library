@@ -247,16 +247,18 @@ Employee.sendGreetings(); // calling static method using className instead of in
   int num1 = number ?? 23; // ?? checks if leftHand side value is null,if null right hand side value will be assigned
 
 
+
 -- Records
 new reference type from c# 9
 prefer records to contain just data, if there is a need to use methods go for classes
 features: immutability, concise, value-based equality
 
 
+
 -- Arrays
 1. To store set of data, variables are not useful. So Arrays or Collection can store set of data
 2. Array is a data structure which stores same type of data. Values in an array can be accessed useing 0 based indexing
-3. Arrays are reference types, new() allocates memory in heap, size of array must be defined during array creation
+3. Arrays are reference types, new allocates memory in heap, size of array must be defined during array creation
 4. Array Methods: .Reverse() .Copy() .Sort()
 
 example of integer array
@@ -265,14 +267,19 @@ int[] array = new int[10];
         array[i] = i;     }
     Console.WriteLine($"{array[0]} , {array[3]}");  
 
-
 example of string array
 String[] duplicates = {"B123","C234","A345","C15","B177","G3003","C235","B179"};
    foreach(string i in duplicates)  {
         if(i.StartsWith('B')) {
         Console.Write(i+"|"); }     }
 
-   
+
+-- Collections
+1. Collections are flexible as size can expand or shrink during runtime. Size need not be defined during creation time
+
+Syntax: List<int> employees = new List<int>();
+
+
 -- Certification freecodecamp & Microsoft--
   Console.Write();
  Console.WriteLine();
