@@ -294,7 +294,9 @@ Four Pillars: Encapsulation, Abstraction, Inheritance, Polymorphism
 - Encapsulation
 1. Hides internal implemetation & data. Exposes only required information
 
-//using get & set 
+//using get & set methods
+1. Private fields can be accessed using get, set methods
+2. Object of the class cannot access private variables directly, must navigate through get,set methods
 public class Student
 {
     private int age;
@@ -322,6 +324,8 @@ s1.Address = "Hogwarts";
 Console.WriteLine($"age: {s1.Age} and address: { s1.Address}");
 
 //using get & private set
+1. In Private set, value cannot be directly assigned to variable. class object can assign the value using constructor or any method.
+2. This approach will greatly help to validate data before assignment
 private string address;
 public string Address {
     get { return address; }
