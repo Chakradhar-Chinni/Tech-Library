@@ -371,7 +371,47 @@ Vehicle v1 = new Vehicle();
 v1.Brand = "ford";
 Console.WriteLine($"{v1.Brand}");
 v1.Honk();
-    
+
+
+- Understanding Reference Type & Object Type
+1. Reference Type: The reference variable myDog is of type Animal. This means it can hold a reference to any object that is an instance of Animal or any of its subclasses (like Dog).
+2. Object Type: The actual object created is of type Dog. This means the object in memory is a Dog instance, which includes all the properties and methods of the Dog class, as well as those   
+   inherited from the Animal class.
+3. Method Call: When myDog.MakeSound() is called, the MakeSound method of the Dog class is executed, even though myDog is of type Animal. This is because the actual object is a Dog, and the Dog      class overrides the MakeSound method from the Animal class. This demonstrates runtime polymorphism. Output: Bark
+4. Accessing Subclass Methods: When you create an object of a subclass and assign it to a reference variable of the superclass type, you can only call methods that are defined in the superclass. This is because the reference type determines what methods are accessible, not the object type.
+class Animal
+{
+    public virtual void MakeSound()
+    {
+        Console.WriteLine("Some generic animal sound");
+    }
+}
+
+class Dog : Animal
+{
+    public override void MakeSound()
+    {
+        Console.WriteLine("Bark");
+    }
+
+    public void Fetch()
+    {
+        Console.WriteLine("Dog is fetching the ball");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Animal myDog = new Dog(); // Reference type is Animal, object type is Dog
+        myDog.MakeSound(); // Outputs: Bark
+
+        // myDog.Fetch(); // This line would cause a compile-time error
+    }
+}
+
+
 
 - Polymorphism
 Poly&morph
