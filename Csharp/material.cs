@@ -514,6 +514,10 @@ bool status = Bob.ApplyLeave();
 
 string leaveStatus = status ? "Approved" : "Rejected";
 
+
+--LINQ using c#
+Agenda: Select, Search, Extract subsets, find common items, joins, grouping, min, aggregation, deferred execution
+Prequisites: Generics, Delegates, Lambda Expressions, Extension Methods
 -- Certification freecodecamp & Microsoft--
   Console.Write();
  Console.WriteLine();
