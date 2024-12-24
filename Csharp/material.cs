@@ -477,6 +477,43 @@ Alex.payCabBill("UPI");
 Alex.payCabBill("TouchPay");
 
 
+
+-- Interface
+  Syntax: public Interface IEmployee {}
+          public class Employee : IEmployee
+1.Its best practice to use I for an interface name  
+2.An Interface specifies what a class should do. A class which implements Interface must provide definitions for all the methods 
+3.All methods are public and abstract
+4.Cannot contain private access type & cannot contain variables
+public interface IEmployee
+{
+    void PerformWork();
+    void ReceiveBonus();
+    bool ApplyLeave();
+}
+public class Employee : IEmployee
+{
+    public void PerformWork()
+    {
+        Console.WriteLine("Work is completed");
+    }
+    public void ReceiveBonus()
+    {
+        Console.WriteLine("Bonus is added");
+    }
+    public bool ApplyLeave()
+    {
+        return true;
+    }
+}
+//program.cs
+Employee Bob = new Employee();
+Bob.PerformWork();
+Bob.ReceiveBonus();
+bool status = Bob.ApplyLeave();
+
+string leaveStatus = status ? "Approved" : "Rejected";
+
 -- Certification freecodecamp & Microsoft--
   Console.Write();
  Console.WriteLine();
