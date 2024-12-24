@@ -338,6 +338,8 @@ public void updateAddress(string updatedAddress) { //method
 
 - Abstraction
 
+
+
 - Inheritance
 1. Classes can reuse functionalities from other class. Lower development time because of code reusability
 2. Parent/Base class Child/Derived class
@@ -371,6 +373,7 @@ Vehicle v1 = new Vehicle();
 v1.Brand = "ford";
 Console.WriteLine($"{v1.Brand}");
 v1.Honk();
+
 
 
 - Understanding Reference Type & Object Type
@@ -415,8 +418,63 @@ class Program
 
 - Polymorphism
 Poly&morph
-Multiple forms can be 
+Overriding & OverLoading
+--Overriding
+1. Use the Reference of Super class and create object of subclass.
+2. Revisit Understanding Reference Type & Object Type
+ public class Vehicle
+ {
+     public virtual void Speed()
+     {
+         Console.WriteLine("General Speed");
+     }
+ }
+ public class Car : Vehicle
+ {
+     public override void Speed()
+     {
+         Console.WriteLine("Car speed is 120 km/hr");
+     }
+ }
+ public class Bike : Vehicle
+ {
+     public override void Speed()
+     {
+         Console.WriteLine("Bike speed is 80 km/hr");
+     }
 
+ } 
+
+//program.cs
+Vehicle v = new Bike();
+v.Speed();
+
+-Overloading
+1. payCabBill() is overloaded with diferent parameters
+public class Employee
+{
+    public void payCabBill()
+    {
+        Console.WriteLine("Bill Payed");
+    }
+    public void payCabBill(string mode)
+    {
+        if (mode == "UPI")
+        {
+            Console.WriteLine("Bill Paid using UPI");
+        }
+        if (mode == "Swipe")
+        {
+            Console.WriteLine("Bill Paid using Swipe Card");
+        }
+    }
+}
+
+//Program.cs
+Employee Alex = new Employee();
+Alex.payCabBill();
+Alex.payCabBill("UPI");
+Alex.payCabBill("TouchPay");
 
 
 -- Certification freecodecamp & Microsoft--
