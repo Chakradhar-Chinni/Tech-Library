@@ -520,10 +520,40 @@ Agenda: Select, Search, Extract subsets, find common items, joins, grouping, min
 Prequisites: Generics, Delegates, Lambda Expressions, Extension Methods
 
 
+
 -- Events, Event Handler, Delegate, Lambda
 1. Events are like notifications. Event Raiser triggers an event and Delegate ensure that it reaches to its destination
 2. Events & Delegates go handInhand. Without Delegates Events are of no use
+3. Delegate is like class. public delegate just like public class
+4. Every Delegate ends with the keyword Handler
 
+
+- Delegates
+1. Syntax is to use delegate keyword with a return type
+2. Method must use the same return type, signature of delegate. Delegate & method name can be different
+3. A delegate can be reused by many methods
+
+public class useDelegates
+{
+    public delegate void MyDelegate(string message);
+    public static void PrintMessage(string message)
+    {
+        Console.WriteLine("Message: " + message);
+    }
+    public static void Greet(string message)
+    {
+        Console.WriteLine("Greetings: " + message);
+    }
+
+    public static void Main()
+    {
+        MyDelegate del1 = PrintMessage;
+        MyDelegate del2 = Greet;
+
+        del1("Hello.. !!");
+        del2("Welcome to eSystems");
+    }
+}
 
 -- Certification freecodecamp & Microsoft--
   Console.Write();
