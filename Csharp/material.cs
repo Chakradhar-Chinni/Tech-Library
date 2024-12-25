@@ -288,7 +288,7 @@ Syntax: List<int> employees = new List<int>();
 
 
 -- Object Oriented Programming OOPS
-Structure: Classes, Objects, Methods, Properties
+Structure: Classes, Objects, Methods, Properties, Interfaces
 Four Pillars: Encapsulation, Abstraction, Inheritance, Polymorphism
 
 - Encapsulation
@@ -518,6 +518,13 @@ string leaveStatus = status ? "Approved" : "Rejected";
 --LINQ using c#
 Agenda: Select, Search, Extract subsets, find common items, joins, grouping, min, aggregation, deferred execution
 Prequisites: Generics, Delegates, Lambda Expressions, Extension Methods
+
+
+-- Events, Event Handler, Delegate, Lambda
+1. Events are like notifications. Event Raiser triggers an event and Delegate ensure that it reaches to its destination
+2. Events & Delegates go handInhand. Without Delegates Events are of no use
+
+
 -- Certification freecodecamp & Microsoft--
   Console.Write();
  Console.WriteLine();
