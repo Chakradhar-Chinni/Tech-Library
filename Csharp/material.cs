@@ -532,6 +532,7 @@ Prequisites: Generics, Delegates, Lambda Expressions, Extension Methods
 1. Syntax is to use delegate keyword with a return type
 2. Method must use the same return type, signature of delegate. Delegate & method name can be different
 3. A delegate can be reused by many methods
+4. Delegates are used to pass methods as parameter to other methods
 
 public class useDelegates
 {
