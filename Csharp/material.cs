@@ -556,6 +556,53 @@ public class useDelegates
     }
 }
 
+
+//Video Encode example
+public class VideoEncoder
+{
+    public delegate void VideoEncodedEventHandler(object source,EventArgs args);
+    public event VideoEncodedEventHandler VideoEncoded;
+    public void Encode()
+    {
+        Console.WriteLine("Encoding Video....");
+        Thread.Sleep(5);
+
+        OnVideoEncoded();
+    }
+    protected virtual void OnVideoEncoded()
+    {
+        if (VideoEncoded != null)
+        {
+            VideoEncoded(this,EventArgs.Empty);
+        }
+    }         
+}
+public class EmailService
+{
+    public void SendEmail(object source, EventArgs args)
+    {
+        Console.WriteLine("Email Service: Sending an email....");
+    }
+}
+public class TextService
+{
+    public void SendText(object source, EventArgs args)
+    {
+        Console.WriteLine("Text Service: Sending an text....");
+    }
+}
+//program.cs
+ VideoEncoder videoencoder = new VideoEncoder();           
+ var mailservice = new EmailService();
+ var textservice = new TextService();
+
+ videoencoder.VideoEncoded += mailservice.SendEmail; // subscribing mail service
+ videoencoder.VideoEncoded += textservice.SendText; // subscribing Text service
+
+
+ videoencoder.Encode();
+
+
 -- Certification freecodecamp & Microsoft--
   Console.Write();
  Console.WriteLine();
