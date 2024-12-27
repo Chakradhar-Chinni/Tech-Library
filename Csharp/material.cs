@@ -603,6 +603,31 @@ public class TextService
  videoencoder.Encode();
 
 
+-- Lambdas 
+1. Lambda expressions in C# are a concise way to represent anonymous methods using a special syntax
+2. Lambdas are widely used in LINQ Expressions, Func<T, TResult>, Action<T>, Custom Delegates, Event Handlers
+3. lambda expression uses the => operator, which is known as the lambda operator
+4. Syntax: (parameters) => expression   'for multiple parameters' (parameters) => { statements }
+
+Taking example of Func<T> with lambda
+  Func<int, int> square = x => x * x; //a lambda expression that squares a number.
+  int result = square(5); //returns 25
+
+split the above example into 2 parts, left side of = and right side
+--left side-- Func<int, int> square
+left side is a C# Delegate Func<T1,T2,..T16,TResult> that take upsto 16 parameters and returns a value
+Func<int, int> .Here 1st int represents input parameter while the 2nd is return type
+Func<int, int> square .Here squaure is an instance of delegate Func
+
+--right side--  x => x * x
+This is the lambda expression assigned to the square delegate.
+x is the parameter of the lambda expression.
+=> is the lambda operator, which separates the parameter from the body of the expression.
+x * x is the body of the lambda expression, which specifies what the lambda does. In this case, it multiplies x by itself.
+
+
+
+  
 -- Certification freecodecamp & Microsoft--
   Console.Write();
  Console.WriteLine();
