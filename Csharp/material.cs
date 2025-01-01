@@ -627,6 +627,14 @@ x * x is the body of the lambda expression, which specifies what the lambda does
 
 (B) Taking Example of Action<T> with lambda
 
+
+
+-- IEnumerable<T> || Interface
+1. IEnumerable has a method GetEnumerator() which returns the Interface IEnumerator
+2. IEnumerator has 3 methods: Current()-pointing current element. MoveNext()-for advancing to next element and Reset()-for moving the control back to initial point
+3. 
+
+-- IQueryable
   
 -- Certification freecodecamp & Microsoft--
   Console.Write();
