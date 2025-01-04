@@ -721,9 +721,8 @@ public static List<Employee> GetEmployees()
 -Select Operator with Query Syntax and Method Syntax
 
  //Query Syntax
- //Employee.GetEmployees() returns IEnumerable<T> Employee objects then.ToList() converts returned collection to List
- List<Employee> basicQuery = (from emp in Employee.GetEmployees() 
-                              select emp).ToList();
+ //Employee.GetEmployees() returns IEnumerable<T> Employee objects then .ToList() converts returned collection to List
+ List<Employee> basicQuery = (from emp in Employee.GetEmployees() select emp).ToList();
  foreach (Employee emp in basicQuery)
  {
      Console.WriteLine($"{emp.ID} {emp.FirstName} {emp.LastName} {emp.Salary}");
@@ -735,6 +734,26 @@ public static List<Employee> GetEmployees()
  {
      Console.WriteLine($"{emp.ID} {emp.FirstName} {emp.LastName} {emp.Salary}");
  }
+
+-Select Single property 
+//Query Syntax
+List<int> basicQuery = (from emp in Employee.GetEmployees() select emp.ID).ToList();
+foreach(var id in basicQuery) 
+{
+    Console.WriteLine($"{id}"); 
+}
+
+//Method Syntax
+IEnumerable<int> basicMethod = Employee.GetEmployees().Select(emp => emp.ID);
+foreach (var id in basicMethod) 
+{
+    Console.WriteLine($"{id}");
+}
+
+cont from: How do you Select a Few Properties to a Different class using a LINQ Select Operator?
+
+
+
 
 
   
