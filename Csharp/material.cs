@@ -294,6 +294,24 @@ Four Pillars: Encapsulation, Abstraction, Inheritance, Polymorphism
 - Encapsulation
 1. Hides internal implemetation & data. Exposes only required information
 
+// simple implementation using get & set
+public class Employee
+{
+    public int ID { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string salary { get; set; }
+}
+//program.cs
+Employee employee = new Employee();
+employee.ID = 10;
+employee.FirstName = "ALex";
+employee.LastName = "A";
+employee.salary = "2500";
+
+Console.WriteLine($"{employee.ID} {employee.FirstName} {employee.LastName} {employee.salary}");
+
+
 //using get & set methods
 1. Private fields can be accessed using get, set methods
 2. Object of the class cannot access private variables directly, must navigate through get,set methods
