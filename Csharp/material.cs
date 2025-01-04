@@ -533,11 +533,6 @@ bool status = Bob.ApplyLeave();
 string leaveStatus = status ? "Approved" : "Rejected";
 
 
---LINQ using c#
-Agenda: Select, Search, Extract subsets, find common items, joins, grouping, min, aggregation, deferred execution
-Prequisites: Generics, Delegates, Lambda Expressions, Extension Methods
-
-
 
 -- Events, Event Handler, Delegate, Lambda
 1. Events are like notifications. Event Raiser triggers an event and Delegate ensure that it reaches to its destination
@@ -689,7 +684,7 @@ foreach(var i in collection)
 
 
 
--- IQueryable<T>
+-- IQueryable<T> || Interface
 1. It is used for external data source querying with LINQ and uses deferred execution
 2. Queries are not executed when they are defined. Instead, they are executed when the query is enumerated (e.g., using foreach or ToList()).
 3. IQueryable<T> uses expression trees to represent the query. This allows the query to be translated into a format that the data source 
@@ -698,6 +693,49 @@ foreach(var i in collection)
 
 
 -- Extension Methods
+
+
+
+-- LINQ || Language Integrated Query
+Agenda: Select, Search, Extract subsets, find common items, joins, grouping, min, aggregation, deferred execution
+Prequisites: Generics, Delegates, Lambda Expressions, Extension Methods
+1. Query Syntax and Method Syntax are two approaches. Query Syntax is more readable, in few aggregation scenarios 
+   only method syntax is possible
+
+public static List<Employee> GetEmployees()
+{
+    List<Employee> employees = new List<Employee>()
+    {
+        new Employee {ID = 1001, FirstName = "Alex", LastName = "J", Salary = 80000 },
+        new Employee {ID = 1002, FirstName = "Priyanka", LastName = "Dewangan", Salary = 70000 },
+        new Employee {ID = 1003, FirstName = "Hina", LastName = "Sharma", Salary = 80000 },
+        new Employee {ID = 1004, FirstName = "Anurag", LastName = "Mohanty", Salary = 90000 },
+        new Employee {ID = 1005, FirstName = "Sambit", LastName = "Satapathy", Salary = 100000 },
+        new Employee {ID = 1006, FirstName = "Sushanta", LastName = "Jena", Salary = 160000 }
+    };
+    //adding 1 more employee
+    employees.Add(new Employee { ID = 1007, FirstName = "Reeta", LastName = "T", Salary = 60000 });
+    return employees;
+}
+
+-Select Operator with Query Syntax and Method Syntax
+
+ //Query Syntax
+ //Employee.GetEmployees() returns IEnumerable<T> Employee objects then.ToList() converts returned collection to List
+ List<Employee> basicQuery = (from emp in Employee.GetEmployees() 
+                              select emp).ToList();
+ foreach (Employee emp in basicQuery)
+ {
+     Console.WriteLine($"{emp.ID} {emp.FirstName} {emp.LastName} {emp.Salary}");
+ }
+
+ //Method Syntax
+ IEnumerable<Employee> basicMethod = Employee.GetEmployees().ToList();
+ foreach (Employee emp in basicMethod)
+ {
+     Console.WriteLine($"{emp.ID} {emp.FirstName} {emp.LastName} {emp.Salary}");
+ }
+
 
   
 -- Certification freecodecamp & Microsoft--
