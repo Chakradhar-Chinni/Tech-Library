@@ -630,11 +630,57 @@ x * x is the body of the lambda expression, which specifies what the lambda does
 
 
 -- IEnumerable<T> || Interface
+It is used to iterate through collections like list,array using foreach loops
 1. IEnumerable has a method GetEnumerator() which returns the Interface IEnumerator
-2. IEnumerator has 3 methods: Current()-pointing current element. MoveNext()-for advancing to next element and Reset()-for moving the control back to initial point
-3. 
+2. IEnumerator has 3 methods: Current()-pointing current element. MoveNext()-for advancing to next element and Reset()-for moving the control 
+   back to initial point
+3. Generic IEnumerable<T> inherits Non-Generic IEnumerable.So, methods in Non-Generic IEnumerable also needs to be implemented if we are 
+   using IEnumerable<T>
+4. It is used for in-memory operations like arrays, collections
 
--- IQueryable
+public class MyCollection<T> : IEnumerable<T>
+{
+    private List<T> _items = new List<T>();
+    public void Add(T item)
+    {
+        _items.Add(item);
+    }
+    public IEnumerator<T> GetEnumerator()
+    {
+        return _items.GetEnumerator();
+    }
+    
+    //Implementation of Non-Generic IEnumerable. 
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator(); //calls GetEnumerator(). So, this enumerator can be used for generic&non-generic
+    }
+}
+
+//program.cs
+var collection = new List<int>();
+collection.Add(1);
+collection.Add(10);
+collection.Add(100);
+collection.Add(1000);
+
+foreach(var i in collection)
+{
+    Console.WriteLine(i);
+}
+
+
+
+-- IQueryable<T>
+1. It is used for external data source querying with LINQ and uses deferred execution
+2. Queries are not executed when they are defined. Instead, they are executed when the query is enumerated (e.g., using foreach or ToList()).
+3. IQueryable<T> uses expression trees to represent the query. This allows the query to be translated into a format that the data source 
+    understands (e.g., SQL for databases).
+4. IQueryable<T> is typically implemented by query providers (e.g., Entity Framework) that translate LINQ queries into the appropriate data source queries.
+
+
+-- Extension Methods
+
   
 -- Certification freecodecamp & Microsoft--
   Console.Write();
