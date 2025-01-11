@@ -702,22 +702,29 @@ Prequisites: Generics, Delegates, Lambda Expressions, Extension Methods
 1. Query Syntax and Method Syntax are two approaches. Query Syntax is more readable, in few aggregation scenarios 
    only method syntax is possible
 
-public static List<Employee> GetEmployees()
+public class Employee
 {
-    List<Employee> employees = new List<Employee>()
-    {
-        new Employee {ID = 1001, FirstName = "Alex", LastName = "J", Salary = 80000 },
-        new Employee {ID = 1002, FirstName = "Priyanka", LastName = "Dewangan", Salary = 70000 },
-        new Employee {ID = 1003, FirstName = "Hina", LastName = "Sharma", Salary = 80000 },
-        new Employee {ID = 1004, FirstName = "Anurag", LastName = "Mohanty", Salary = 90000 },
-        new Employee {ID = 1005, FirstName = "Sambit", LastName = "Satapathy", Salary = 100000 },
-        new Employee {ID = 1006, FirstName = "Sushanta", LastName = "Jena", Salary = 160000 }
-    };
-    //adding 1 more employee
-    employees.Add(new Employee { ID = 1007, FirstName = "Reeta", LastName = "T", Salary = 60000 });
-    return employees;
-}
+    public int ID { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public int Salary { get; set; }
 
+    public static List<Employee> GetEmployees()
+    {
+        List<Employee> employees = new List<Employee>()
+        {
+            new Employee {ID = 1001, FirstName = "Alex", LastName = "J", Salary = 80000 },
+            new Employee {ID = 1002, FirstName = "Priyanka", LastName = "Dewangan", Salary = 70000 },
+            new Employee {ID = 1003, FirstName = "Hina", LastName = "Sharma", Salary = 80000 },
+            new Employee {ID = 1004, FirstName = "Anurag", LastName = "Mohanty", Salary = 90000 },
+            new Employee {ID = 1005, FirstName = "Sambit", LastName = "Satapathy", Salary = 100000 },
+            new Employee {ID = 1006, FirstName = "Sushanta", LastName = "Jena", Salary = 160000 }
+        };
+        //adding 1 more employee
+        employees.Add(new Employee { ID = 1007, FirstName = "Reeta", LastName = "T", Salary = 60000 });
+        return employees;
+    }
+}
 -Select Operator with Query Syntax and Method Syntax
 
  //Query Syntax
@@ -744,16 +751,88 @@ foreach(var id in basicQuery)
 }
 
 //Method Syntax
-IEnumerable<int> basicMethod = Employee.GetEmployees().Select(emp => emp.ID);
+IEnumerable<int> basicMethod = Employee.GetEmployees().Select(emp => emp.ID); // query generated but not executed
 foreach (var id in basicMethod) 
 {
     Console.WriteLine($"{id}");
 }
-
+/*
+1) Iteration: The Select operator iterates over each element in the source sequence.
+2) Transformation: For each element, it applies the transformation logic defined in the lambda expression.
+3) Result: It produces a new sequence where each element is the result of the applied transformation on the corresponding element from the source sequence
+*/
 cont from: How do you Select a Few Properties to a Different class using a LINQ Select Operator?
 
+- Select only few properties
+//Query Syntax-1, storing result into IEnumerable<T>
+IEnumerable<Employee> myquery =  (from emp in Employee.GetEmployees() select new Employee()
+                                                                      {
+                                                                        FirstName = emp.FirstName,
+                                                                        LastName  = emp.LastName,
+                                                                        Salary = emp.Salary
+                                                                      });
+foreach(var emp in myquery)
+{
+    Console.WriteLine($"{emp.LastName} {emp.FirstName}");
+}
 
+//Query Syntax-2, storing result into List
+List<Employee> querylist = (from emp in Employee.GetEmployees()
+ select new Employee()
+ {
+     FirstName = emp.FirstName,
+     LastName = emp.LastName,
+     Salary = emp.Salary
+ }).ToList();
 
+foreach(Employee emp in querylist)
+{
+    Console.WriteLine($"{emp.FirstName} {emp.LastName}");
+}
+
+//Method Syntax-1, uses lambda & stores the result to list
+List<Employee> selectMethod = Employee.GetEmployees().
+                              Select(emp => new Employee()
+                              {
+                                  FirstName = emp.FirstName,
+                                  LastName = emp.LastName,
+                                  Salary = emp.Salary
+                              }).ToList();
+foreach(Employee emp in selectMethod)
+{
+    Console.WriteLine(emp.FirstName);
+}
+
+- Project data as anonymous type
+1. After new keyword nothing is mentioned which makes the data as anonymous
+2. FullName can be projected because of anonymous type, for non-anonymous type its nor possible to introduce new fields
+3. Salary * 12 is also possible because of anonymous type, it is not possible for non-anonymous types
+//Query Syntax
+var myquery =  (from emp in Employee.GetEmployees() select new
+                                                          {
+                                                            FirstName = emp.FirstName,
+                                                            LastName  = emp.LastName,
+                                                            FullName = emp.FirstName +" "+ emp.LastName, 
+                                                            Salary = emp.Salary
+                                                          });
+foreach(var emp in myquery)
+{
+    Console.WriteLine($" {emp.FirstName} {emp.LastName} {emp.Salary} {emp.FullName}");
+}          
+Console.WriteLine(myquery.GetType());
+           
+//Method Syntax
+var selectMethod = Employee.GetEmployees().
+                              Select(emp => new 
+                              {
+                                  FirstName = emp.FirstName,
+                                  LastName = emp.LastName,
+                                  Salary = emp.Salary * 12
+                              }).ToList();
+foreach(var emp in selectMethod)
+{
+    Console.WriteLine($" {emp.FirstName} {emp.LastName} {emp.Salary}");
+}
 
 
   
