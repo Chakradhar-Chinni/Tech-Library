@@ -900,7 +900,7 @@ foreach (var res in result)
 //Where clause with second overload
 
 
-//LINQ #$ OfType()
+//LINQ #4 OfType()
 1. Linq OfType() is used to check the data type of given value. 
 2. If it matches given data type then the value is added to output otherwise it will be skipped
 3. when there is a mix of data in collection, use OfType() to filter out. This also avoids InvalidCase Exception scenarios
@@ -947,7 +947,32 @@ foreach (var res in result)
     Console.Write($"{res} ");
 }
 
+//LINQ #5 DISTINCT method
+1. Distinct is used to return unique elements by removing duplicates.
+2. Distinct() is overloaded. one version to return distinct elements, second version is to return distinct elements by ignoring case-sensitivity
 
+//select distinct numbers from List<int>
+List<int> numbersdata = new List<int>() {20,30,50,20,90,250,90};
+//Method Syntax
+var result = numbersdata.Distinct();
+
+//Query Syntax
+var result = (from numbers in numbersdata
+              select numbers).Distinct();
+
+foreach (var res in result)
+{
+    Console.Write($"{res} ");
+}
+
+//select distinct strings from List<string>
+string[] namesArray = { "Priyanka", "HINA", "hina", "Anurag", "Anurag", "ABC", "abc" };
+
+//Method Syntax
+var result = namesArray.Distinct(); 
+
+output : Priyanka HINA hina Anurag ABC abc
+As case-sensitivity is ignored it returned like above. To include case-sensitivity use overloaded version on distinct or use Anonymous Type for simplicity
   
 -- Certification freecodecamp & Microsoft--
   Console.Write();
