@@ -834,6 +834,119 @@ foreach(var emp in selectMethod)
     Console.WriteLine($" {emp.FirstName} {emp.LastName} {emp.Salary}");
 }
 
+// Linq #2 SelectMany
+1. SelectMany provides method syntax only. Query Syntax can be in-directly achieved
+
+a. SelectMany basic example
+
+List<String> names = new List<String>();
+names.Add("DOT");
+names.Add("NET");
+
+//Query Syntax
+IEnumerable<char> querysyntax = from str in names
+                                from ch in str
+                                select ch;
+foreach (char ch in querysyntax)
+{
+    Console.WriteLine(ch);
+}
+
+//Method Syntax
+IEnumerable<char> methodsyntax = names.SelectMany(x => x);
+foreach(char ch in methodsyntax)
+{
+    Console.WriteLine(ch);
+}
+
+//LINQ #3 Where
+1. Where clause use predicate to 
+
+// Using Where clause with one condition
+List<int> numbers = new List<int>() {1,2,3,4,5,6,7,8,9,10 };
+
+//Method Syntax
+IEnumerable<int> result = numbers.Where(num => num %2 != 0);
+
+//Query Syntax
+IEnumerable<int> result = from num in numbers
+                          where num % 2 != 0
+                          select num;
+
+foreach (var res in result)
+{
+    Console.WriteLine(res);
+}
+
+// Where clause with two conditions
+ List<int> numbers = new List<int>() {1,2,3,4,5,6,7,8,9,10 };
+
+ //Method Syntax
+ IEnumerable<int> result = numbers.Where(num => num > 5 && num != 8);
+
+ //Query Syntax
+ IEnumerable<int> result = from num in numbers
+                           where num > 5 && num != 8
+                           select num;
+
+ foreach (var res in result)
+ {
+     Console.WriteLine(res);
+ }
+
+// Where clause with complex data type
+
+//Where clause with indexes
+//Where clause with second overload
+
+
+//LINQ #$ OfType()
+1. Linq OfType() is used to check the data type of given value. 
+2. If it matches given data type then the value is added to output otherwise it will be skipped
+3. when there is a mix of data in collection, use OfType() to filter out. This also avoids InvalidCase Exception scenarios
+4. OfType() is used for IEnumerable only not for IEnumerable<T> as OfType objective is to identify the datatype
+  
+//Basic Example
+List<object> datalist = new List<object>() {1,2,3,"Alex",4,5,6,7,8,9,10,"Jack" }; //Alex Jack
+IEnumerable<int> result = datalist.OfType<int>(); //1 2 3 4 5 6 7 8 9 10
+
+foreach (var res in result)
+{
+    Console.WriteLine(res);
+} //Output:
+
+// identifying int & strings using LINQ OfType()
+List<object> datalist = new List<object>() {1,2,3,"Alex",4,5,6,7,8,9,10,"Jack" };
+
+//Method Syntax
+var result = datalist.OfType<string>();
+
+//Query Syntax
+var result = (from name in datalist
+              where name is string
+              select name).ToList();
+
+foreach (var res in result)
+{
+    Console.Write($"{res} ");
+}
+
+//OfType() with Where method
+List<object> datalist = new List<object>() {1,2,3,"Alex",4,5,6,7,8,9,10,"Jack" };
+
+//Method Syntax
+var result = datalist.OfType<string>().Where(data =>data.Contains('A'));
+
+//Query Syntax
+var result = (from name in datalist
+              where name is string && ((string)name).Contains('A')
+              select name).ToList();
+
+foreach (var res in result)
+{
+    Console.Write($"{res} ");
+}
+
 
   
 -- Certification freecodecamp & Microsoft--
