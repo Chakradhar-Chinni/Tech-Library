@@ -973,6 +973,42 @@ var result = namesArray.Distinct();
 
 output : Priyanka HINA hina Anurag ABC abc
 As case-sensitivity is ignored it returned like above. To include case-sensitivity use overloaded version on distinct or use Anonymous Type for simplicity
+
+
+- LINQ Except Method
+1.This method returns a new sequence containing elements from the first sequence that are not in the second sequence
+
+string[] namesArray1 = { "Priyanka", "HINA", "Anurag", "Alex", "Riya" };
+string[] namesArray2 = { "Priyanka", "HINA", "Anurag","RIYA" };
+int[] numberslist1 = { 20,30,40,32,50,22,28 };
+int[] numberslist2 = { 50, 92 };
+//Method Syntax
+  
+    var result = numberslist1.Except(numberslist2); //20 30 40 32 22 28
+
+    //case-insensitive, output: Alex Riya
+    var result = namesArray1.Except(namesArray2);
+
+    //case-sensitive, output: Alex 
+    var result = namesArray1.Except(namesArray2, StringComparer.OrdinalIgnoreCase);
+
+
+//Query Syntax
+    var result = (from numbers in numberslist1 select numbers).Except(numberslist2);
+
+    //case in-sensitive output: Alex Riya
+    IEnumerable<string> result = (from names in namesArray1
+                                  select names).Except(namesArray2);
+
+    //case sensitive output: Alex
+    IEnumerable<string> result = (from names in namesArray1
+                                  select names).Except(namesArray2, StringComparer.OrdinalIgnoreCase);
+
+
+    foreach (var res in result)
+    {
+        Console.Write($"{res} ");
+    }
   
 -- Certification freecodecamp & Microsoft--
   Console.Write();
