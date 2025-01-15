@@ -859,7 +859,7 @@ foreach(char ch in methodsyntax)
     Console.WriteLine(ch);
 }
 
-//LINQ #3 Where
+- LINQ #3 Where Method
 1. Where clause use predicate to 
 
 // Using Where clause with one condition
@@ -900,7 +900,7 @@ foreach (var res in result)
 //Where clause with second overload
 
 
-//LINQ #4 OfType()
+- LINQ #4 OfType()
 1. Linq OfType() is used to check the data type of given value. 
 2. If it matches given data type then the value is added to output otherwise it will be skipped
 3. when there is a mix of data in collection, use OfType() to filter out. This also avoids InvalidCase Exception scenarios
@@ -947,7 +947,7 @@ foreach (var res in result)
     Console.Write($"{res} ");
 }
 
-//LINQ #5 DISTINCT method
+- LINQ #5 DISTINCT method
 1. Distinct is used to return unique elements by removing duplicates.
 2. Distinct() is overloaded. one version to return distinct elements, second version is to return distinct elements by ignoring case-sensitivity
 
@@ -975,41 +975,144 @@ output : Priyanka HINA hina Anurag ABC abc
 As case-sensitivity is ignored it returned like above. To include case-sensitivity use overloaded version on distinct or use Anonymous Type for simplicity
 
 
+
 - LINQ Except Method
 1.This method returns a new sequence containing elements from the first sequence that are not in the second sequence
+2. Exception will be thrown if sequence is null
 
 string[] namesArray1 = { "Priyanka", "HINA", "Anurag", "Alex", "Riya" };
 string[] namesArray2 = { "Priyanka", "HINA", "Anurag","RIYA" };
 int[] numberslist1 = { 20,30,40,32,50,22,28 };
 int[] numberslist2 = { 50, 92 };
-//Method Syntax
-  
+
+//Method Syntax  
     var result = numberslist1.Except(numberslist2); //20 30 40 32 22 28
 
-    //case-insensitive, output: Alex Riya
+    //case sensitive, output: Alex Riya
     var result = namesArray1.Except(namesArray2);
 
-    //case-sensitive, output: Alex 
+    //case in-sensitive, output: Alex 
     var result = namesArray1.Except(namesArray2, StringComparer.OrdinalIgnoreCase);
 
 
 //Query Syntax
     var result = (from numbers in numberslist1 select numbers).Except(numberslist2);
 
-    //case in-sensitive output: Alex Riya
+    //case sensitive output: Alex Riya
     IEnumerable<string> result = (from names in namesArray1
                                   select names).Except(namesArray2);
 
-    //case sensitive output: Alex
+    //case in-sensitive output: Alex
     IEnumerable<string> result = (from names in namesArray1
                                   select names).Except(namesArray2, StringComparer.OrdinalIgnoreCase);
-
 
     foreach (var res in result)
     {
         Console.Write($"{res} ");
     }
-  
+
+
+
+- LINQ Intersect Method
+1. Intersect is used to find common items in both the collections
+2. Exception will be thrown if collection is null
+3. Intersect provides overloaded version to support case-sensitivity
+
+ string[] namesArray1 = { "Priyanka", "HINA", "Anurag", "Alex", "Riya" };
+ string[] namesArray2 = { "Priyanka", "HINA", "Anurag","RIYA" };
+ int[] numberslist1 = { 20,30,40,32,50,22,28 };
+ int[] numberslist2 = { 50, 92 };
+
+ //Method Syntax queries
+     var result = numberslist1.Intersect(numberslist2); //50
+
+     //case sensitive, output: Priyanka HINA Anurag
+     var result = namesArray1.Intersect(namesArray2);
+
+     //case in-sensitive, output: Priyanka HINA Anurag Riya
+     var result = namesArray1.Intersect(namesArray2, StringComparer.OrdinalIgnoreCase);
+
+
+ //Query Syntax queries
+     var result = (from numbers in numberslist1 select numbers).Intersect(numberslist2); //50
+
+     //case in-sensitive output: Priyanka HINA Anurag
+     IEnumerable<string> result = (from names in namesArray1
+                                   select names).Intersect(namesArray2);
+
+     //case sensitive output: Priyanka HINA Anurag Riya
+     IEnumerable<string> result = (from names in namesArray1
+                                   select names).Intersect(namesArray2, StringComparer.OrdinalIgnoreCase);
+
+
+     foreach (var res in result)
+     {
+         Console.Write($"{res} ");
+     }
+
+-// Complex query
+public class Singer
+{
+    public int ID { get; set; }
+    public string Name { get; set; }
+}
+List<Singer> singerslist1 = new List<Singer>();
+List<Singer> singerslist2 = new List<Singer>();
+
+singerslist1.Add(new Singer { ID = 201, Name = "Jack" });
+singerslist1.Add(new Singer { ID = 202, Name = "Alex" });
+singerslist1.Add(new Singer { ID = 203, Name = "Bob" });
+
+singerslist2.Add(new Singer { ID = 201, Name = "Jack" });
+singerslist1.Add(new Singer { ID = 208, Name = "Glen" });
+
+//Method Syntax Output: Jack
+var result = singerslist1.Select(x => x.Name).Intersect(
+             singerslist2.Select(y => y.Name));
+
+//Query Syntax Output: Jack
+var result = (from singer in singerslist1 select singer.Name).Intersect(
+    from singer in singerslist2 select singer.Name);
+
+foreach (var res in result)
+{
+    Console.Write($"{res} ");
+}
+
+-  LINQ Union Method
+1. Union is used to mix two lists and remove duplicates
+2. ArgumentNullException will be thrown if any of the list is null
+3. has two overloaded methods - IEqualityComparer
+
+ string[] namesArray1 = { "Priyanka", "HINA", "Anurag", "Alex", "Riya" };
+ string[] namesArray2 = { "Priyanka", "HINA", "Anurag","RIYA" };
+ int[] numberslist1 = { 20,30,40,32,50,22,28 };
+ int[] numberslist2 = { 50, 92 };
+
+//Method Syntax
+    var result = numberslist1.Union(numberslist2); // 20 30 40 32 50 22 28 92
+
+    //case sensitive, output: Priyanka HINA Anurag Alex Riya RIYA
+    var result = namesArray1.Union(namesArray2);
+
+    //case in-sensitive, output: Priyanka HINA Anurag Alex Riya
+    var result = namesArray1.Union(namesArray2, StringComparer.OrdinalIgnoreCase);
+
+
+//Query Syntax
+    var result = (from numbers in numberslist1 select numbers).Union(numberslist2); // 20 30 40 32 50 22 28 92
+
+    //case sensitive output: Priyanka HINA Anurag Alex Riya RIYA
+    IEnumerable<string> result = (from names in namesArray1
+                                  select names).Union(namesArray2);
+
+    //case in-sensitive output: Priyanka HINA Anurag Alex Riya
+    IEnumerable<string> result = (from names in namesArray1
+                                  select names).Union(namesArray2, StringComparer.OrdinalIgnoreCase);
+
+
+
+
 -- Certification freecodecamp & Microsoft--
   Console.Write();
  Console.WriteLine();
