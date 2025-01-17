@@ -139,6 +139,36 @@ public void AcceptPayment(int DebitCard){
 // Implementation for payment by Debit Card
 }
 
+-- Collections
+
+-Dictinoary
+Dictionary<int,string> dict = new Dictionary<int,string>();
+		dict.Add(3,"South East");
+		dict.Add(4,"Western Union");
+		Console.WriteLine(dict[4]);
+		foreach(KeyValuePair<int,string> kvp in dict)
+		{
+		    Console.WriteLine($"ID={kvp.Key} Bank={kvp.Value}");
+		    //Console.WriteLine("{0}rd is {1}",kvp.Key,kvp.Value); // this is composite syntax used in c# before introducing Interpolation
+		}
+  dict.Clear() //erases data in dictionary
+
+
+    
+
+--Development Logics
+
+-Null check for given value, works for excel cells, any other data types
+  var value="eg ypt ";
+  if(String.IsNullOrWhiteSpace(value.ToString()))
+  {
+      Console.WriteLine("Data is not available");
+  }
+  else
+  {
+      Console.WriteLine("Data is available");
+  }
+    
 --Plural Sight C# Path--
   - Understanding Value Types & Reference Types
     Value Types: Allocated on Stack. int float char double. They have fixed allocation on stack which is provided by complier
