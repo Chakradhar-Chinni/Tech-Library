@@ -1143,6 +1143,91 @@ foreach (var res in result)
 
 
 
+-- Asynchronous Programming
+1) When there is a wait time, instead of blocking the main thread, use it for the next task and come back after      
+   wait time
+2) async and await keywords are used to tell the compiler to work asynchronously
+3) async - return type of method which marks the method as asynchronous
+4) await - Thread is free to execute another and can come back after wait operation
+5) use Task.Delay() is asynchronous as it allows current thread to be freed up to perform other tasks while waiting. Thread.Sleep() is synchronous and blocks the thread for total delay time, so using this method in async approach defeats the purpose.
+6) Asynchronous Execution: When you use await, the method doesn't block the thread. Instead, it allows other tasks to run while waiting for the awaited task to complete. This is useful for keeping the application responsive, especially in UI applications or when performing I/O-bound operations.
+7) Task Continuation: When an awaited task completes, the method resumes execution from the point where it was awaiting. This ensures that the subsequent code runs only after the awaited task is done.
+
+- Task Implementation without await
+1. This implementation is asynchronous. However, after starting SomeMethod() it needs to wait for completion of Wait(). But, without waiting it ended the some method.
+2. The idea of async approach is to not block the main thread but not the methods
+3. So, to ensure wait is properly handled before executing next line we need to use await , Task
+4. SomeMethod() is calling Wait(). Warning will be shown on this line because Wait() is returning a Task which means its a promise. (If Wait() returns void instead of Task, warning will be gone. Still wait is not handled)
+5. If we don’t use the await operator while calling the Wait method, the Wait method is not going to wait for this operation to finish, which means that once we call the Wait method, the next line of code inside the SomeMethod is going to be 	 
+    executed immediately
+
+
+public static void Main(String[] args)
+ {            
+     Console.WriteLine("Main Method Started");
+     
+     SomeMethod();
+
+     Console.WriteLine("Main Method Ended");
+     Console.ReadKey();
+ }
+ public async static void SomeMethod()
+ {
+     Console.WriteLine("Some Method Started");
+     Wait();
+
+     Console.WriteLine("Some Method Ended");
+ }
+
+ public static async Task Wait()
+ {
+     Console.WriteLine("Wait Time Started");
+
+     await Task.Delay(TimeSpan.FromSeconds(10));
+
+     Console.WriteLine("Wait Time Ended");
+ }
+
+Output:
+Main Method Started
+Some Method Started
+Wait Time Started
+Some Method Ended
+Main Method Ended
+
+Wait Time Ended
+
+
+- Task Implementation with await
+public static void Main(String[] args)
+{            
+    Console.WriteLine("Main Method Started");
+    
+    SomeMethod();
+
+    Console.WriteLine("Main Method Ended");
+    Console.ReadKey();
+}
+public async static void SomeMethod()
+{
+    Console.WriteLine("Some Method Started");
+    await Wait();
+    Console.WriteLine("Some Method Ended");
+}
+
+public static async Task Wait()
+{
+    Console.WriteLine("Wait Time Started");
+
+    await Task.Delay(TimeSpan.FromSeconds(10));
+
+    Console.WriteLine("\nWait Time Ended");
+}
+	
+
+- Implementation without waiting for async operation
+This is same as 'Task Implementation without await'. Only change is to get rid of warning message change return type of Wait() to void from Task
+
 -- Certification freecodecamp & Microsoft--
   Console.Write();
  Console.WriteLine();
