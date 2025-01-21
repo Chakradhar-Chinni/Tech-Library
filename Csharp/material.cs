@@ -1223,6 +1223,15 @@ public static async Task Wait()
 
     Console.WriteLine("\nWait Time Ended");
 }
+
+Output:
+Main Method Started
+Some Method Started
+Wait Time Started
+Main Method Ended
+
+Wait Time Ended
+Some Method Ended
 	
 
 - Implementation without waiting for async operation
