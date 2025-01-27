@@ -1237,6 +1237,11 @@ Some Method Ended
 - Implementation without waiting for async operation
 This is same as 'Task Implementation without await'. Only change is to get rid of warning message change return type of Wait() to void from Task
 
+
+-- Entity Framework Core for Data Access
+ Scaffold - reverese engineering the database
+ Never store connection strings into source control
+
 -- Certification freecodecamp & Microsoft--
   Console.Write();
  Console.WriteLine();
