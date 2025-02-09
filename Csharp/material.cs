@@ -168,7 +168,41 @@ Dictionary<int,string> dict = new Dictionary<int,string>();
   {
       Console.WriteLine("Data is available");
   }
-    
+
+- Nested Dictionary Implementation
+using System;
+using System.Collections.Generic;
+
+public class Test
+{
+	public static void Main()
+	{
+		var maindict = new Dictionary<string,Dictionary<string,string>>();
+		
+		//adding items
+		maindict["key1"] = new Dictionary<string,string>
+		{
+		    {"subkey1","value1"},
+		    {"subkey2","value2"}
+		};
+		maindict["key2"] = new Dictionary<string,string>
+		{
+		    {"subkeyA","valueA"},
+		    {"subkeyB","valueB"}
+		};
+		
+		//printing items
+		foreach(var i in maindict)
+		{
+		    Console.WriteLine(i.Key);
+		    foreach(var j in i.Value)
+		    {
+		        Console.WriteLine($"{j.Key} {j.Value}");
+		    }
+		}
+	}
+}
+
 --Plural Sight C# Path--
   - Understanding Value Types & Reference Types
     Value Types: Allocated on Stack. int float char double. They have fixed allocation on stack which is provided by complier
