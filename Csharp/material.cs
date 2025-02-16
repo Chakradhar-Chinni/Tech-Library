@@ -1413,6 +1413,11 @@ var results = context.CustomEntity.FromSqlRaw("EXEC YourStoredProcedure @param1,
 
 
 - DbContext and Entity
+Entity: C# class that maps to a database table
+DbContext: Manages database operations and configurations. Acts as bridge between Sql and C# app
+DbSet: Represents a table in the database
+
+
 DbContext: Represents a session with the database not when instantiated but it represents the session when 1st interaction is performed
 DbContext.ChangeTracker: Manages a collection of entity objects
 EntityEntry : State info for each entity. Current Values, Original Values, State enum. Entity & more
