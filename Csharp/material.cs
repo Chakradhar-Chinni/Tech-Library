@@ -1288,7 +1288,7 @@ EF Core can connect to various data sources like RDBMS, Azure Cosmos etc...
 - Query workflow in EF
 for example, context.Authors.ToList()
 a.Express and Execute query
-b.EF COre converts the query to SQL Provider. (internally, EF uses hashing and stores the converted query for avoiding repetitions)
+b.EF Core converts the query to SQL Provider. (internally, EF uses hashing and stores the converted query for avoiding repetitions)
 c.Query is sent to Sql database using the configuration details
 d.Sql database sends the result to EF as rows & columns
 e.EF Core Materialize the database results into objects (converting Rowsoolumns to objects)
@@ -1351,7 +1351,7 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
 
 
-- use tracking in query even if tracking in disabled at DbContext level
+- use tracking in query even if tracking is disabled at DbContext level
 1. DbContext Configuration: The UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking) method configures the DbContext to disable tracking by default.
 2. AsTracking Method: The AsTracking method is used to enable tracking for the specific query, allowing EF Core to track changes to the entities returned by that query.
 
@@ -1420,6 +1420,18 @@ EntityEntry : State info for each entity. Current Values, Original Values, State
 Entity: In-memory objects with key(identity) properties that DbContext is aware of 
 DbContext contains EntityEntry objects with reference pointers to in-memory objects
 
+The lifetime of a DbContext begins when the instance is created and ends when the instance is disposed. A DbContext instance is designed to be used for a single 
+ unit-of-work. This means that the lifetime of a DbContext instance is usually very short.
+
+A typical unit-of-work when using Entity Framework Core (EF Core) involves: 
+	Creation of a DbContext instance
+	Tracking of entity instances by the context. Entities become tracked by
+		Being returned from a query
+		Being added or attached to the context
+	Changes are made to the tracked entities as needed to implement the business rule
+	SaveChanges or SaveChangesAsync is called. EF Core detects the changes made and writes them to the database.
+	The DbContext instance is disposed
+ (in short), DBContext lifetime is 1.create instance 2.track changes 3.make Changes 4.Save Changes 5.Dispose the DbContext 
 
 - Tracking and Saving Workflow
 1. DbContext starts tracking when there is a reason create tracking object. (one example is tracking results of query)
@@ -1427,6 +1439,15 @@ Enum has Unchanged, Added, Modified, Deleted
 
 https://learn.microsoft.com/en-us/ef/core/change-tracking/
 
+Entity instances become tracked when they are:
+	Returned from a query executed against the database
+	Explicitly attached to the DbContext by Add, Attach, Update, or similar methods
+	Detected as new entities connected to existing tracked entities
+
+Entity instances are no longer tracked when:
+	The DbContext is disposed
+	The change tracker is cleared
+	The entities are explicitly detached
 
 
 
