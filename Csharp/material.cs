@@ -1277,8 +1277,8 @@ This is same as 'Task Implementation without await'. Only change is to get rid o
  Never store connection strings into source control
 
 Whats EF???
-Evolution of DotNet Framework. Improved very fast
 Microsoft's official Data access for .NET development
+Evolution of DotNet Framework. Improved very fast
 Its cross-platform  - linux, windows, mac
 Its an ORM. Object Relational Mapping. These helps to relate database tables to classes. allows CRUD
 Regular ORMs directly connect tables and classes. EFCore maps domain classes with database schema
@@ -1324,7 +1324,8 @@ In the above example, instead of passing "Josie". use string firstname="Josie" a
 a. Paging - use .Skip(100).Take(100) - skip first 100 records and fetch next 100 records
 b. Ef Core methods and Linq methods can be used to write queries.
 c. All Linq Methods will be translated to EF. So, this is additional step
-d. Its best to use hybrid approach by using Linq and EF. use Linq for readability, maintenance, strong typing. To address performance considerations use EF methods when necessary
+d. Its best to use hybrid approach by using Linq and EF. use Linq for readability, maintenance, strong typing. To address performance considerations use EF 
+ methods when necessary
 
 
 
@@ -1334,8 +1335,7 @@ each of the above methods have async() as well. FirstAsync() SingleAsync() ...
 
 First() returns only first match, if no match then throws exception
 First() Single() Last() throws exception if noresults are found
-FirstOrDefault() SingleOrDefault() LastOrDefault() will return null if no results are found
-
+FirstOrDefault() SingleOrDefault() LastOrDefault() will return result if matches are found. They return null if no results are found 
 So, its smart to use FirstOrDefault() methods for aggregations
 
 
@@ -1412,13 +1412,20 @@ var results = context.CustomEntity.FromSqlRaw("EXEC YourStoredProcedure @param1,
 
 
 
+- DbContext and Entity
+DbContext: Represents a session with the database not when instantiated but it represents the session when 1st interaction is performed
+DbContext.ChangeTracker: Manages a collection of entity objects
+EntityEntry : State info for each entity. Current Values, Original Values, State enum. Entity & more
+
+Entity: In-memory objects with key(identity) properties that DbContext is aware of 
+DbContext contains EntityEntry objects with reference pointers to in-memory objects
 
 
+- Tracking and Saving Workflow
+1. DbContext starts tracking when there is a reason create tracking object. (one example is tracking results of query)
+Enum has Unchanged, Added, Modified, Deleted
 
-
-
-
-
+https://learn.microsoft.com/en-us/ef/core/change-tracking/
 
 
 
