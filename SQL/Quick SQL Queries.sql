@@ -3,6 +3,8 @@
 	select COLUMN_NAME from information_schema.columns where table_name = 'JiraDataDetails'
 	2. Create table with auto-increment
 	CREATE TABLE table23( id INT IDENTITY(1,1) PRIMARY KEY,colC varchar(255),colZ varchar(255))
+	3. Get all tables/view in database
+	 SELECT * FROM sys.tables , sys.views
 
 	
 ---Queries---
