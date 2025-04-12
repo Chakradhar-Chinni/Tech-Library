@@ -36,6 +36,21 @@ public void ReadFromTable() {
 5. Read() in SqlDataReader class is used in while loop as it advances the cursor to next row. Initially, the cursor points to previous rows of 0th index or -1 index
 
 /*---------------------------- 
+printing entire row 
+------------------------------*/
+StringBuilder rowOutput = new StringBuilder();
+while (reader.Read())
+{
+    for (int i = 0; i < reader.FieldCount; i++)
+    {
+        rowOutput.Append(reader[i].ToString() + "\n");
+    }
+    Console.WriteLine(rowOutput);
+}
+
+1. use reader.FieldCount when sql row length is unknown
+2. store everything to string builder and print after exiting loop. Its efficient compared to printing inside loop
+/*---------------------------- 
 Update values in existing SQL Data Table 
 ------------------------------*/
 public void WriteToTable()
