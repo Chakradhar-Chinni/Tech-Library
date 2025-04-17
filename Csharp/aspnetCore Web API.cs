@@ -111,9 +111,21 @@ Working with Enviroments - Development, Staging, UAT, Production or any
 - Change the above property to Production and notice Swagger won't run as Swagger is only for development regions (check if condition in program.cs)
 
 
+  
 <h1>
 Creating API and returning resources
 MVC Pattern, Returning Resources, API Interaction, Content Negotiation, Getting a file
 
+
+
+<h2>
+MVC Pattern
+- A software development Pattern used in many languages
+- promotes loose coupling, Improves separation of concerns, Improves testability, promotes reuse
+Model: business logic, rules, app data
+View: Showing data
+COntroller; Maps Model with View
+
+In context of Web API, consumer of API hits controller which in turn 
 
 
