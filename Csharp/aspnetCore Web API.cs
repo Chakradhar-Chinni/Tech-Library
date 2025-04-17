@@ -47,6 +47,10 @@ launchsettings.json : HTTP, HTTPS, IIS profiles are offered. Each profile has co
  open cmd > go to project path and give the following commands
 'dotnet run' by default uses HttpProfile
 'dotnet run --launch-profile https' indicating https profile explicitly in cmd
-  
-  
+
+  <h2> Request Processing pipeline and middleware
+-Http Request processing pipeline is a series of middleware components that handle incoming HTTP requests and responses in an ASP.NET Core Web application
+-Each middleware component is responsible for a specific task, such as authentication,routing,logging, caching, encryption and decryption, response generation,etc. 
+-The pipeline is configured in the Program class of an ASP.NET Core application.
+-Order of middlewares is important 
  
