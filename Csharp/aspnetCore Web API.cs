@@ -72,18 +72,36 @@ open cmd > go to project path and give the following commands
 
 
 <h2>
-Request Processing pipeline and middleware
--Http Request processing pipeline is a series of middleware components that handle incoming HTTP requests and responses in an ASP.NET Core Web application
--Each middleware component is responsible for a specific task, such as authentication,routing,logging, caching, encryption and decryption, response generation,etc. 
--The pipeline is configured in the Program class of an ASP.NET Core application.
--Order of middlewares is important 
+Request pipeline and middleware
+1. Middleware Chain:
+   - The pipeline is composed of middleware components. Middleware is like a checkpoint where requests pass through for processing.
+   - Examples include routing, authentication, error handling, and logging.
+
+2. Order Matters:
+   - Middleware is executed in the order you define in your code. The sequence affects how requests and responses flow.
+   - For example, if authentication middleware comes after routing, it won't protect the routes—it has to come before.
+
+3. Request Flow:
+   - When a request arrives, it moves through the pipeline. Each middleware can:
+     - Process the request and pass it to the next middleware.
+     - Short-circuit the pipeline (e.g., return an error response directly).
+
+4. Response Flow:
+   - After the endpoint is executed, the response travels back through the pipeline, allowing middleware to modify the outgoing response.
+
+### Visualize the request pipeline
+Think of the pipeline as a water slide:
+1. The request enters at the top.
+2. It flows through various turns (middleware).
+3. At the bottom, an endpoint handles the request, and the response goes back up the slide.
 
 
+  
 
 
  <h2>
  Middleware redirection to Hello World
-- In Program.cs use the following code to re direct all HttpRequests to Hello World (use ful for testing purposes)
+- In Program.cs use the following code to re direct all HttpRequests to Hello World (useful for testing purposes)
  
 var app = builder.Build(); // Build the app
 // Configure the HTTP request pipeline.
@@ -127,5 +145,9 @@ View: Showing data
 COntroller; Maps Model with View
 
 In context of Web API, consumer of API hits controller which in turn 
+
+<h2> Creating API End Point and Returning resources
+
+
 
 
