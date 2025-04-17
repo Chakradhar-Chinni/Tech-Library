@@ -1,14 +1,20 @@
 HTTP Request would send serialized data and receive the same as HTTPResponse
 Serialized data can be in Json / XML / any other format
 
-<h2> REST API with Web API
+
+
+<h2>
+REST API with Web API
 1. Leverage HTTP Protocol
 2. Each piece of data is available at unique location. For Example, /products ; /product(1)
 3. HTTP Methods are mapped to actions. For example, Get,Post,PUT
 4. HTTP Status Codes determine the outcome. 400, 204, 302
 5. Response can also contain pointers on what to do next
 
-<h2> Hierarchy of Web API with front end
+
+
+<h2>
+Hierarchy of Web API with front end
 1. a solution file will contain web api .sln and front end .sln(may be razor pages)
 2. Swagger is also called as OPEN API. Swagger provides SwaggerUI which acts as API documentation
 3. use CORS to block unauthorized requests / cross-origin requests
@@ -23,17 +29,26 @@ Serialized data can be in Json / XML / any other format
 7. REST API responses are human readable, while gRPC are not as they use binaries which makes gRPC faster than REST
 8. For internal org. prefer gRPC, for external prefer REST. a web api can contain gRPC and REST
 
-<h2> aspnet core web api fundamentals
+
+
+<h2>
+aspnet core web api fundamentals
 tech stack: DAL: EF Core, Dependency Injection, securing API
 course structure: web api fundamentails, web api deep dive, minimal APIs, async API
 web api fundamentails: aspnet core topics, building API with in-memory data, adding EF Core, security/versioning/documenting/deployment
 
-<h2> aspnetcore bigpicture
+
+
+<h2>
+aspnetcore bigpicture
 aspnet core is cross-platform. Open source. supports cloud development
 Approaches to build web API: MVC, Minimal API
 .net core was later renamed to .net
 
-<h2> Create a new web api project using Visual Studio
+
+
+<h2>
+Create a new web api project using Visual Studio
 Open VS > ASP.NET Core Web API > choose .net8 > Create
 Intial Project structure: .sln will contain
  - appsettings.json has some defualt configurations for allowed hosts=all
@@ -45,18 +60,29 @@ Intial Project structure: .sln will contain
 launchsettings.json : HTTP, HTTPS, IIS profiles are offered. Each profile has configuration for port number,URL
 "launchBrowser": true  - inside launchsettings.json, change this to false, so browser doesn't open after starting application
 
- <h2> Running project using CLI
- open cmd > go to project path and give the following commands
+
+  
+<h2>
+Running project using CLI
+open cmd > go to project path and give the following commands
 'dotnet run' by default uses HttpProfile
 'dotnet run --launch-profile https' indicating https profile explicitly in cmd
 
-  <h2> Request Processing pipeline and middleware
+
+
+
+<h2>
+Request Processing pipeline and middleware
 -Http Request processing pipeline is a series of middleware components that handle incoming HTTP requests and responses in an ASP.NET Core Web application
 -Each middleware component is responsible for a specific task, such as authentication,routing,logging, caching, encryption and decryption, response generation,etc. 
 -The pipeline is configured in the Program class of an ASP.NET Core application.
 -Order of middlewares is important 
 
- <h2> Middleware redirection to Hello World
+
+
+
+ <h2>
+ Middleware redirection to Hello World
 - In Program.cs use the following code to re direct all HttpRequests to Hello World (use ful for testing purposes)
  
 var app = builder.Build(); // Build the app
@@ -76,7 +102,11 @@ app.Run(async (context) =>
 });
 app.Run();
 
-<h2> Working with Enviroments - Development, Staging, UAT, Production or any
+
+
+
+<h2>
+Working with Enviroments - Development, Staging, UAT, Production or any
 - In launchsettings.json, profiles would use  "ASPNETCORE_ENVIRONMENT": "Development"
 - Change the above property to Production and notice Swagger won't run as Swagger is only for development regions (check if condition in program.cs)
 
