@@ -110,5 +110,10 @@ Working with Enviroments - Development, Staging, UAT, Production or any
 - In launchsettings.json, profiles would use  "ASPNETCORE_ENVIRONMENT": "Development"
 - Change the above property to Production and notice Swagger won't run as Swagger is only for development regions (check if condition in program.cs)
 
-  
+
+<h1>
+Creating API and returning resources
+MVC Pattern, Returning Resources, API Interaction, Content Negotiation, Getting a file
+
+
 
