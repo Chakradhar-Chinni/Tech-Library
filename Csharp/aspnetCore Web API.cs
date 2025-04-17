@@ -20,8 +20,8 @@ Serialized data can be in Json / XML / any other format
   c. Contract First - gives list of methods the API has
   d. Focus on Performance
   e. Protocol BUffers
-7. REST API responses are human readable. gRPC are not as they use binaries which makes gRPC faster the REST
-8.for internal org. prefer gRPC, for external prefer REST. a web api can contain gRPC and REST
+7. REST API responses are human readable, while gRPC are not as they use binaries which makes gRPC faster than REST
+8. For internal org. prefer gRPC, for external prefer REST. a web api can contain gRPC and REST
 
 <h2> aspnet core web api fundamentals
 tech stack: DAL: EF Core, Dependency Injection, securing API
@@ -29,14 +29,14 @@ course structure: web api fundamentails, web api deep dive, minimal APIs, async 
 web api fundamentails: aspnet core topics, building API with in-memory data, adding EF Core, security/versioning/documenting/deployment
 
 aspnet core is cross-platform. Open source. supports cloud development
-Approaches to builf web API: MVC, Minimal API
+Approaches to build web API: MVC, Minimal API
 
 <h2> Create a new web api project using Visual Studio
 Open VS > ASP.NET Core Web API > choose .net8 > Create
 Intial Project structure: .sln will contain
  - appsettings.json has some defualt configurations for allowed hosts=all
- - contorllers/ - has weatherforecastController.cs  with some dummy data. simply delete it
- - /WeatherForecast.cs - this is class file for Controller. SImply delete it
+ - controllers/ - has weatherforecastController.cs  with some dummy data. simply delete it
+ - /WeatherForecast.cs - this is class file for Controller. Simply delete it
  - /CityInfo.API.http - used for testing API. prefer Postman to test APIs
  - program.cs is starting point of app. It uses toplevel statements. So namespace, main method are not required. 
     - Uses DI, maps controllers, uses Swagger UI
@@ -44,9 +44,9 @@ launchsettings.json : HTTP, HTTPS, IIS profiles are offered. Each profile has co
 "launchBrowser": true  - inside launchsettings.json, change this to false, so browser doesn't open after starting application
 
  <h2> Running project using CLI
-  open cmd > go to project path and give the following commands
-  'dotnet run' by default uses HttpProfile
-  'dotnet run --launch-profile https' indicating https profile explicitly in cmd
+ open cmd > go to project path and give the following commands
+'dotnet run' by default uses HttpProfile
+'dotnet run --launch-profile https' indicating https profile explicitly in cmd
   
   
  
