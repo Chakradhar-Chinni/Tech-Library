@@ -23,7 +23,7 @@ Serialized data can be in Json / XML / any other format
 7. REST API responses are human readable. gRPC are not as they use binaries which makes gRPC faster the REST
 8.for internal org. prefer gRPC, for external prefer REST. a web api can contain gRPC and REST
 
-aspnet core web api fundamentals
+<h2> aspnet core web api fundamentals
 tech stack: DAL: EF Core, Dependency Injection, securing API
 course structure: web api fundamentails, web api deep dive, minimal APIs, async API
 web api fundamentails: aspnet core topics, building API with in-memory data, adding EF Core, security/versioning/documenting/deployment
@@ -31,12 +31,22 @@ web api fundamentails: aspnet core topics, building API with in-memory data, add
 aspnet core is cross-platform. Open source. supports cloud development
 Approaches to builf web API: MVC, Minimal API
 
-Create a new project using Visual Studio
+<h2> Create a new web api project using Visual Studio
 Open VS > ASP.NET Core Web API > choose .net8 > Create
 Intial Project structure: .sln will contain
-appsettings.json is created
-program.cs uses Swagger UI to run app
+ - appsettings.json has some defualt configurations for allowed hosts=all
+ - contorllers/ - has weatherforecastController.cs  with some dummy data. simply delete it
+ - /WeatherForecast.cs - this is class file for Controller. SImply delete it
+ - /CityInfo.API.http - used for testing API. prefer Postman to test APIs
+ - program.cs is starting point of app. It uses toplevel statements. So namespace, main method are not required. 
+    - Uses DI, maps controllers, uses Swagger UI
 launchsettings.json : HTTP, HTTPS, IIS profiles are offered. Each profile has configuration for port number,URL
-"launchBrowser": true under launchsettings.json, change this to false, so browser doesn't open after starting application
+"launchBrowser": true  - inside launchsettings.json, change this to false, so browser doesn't open after starting application
 
+ <h2> Running project using CLI
+  open cmd > go to project path and give the following commands
+  'dotnet run' by default uses HttpProfile
+  'dotnet run --launch-profile https' indicating https profile explicitly in cmd
+  
+  
  
