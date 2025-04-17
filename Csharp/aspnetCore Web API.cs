@@ -1,4 +1,4 @@
-HTTP Request would send serialized data and receive the same. 
+HTTP Request would send serialized data and receive the same as HTTPResponse
 Serialized data can be in Json / XML / any other format
 
 <h2> REST API with Web API
