@@ -22,3 +22,21 @@ Serialized data can be in Json / XML / any other format
   e. Protocol BUffers
 7. REST API responses are human readable. gRPC are not as they use binaries which makes gRPC faster the REST
 8.for internal org. prefer gRPC, for external prefer REST. a web api can contain gRPC and REST
+
+aspnet core web api fundamentals
+tech stack: DAL: EF Core, Dependency Injection, securing API
+course structure: web api fundamentails, web api deep dive, minimal APIs, async API
+web api fundamentails: aspnet core topics, building API with in-memory data, adding EF Core, security/versioning/documenting/deployment
+
+aspnet core is cross-platform. Open source. supports cloud development
+Approaches to builf web API: MVC, Minimal API
+
+Create a new project using Visual Studio
+Open VS > ASP.NET Core Web API > choose .net8 > Create
+Intial Project structure: .sln will contain
+appsettings.json is created
+program.cs uses Swagger UI to run app
+launchsettings.json : HTTP, HTTPS, IIS profiles are offered. Each profile has configuration for port number,URL
+"launchBrowser": true under launchsettings.json, change this to false, so browser doesn't open after starting application
+
+ 
