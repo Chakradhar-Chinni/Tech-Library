@@ -28,8 +28,10 @@ tech stack: DAL: EF Core, Dependency Injection, securing API
 course structure: web api fundamentails, web api deep dive, minimal APIs, async API
 web api fundamentails: aspnet core topics, building API with in-memory data, adding EF Core, security/versioning/documenting/deployment
 
+<h2> aspnetcore bigpicture
 aspnet core is cross-platform. Open source. supports cloud development
 Approaches to build web API: MVC, Minimal API
+.net core was later renamed to .net
 
 <h2> Create a new web api project using Visual Studio
 Open VS > ASP.NET Core Web API > choose .net8 > Create
@@ -53,4 +55,30 @@ launchsettings.json : HTTP, HTTPS, IIS profiles are offered. Each profile has co
 -Each middleware component is responsible for a specific task, such as authentication,routing,logging, caching, encryption and decryption, response generation,etc. 
 -The pipeline is configured in the Program class of an ASP.NET Core application.
 -Order of middlewares is important 
+
+ <h2> Middleware redirection to Hello World
+- In Program.cs use the following code to re direct all HttpRequests to Hello World (use ful for testing purposes)
  
+var app = builder.Build(); // Build the app
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+//app.UseHttpsRedirection(); //Http are re-directed to Https
+//app.UseAuthorization();
+//app.MapControllers(); //Maps Http Requests to controllers
+
+app.Run(async (context) =>
+{
+    await context.Response.WriteAsync("Hello World!");
+});
+app.Run();
+
+<h2> Working with Enviroments - Development, Staging, UAT, Production or any
+- In launchsettings.json, profiles would use  "ASPNETCORE_ENVIRONMENT": "Development"
+- Change the above property to Production and notice Swagger won't run as Swagger is only for development regions (check if condition in program.cs)
+
+  
+
