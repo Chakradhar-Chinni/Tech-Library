@@ -146,8 +146,87 @@ COntroller; Maps Model with View
 
 In context of Web API, consumer of API hits controller which in turn 
 
-<h2> Creating API End Point and Returning resources
 
 
+
+<h2>
+Creating API End Point and Returning resources
+Routing Docs: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing?view=aspnetcore-9.0
+-Routing matches request URL to an action on Controller
+app.UseRouting() - selects a end point
+app.UseEndpoints() - executes the endpoint selected by app.UseRouting()
+
+-Two types of Routing
+  - Attribute based routing  (preferred for API developemnt)
+  - Convention based routing
+
+
+- Create an endpoint using [HttpGet] 
+Code Explanation
+- defining the route at method level
+1. Manually create CitiesController.cs file under Controllers Folder
+2. CitiesController class inherits ControllerBase from the package Microsoft.AspNetCore.Mvc 
+3.GetCities() returns all the cities in Json format as return type is JsonResult
+ a. JsonResult formats the data into jsonformat 
+4.[HttpGet("/api/cities")] is api end point for all cities. https://localhost:7169/api/cities
+
+using Microsoft.AspNetCore.Mvc;
+namespace CityInfo.API.Controllers
+{
+    public class CitiesController : ControllerBase
+    {
+        [HttpGet("/api/cities")]
+        public JsonResult GetCities()
+        {
+            return new JsonResult(
+                new List<object>
+                {
+                  new{  id=1,Name="Newyork" },
+                  new{  id=2,Name="Texas" }
+                });
+        }
+    }
+}
+
+- Create the endpoint usign [ApiController]
+Code Explanation
+1. defining the route at Controller Level. So, multiple endpoints can be managed
+2. using [ApiController] route is defined at Controller Level
+3. GetCities() need not provide the endpoint as /api/cities. It would just say the the type of HttpMethod
+
+using Microsoft.AspNetCore.Mvc;
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    [Route("api/cities")]
+    //[Route("api/[controller]")]
+     // Cities would be replaced here as CitiesController is matching. THis approach is also preferred
+    public class CitiesController : ControllerBase
+    {
+        [HttpGet]
+        public JsonResult GetCities()
+        {
+            return new JsonResult(
+                new List<object>
+                {
+                  new{  id=1,Name="Newyork" },
+                  new{  id=2,Name="Texas" }
+                });
+        }
+    }
+} 
+
+
+- Inspect Chrome Network tab & understand Request Headers
+ - learn more about chrome dev tools
+
+
+
+
+<h2> 
+Testing APIs through Postman / Bruno
+- prefer to test using these tools
+- As Self signed certificate will be used during development, Postman,Bruno doesnot allow to execute the request
+- settings > disable SSL . this step allows to exeucute localhost APIs. (in other words, its like development tools)
 
 
