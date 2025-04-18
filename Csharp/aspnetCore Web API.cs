@@ -373,4 +373,140 @@ namespace CityInfo.API.Controllers
 }
 
 
+
+<h2>
+  Returning Child Resources
+
+Code Explanation
+1. Adding PointsOfInterest Collection to CityDto class
+2. Create a model class  at /Models/PointsOfInterestDto.cs with Id,Name,Description
+3. Update MockData file at /CitiesDataStore.cs to include PointsOfInterest mock data
+5. Create controller at /Controller/PointsOfInterestController.cs to return data
+    - route is modified at class level, so method can simply use [HttpGet] Attribute
+
+## /Models/CityDto.cs
+namespace CityInfo.API.Models
+{
+    public class CityDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string? Description { get; set; }
+
+        public int NumberOfPointsOfInterest
+        {
+            get
+            {
+                return PointsOfInterest.Count;
+            }
+        }
+
+        public ICollection<PointOfInterestDto> PointsOfInterest { get; set; } 
+                    = new List<PointOfInterestDto>();       
+    }
+}
+
+## /Models/PointOfInterestDto.cs
+namespace CityInfo.API.Models
+{
+    public class PointOfInterestDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string? Description { get; set; }
+    }
+}
+
+## /CitiesDataStore.cs (mock data)
+using CityInfo.API.Models;
+namespace CityInfo.API
+{
+    public class CitiesDataStore
+    {
+        public List<CityDto> Cities { get; set; }
+        public static CitiesDataStore Current { get; } = new CitiesDataStore();
+
+        public CitiesDataStore()
+        {
+            Cities = new List<CityDto>()
+            {
+                new CityDto()
+                {
+                    Id=1,
+                    Name="Newyork",
+                    Description="Newyork is a city in the USA with big park",
+                    PointsOfInterest = new List<PointOfInterestDto>()
+                    {
+                        new PointOfInterestDto()
+                        {
+                            Id = 1,
+                            Name= "Water park",
+                            Description="A water park having many themes"
+                        },
+                        new PointOfInterestDto()
+                        {
+                            Id = 2,
+                            Name= "Art Library",
+                            Description="Art Library with dozens of paintings"
+                        }
+                    }
+                },
+                new CityDto()
+                {
+                    Id=2,
+                    Name="Texas",
+                    Description="Texas is a city in the USA",
+                    PointsOfInterest = new List<PointOfInterestDto>()
+                    {
+                        new PointOfInterestDto()
+                        {
+                            Id = 1,
+                            Name= "Central Park",
+                            Description="Central Park is most visited place"
+                        },
+                        new PointOfInterestDto()
+                        {
+                            Id = 2,
+                            Name= "Empire Building",
+                            Description="Empire Building is most historic"
+                        }
+                    }
+                },
+                new CityDto()
+                {
+                    Id=3,
+                    Name="California",
+                    Description="California is a city in the USA"
+                }
+            };
+        }
+    }
+}
+
+
+## /Controllers/PointOfInterestController.cs
+using Microsoft.AspNetCore.Mvc;
+using CityInfo.API.Models;
+using Microsoft.AspNetCore.Http;
+
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    [Route("/api/cities/{cityId}/pointofinterest")]
+    public class PointOfInterestController : ControllerBase
+    {
+        [HttpGet]
+        public ActionResult<IEnumerable<PointOfInterestDto>> GetPointsOfInterest(int cityId)
+        {
+            var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
+            if(city == null)
+            {
+                return NotFound();
+            }
+            return Ok(city.PointsOfInterest);
+        }
+    }
+}
+
+
   
