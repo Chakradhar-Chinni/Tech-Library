@@ -220,6 +220,8 @@ namespace CityInfo.API.Controllers
 - Inspect Chrome Network tab & understand Request Headers
  - learn more about chrome dev tools
 
+Route: /Cities
+Endpoint: GET /Cities
 
 
 
@@ -230,3 +232,79 @@ Testing APIs through Postman / Bruno
 - settings > disable SSL . this step allows to exeucute localhost APIs. (in other words, its like development tools)
 
 
+
+<h2>
+Creating Data Models and mockdata class
+
+Code Explanation
+1. Create /Models folder
+2. Create a CityDto model under Models/CityDto.cs
+3. create /CitiesDataStore.cs and create mock data list using citydto
+
+## Models/CityDto.cs
+namespace CityInfo.API.Models
+{
+    public class CityDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string? Description { get; set; }
+    }
+}
+
+## Mock data class - /CitiesDataStore.cs
+using CityInfo.API.Models;
+namespace CityInfo.API
+{
+    public class CitiesDataStore
+    {
+        public List<CityDto> Cities { get; set; }
+        public static CitiesDataStore Current { get; } = new CitiesDataStore();
+        public CitiesDataStore()
+        {
+            Cities = new List<CityDto>()
+            {
+                new CityDto()
+                {
+                    Id=1, 
+                    Name="Newyork", 
+                    Description="Newyork is a city in the USA with big park"
+                },
+                new CityDto()
+                {
+                    Id=2,
+                    Name="Texas",
+                    Description="Texas is a city in the USA"
+                },
+                new CityDto()
+                {
+                    Id=3,
+                    Name="California",
+                    Description="California is a city in the USA"
+                }
+            };
+        }
+    }
+}
+
+## Controllers/CitiesController.cs
+using Microsoft.AspNetCore.Mvc;
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    //[Route("api/cities")]
+    [Route("api/[controller]")]
+    public class CitiesController : ControllerBase
+    {
+        [HttpGet]
+        public JsonResult GetCities()
+        {
+            return new JsonResult(CitiesDataStore.Current.Cities);
+        }
+    }
+}
+
+
+
+
+  
