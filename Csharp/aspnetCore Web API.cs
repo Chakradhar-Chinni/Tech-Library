@@ -512,9 +512,7 @@ namespace CityInfo.API.Controllers
 
 <h2>
 Adding Customized Error messages in API errors
-
 place the below code in program.cs file before building the app to show customized error messages
-
 // Send Additional in error messages
 builder.Services.AddProblemDetails(options =>
 {
@@ -527,4 +525,60 @@ builder.Services.AddProblemDetails(options =>
     };
 });
 
-  
+
+
+
+<h2>
+  Content Negotiation and Data Formatting
+1. Request Header Accept: Application/Json will make the sure API returns data in Json format
+  - Accept: Application/XML will still return data in Json format if code is not configured to return XML Data (unfair as client explicitly asked XML)
+2. add configuration to return XML Data;
+3. handle the code if a unsupported data format is requested
+
+## Program.cs
+builder.Services.AddControllers(options =>
+{
+    options.ReturnHttpNotAcceptable = true; //return 406 if the client requests a format that is not supported
+}).AddXmlDataContractSerializerFormatters()
+
+URI: https://localhost:7167/api/cities/1
+## Json Format
+{
+  "id": 1,
+  "name": "Newyork",
+  "description": "Newyork is a city in the USA with big park",
+  "numberOfPointsOfInterest": 2,
+  "pointsOfInterest": [
+    {
+      "id": 1,
+      "name": "Water park",
+      "description": "A water park having many themes"
+    },
+    {
+      "id": 2,
+      "name": "Art Library",
+      "description": "Art Library with dozens of paintings"
+    }
+  ]
+}
+
+## XML Format
+<CityDto xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/CityInfo.API.Models">
+    <Description>Newyork is a city in the USA with big park</Description>
+    <Id>1</Id>
+    <Name>Newyork</Name>
+    <PointsOfInterest>
+        <PointOfInterestDto>
+            <Description>A water park having many themes</Description>
+            <Id>1</Id>
+            <Name>Water park</Name>
+        </PointOfInterestDto>
+        <PointOfInterestDto>
+            <Description>Art Library with dozens of paintings</Description>
+            <Id>2</Id>
+            <Name>Art Library</Name>
+        </PointOfInterestDto>
+    </PointsOfInterest>
+</CityDto>
+
+
