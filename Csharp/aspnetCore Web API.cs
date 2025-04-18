@@ -509,4 +509,22 @@ namespace CityInfo.API.Controllers
 }
 
 
+
+<h2>
+Adding Customized Error messages in API errors
+
+place the below code in program.cs file before building the app to show customized error messages
+
+// Send Additional in error messages
+builder.Services.AddProblemDetails(options =>
+{
+    options.CustomizeProblemDetails = ctx =>
+    {
+        ctx.ProblemDetails.Instance = ctx.HttpContext.Request.Path;
+        ctx.ProblemDetails.Title = "Custom Error";
+        ctx.ProblemDetails.Detail = "Custom error message";
+        ctx.ProblemDetails.Extensions.Add("Process Id", Environment.ProcessId);
+    };
+});
+
   
