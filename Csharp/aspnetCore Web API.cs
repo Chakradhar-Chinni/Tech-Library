@@ -330,4 +330,47 @@ namespace CityInfo.API.Controllers
         }
     }
 }
+
+
+
+<h2>
+ Implementing HttpStatus Codes 
+ 
+ 1xx Information
+ 2xx Success
+ 3xx Redirection
+ 4xx Client Error
+ 5xx Server Error
+
+using Microsoft.AspNetCore.Mvc;
+using CityInfo.API.Models;
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    //[Route("api/cities")]
+    [Route("api/[controller]")]
+    public class CitiesController : ControllerBase
+    {
+        [HttpGet]
+        public ActionResult<IEnumerable<CityDto>> GetCities()
+        {
+            return Ok(CitiesDataStore.Current.Cities);
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<IEnumerable<CityDto>> GetCity(int id)
+        {
+            var cityToReturn = CitiesDataStore.Current.Cities.First(c => c.Id == id);
+
+            if(cityToReturn == null)
+            {
+                return NotFound();
+            }            
+            
+            return Ok(CitiesDataStore.Current.Cities.First(c=> c.Id == id));
+        }
+    }
+}
+
+
   
