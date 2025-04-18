@@ -306,5 +306,28 @@ namespace CityInfo.API.Controllers
 
 
 
+<h2> 
+Add new API End Point
 
+using Microsoft.AspNetCore.Mvc;
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    //[Route("api/cities")]
+    [Route("api/[controller]")]
+    public class CitiesController : ControllerBase
+    {
+        [HttpGet]
+        public JsonResult GetCities()
+        {
+            return new JsonResult(CitiesDataStore.Current.Cities);
+        }
+        
+        [HttpGet("{id}")]  //new end point added
+        public JsonResult GetCity(int id)
+        {
+            return new JsonResult(CitiesDataStore.Current.Cities.First(c=> c.Id == id));
+        }
+    }
+}
   
