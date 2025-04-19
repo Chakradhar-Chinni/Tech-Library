@@ -597,3 +597,20 @@ URI: https://localhost:7167/api/cities/1
 </CityDto>
 
 
+
+
+<h2>
+Returning a File
+
+
+<h1>
+CRUD Operations,Validation Input
+
+1. Data retrieved through API may not be same as in database. because business rules can perform data transformation
+2. Maintain separate Dtos for every operation like create, update, delete
+
+
+<h2>
+
+
+
