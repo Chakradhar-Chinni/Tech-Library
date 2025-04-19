@@ -333,6 +333,19 @@ namespace CityInfo.API.Controllers
 
 
 
+
+<h2>
+Changing Return type to ActionResult<IEnumerable<CityDto>> from Json Result
+1. JsonResult always returns 200 ok with the data, even if the data is not found or redirections or others
+2. JsonResult isn't suitable to handle errors and send error messages without extra work
+3. ActionResult<> offers flexibility
+4. ActionResult<T> is a generic class that combines result object with HTTP Status code
+5. Clean Code: It provides helper methods like Ok() NotFound() BadRequest() etc...
+6. Compatibility: Very helpful in REST API development as it can return data along with appropriate HttpStatus Code
+
+
+
+
 <h2>
  Implementing HttpStatus Codes 
  
@@ -341,6 +354,8 @@ namespace CityInfo.API.Controllers
  3xx Redirection
  4xx Client Error
  5xx Server Error
+
+
 
 using Microsoft.AspNetCore.Mvc;
 using CityInfo.API.Models;
