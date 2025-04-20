@@ -1,0 +1,75 @@
+## Categiores
+DDL (Data Definition Language)
+DQL (Data Query Language)
+DML (Data Manipulation Language)
+DCL (Data Control Language)
+TCL (Transaction Control Language)
+
+
+## Commands
+DDL (Data Definition Language) : CREATE, ALTER, DROP, TRUNCATE, RENAME  
+DQL (Data Query Language) : SELECT  
+DML (Data Manipulation Language) : INSERT, UPDATE, DELETE, MERGE, CALL, EXPLAIN PLAN, LOCK  
+DCL (Data Control Language) : GRANT, REVOKE  
+TCL (Transaction Control Language) : COMMIT, ROLLBACK, SAVEPOINT, SET TRANSACTION  
+
+
+## DDL Examples
+  **Command**: CREATE  
+     Example: CREATE TABLE student (id INT, name VARCHAR(100), age INT, grade VARCHAR(10));  
+  
+  **Command**: ALTER  
+     Example: ALTER TABLE student ADD COLUMN address VARCHAR(255);  
+  
+  **Command**: DROP  
+     Example: DROP TABLE student;  
+  
+  **Command**: TRUNCATE  
+     Example: TRUNCATE TABLE student;  
+  
+  **Command**: RENAME  
+     Example: RENAME TABLE student TO student_info;  
+
+
+
+
+## DQL Examples
+  **Command**: SELECT  
+     Example: SELECT * FROM student;  
+
+
+
+## DML Examples
+  **Command**: INSERT  
+     Example: INSERT INTO student (id, name, age, grade) VALUES (1, 'John Doe', 20, 'A');  
+  
+  **Command**: UPDATE  
+     Example: UPDATE student SET grade = 'B' WHERE id = 1;  
+  
+  **Command**: DELETE  
+     Example: DELETE FROM student WHERE id = 1;  
+  
+  **Command**: MERGE  
+     Example: MERGE INTO student USING dual ON (id = 1) WHEN MATCHED THEN UPDATE SET grade = 'A+' WHEN NOT MATCHED THEN INSERT (id, name) VALUES (1, 'Jane Doe');  
+
+
+
+## DCL Examples
+  **Command**: GRANT  
+     Example: GRANT SELECT ON student TO user_name;  
+  
+  **Command**: REVOKE  
+     Example: REVOKE SELECT ON student FROM user_name;  
+  
+  ## TCL Examples
+  **Command**: COMMIT  
+     Example: COMMIT;  
+  
+  **Command**: ROLLBACK  
+     Example: ROLLBACK;  
+  
+  **Command**: SAVEPOINT  
+     Example: SAVEPOINT savepoint_name;  
+  
+  **Command**: SET TRANSACTION  
+     Example: SET TRANSACTION READ ONLY;  
