@@ -73,3 +73,41 @@ TCL (Transaction Control Language) : COMMIT, ROLLBACK, SAVEPOINT, SET TRANSACTIO
   
   **Command**: SET TRANSACTION  
      Example: SET TRANSACTION READ ONLY;  
+
+
+
+## Operators
+### **Arithmetic Operators**
++ (Addition)
+- (Subtraction)
+* (Multiplication)
+/ (Division)
+% (Modulo)
+
+### **Comparison Operators**
+= (Equal to)
+!= or <> (Not equal to)
+> (Greater than)
+< (Less than)
+>= (Greater than or equal to)
+<= (Less than or equal to)
+
+### **Logical Operators**
+AND (Returns true if all conditions are true)
+OR (Returns true if at least one condition is true)
+NOT (Negates the result of a condition)
+
+### **Bitwise Operators** (supported in some SQL databases)
+& (Bitwise AND)
+| (Bitwise OR)
+^ (Bitwise XOR)
+
+### **String Operators** 
+|| or + (Concatenation in different database systems)
+
+### **Special Operators**
+IN (Checks if a value exists within a list)
+BETWEEN (Checks if a value is within a range)
+LIKE (Searches for a pattern)
+IS NULL (Checks if a value is NULL)
+
