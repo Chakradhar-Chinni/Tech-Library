@@ -111,3 +111,25 @@ BETWEEN (Checks if a value is within a range)
 LIKE (Searches for a pattern)
 IS NULL (Checks if a value is NULL)
 
+
+
+## SQL Constraints
+NOT NULL: Ensures a column cannot have NULL values.
+UNIQUE: Ensures all values in a column are distinct.
+PRIMARY KEY: Uniquely identifies each row in a table.
+FOREIGN KEY: Ensures referential integrity by linking to a primary key in another table.
+CHECK: Ensures that all values in a column satisfy a specific condition.
+DEFAULT: Sets a default value for a column when no value is specified.
+ - CREATE TABLE employees (employee_id INT PRIMARY KEY, name VARCHAR(50),department VARCHAR(50) DEFAULT 'General');
+
+
+
+## SQL Clauses
+WHERE
+HAVING
+ORDER BY
+
+Points
+1. CHAR: Fixed-length storage. If the defined length is not fully used, it is padded with spaces.
+2. VARCHAR2: Variable-length storage. Only the actual data is stored, saving space when the full length is not needed.
+
