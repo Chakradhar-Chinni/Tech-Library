@@ -155,5 +155,50 @@ FOREIGN KEY (ClassID) REFERENCES Classes(ClassID) ON DELETE SET NULL
 
 - if ON DELETE is not mentioned, first drop the foreign key constraint and then manually handle the data & set them to NULL or anything. Its best to mention ON DELETE scenario
 
+
+
 # DEFAULT KEY
- 
+  If value is not provided during INSERT operation, then DEFAULT Value will be inserted
+  
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Department VARCHAR(50),
+    Salary DECIMAL(10, 2) DEFAULT 50000.00
+);
+
+INSERT INTO Employees (EmployeeID, Name, Department)
+VALUES (1, 'John Doe', 'HR');
+
+INSERT INTO Employees (EmployeeID, Name, Department, Salary)
+VALUES (2, 'Jane Smith', 'IT', 75000.00);
+
+
+
+# Normalization
+# DeNormalizaion
+# View
+# Unique
+# Joins 
+ Inner Join
+ Outer Join: LEFT OUTER JOIN, RIGHT OUTER JOIN, FULL OUTER JOIN, CROSS JOIN
+# GROUP BY: used to arrange identical data into groups. used with aggregate functions
+# Aggregate functions: COUNT() SUM() AVG() MIN() MAX()
+# WHERE: 
+# HAVING CLAUSE
+# Indexes
+# DELETE 
+# TRUNCATE
+# ORDER BY
+# SQL VS NO SQL
+# ACID Properties
+    Atomicity
+    Consistency
+    Isolation
+    Durability
+# CURSOR
+# QUERY
+# purpose of SELECT 
+# NULL values
+# Stored Procedures
+
