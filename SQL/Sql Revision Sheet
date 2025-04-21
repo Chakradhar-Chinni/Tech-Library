@@ -130,6 +130,30 @@ HAVING
 ORDER BY
 
 Points
-1. CHAR: Fixed-length storage. If the defined length is not fully used, it is padded with spaces.
-2. VARCHAR2: Variable-length storage. Only the actual data is stored, saving space when the full length is not needed.
+# CHAR: Fixed-length storage. If the defined length is not fully used, it is padded with spaces.
+# VARCHAR2: Variable-length storage. Only the actual data is stored, saving space when the full length is not needed.
 
+# Primary Key is a column in sql table which is used to uniquely identify a row. It doesn't allow duplicates & NULL values
+  CREATE TABLE Students (StudentID INT PRIMARY KEY, Name VARCHAR(100), Age INT, Grade INT);
+
+# Foreign Key is a column in sql table which reference primary key of another table. It creates relation between two tables
+ -- Create Classes table
+CREATE TABLE Classes (ClassID INT PRIMARY KEY,ClassName VARCHAR(100));
+
+-- Create Students table with a foreign key referencing Classes table
+CREATE TABLE Students (
+    StudentID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Age INT,
+    Grade INT,
+    ClassID INT,
+    FOREIGN KEY (ClassID) REFERENCES Classes(ClassID)
+);
+-if Classes table or ClassID column is deleted, Sql shows Referential Integrity Error and doesn't allow the delete operation. To handle delete scenarios, use 'CASCADE' or 'SET NULL'
+FOREIGN KEY (ClassID) REFERENCES Classes(ClassID) ON DELETE CASCADE
+FOREIGN KEY (ClassID) REFERENCES Classes(ClassID) ON DELETE SET NULL
+
+- if ON DELETE is not mentioned, first drop the foreign key constraint and then manually handle the data & set them to NULL or anything. Its best to mention ON DELETE scenario
+
+# DEFAULT KEY
+ 
