@@ -7,27 +7,35 @@ TCL (Transaction Control Language)
 
 
 ## Commands
-DDL (Data Definition Language) : CREATE, ALTER, DROP, TRUNCATE, RENAME  
-DQL (Data Query Language) : SELECT  
-DML (Data Manipulation Language) : INSERT, UPDATE, DELETE, MERGE, CALL, EXPLAIN PLAN, LOCK  
-DCL (Data Control Language) : GRANT, REVOKE  
-TCL (Transaction Control Language) : COMMIT, ROLLBACK, SAVEPOINT, SET TRANSACTION  
+DDL (Data Definition Language) : Defines and Modifies Database Structure -  CREATE, ALTER, DROP, TRUNCATE, RENAME  
+DQL (Data Query Language) : Retrieves Data - SELECT  
+DML (Data Manipulation Language) : Modifies Table Data - INSERT, UPDATE, DELETE, MERGE, CALL, EXPLAIN PLAN, LOCK  
+DCL (Data Control Language) :  Manages Permissions - GRANT, REVOKE  
+TCL (Transaction Control Language) : Manage Transactions - COMMIT, ROLLBACK, SAVEPOINT, SET TRANSACTION  
 
 
 ## DDL Examples
   **Command**: CREATE  
+     1. CREATE new tables, views, Indexes, Stored Procedures
      Example: CREATE TABLE student (id INT, name VARCHAR(100), age INT, grade VARCHAR(10));  
   
   **Command**: ALTER  
+     1. ALTER TABLE Structure - add, delete, rename columns
      Example: ALTER TABLE student ADD COLUMN address VARCHAR(255);  
   
   **Command**: DROP  
+     1. DROP Tables, Views, Indexes, triggers
+     2. drop table deletes table data, table, views, triggers, everything linked to that table
+     3. drop frees up the data from physical storage so ROLLBACK is not possible
      Example: DROP TABLE student;  
   
-  **Command**: TRUNCATE  
+  **Command**: TRUNCATE
+     1. TRUNCATE tables
+     2. Truncate deletes table rows only. (table constraints, views, triggers or any thing are untouched)
      Example: TRUNCATE TABLE student;  
   
   **Command**: RENAME  
+     1. RENAME table, column
      Example: RENAME TABLE student TO student_info;  
 
 
