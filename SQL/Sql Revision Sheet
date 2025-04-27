@@ -43,18 +43,22 @@ TCL (Transaction Control Language) : Manage Transactions - COMMIT, ROLLBACK, SAV
 
 ## DQL Examples
   **Command**: SELECT  
+    1. SELECT is used to retrieve data
      Example: SELECT * FROM student;  
 
 
 
 ## DML Examples
   **Command**: INSERT  
+     1. Add new data to tables
      Example: INSERT INTO student (id, name, age, grade) VALUES (1, 'John Doe', 20, 'A');  
   
   **Command**: UPDATE  
+     1. Modify existing data
      Example: UPDATE student SET grade = 'B' WHERE id = 1;  
   
   **Command**: DELETE  
+     1. delete existing data
      Example: DELETE FROM student WHERE id = 1;  
   
   **Command**: MERGE  
@@ -63,20 +67,25 @@ TCL (Transaction Control Language) : Manage Transactions - COMMIT, ROLLBACK, SAV
 
 
 ## DCL Examples
-  **Command**: GRANT  
+  **Command**: GRANT 
+     1. Provide priveleges to users, roles
      Example: GRANT SELECT ON student TO user_name;  
   
   **Command**: REVOKE  
+     1. Remove priveleges to users, roles
      Example: REVOKE SELECT ON student FROM user_name;  
   
   ## TCL Examples
   **Command**: COMMIT  
+     1. Save all changes permanently
      Example: COMMIT;  
   
   **Command**: ROLLBACK  
+     1. undo changes if needed
      Example: ROLLBACK;  
   
   **Command**: SAVEPOINT  
+     1. set a checkpoint to rollback to
      Example: SAVEPOINT savepoint_name;  
   
   **Command**: SET TRANSACTION  
