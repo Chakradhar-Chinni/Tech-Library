@@ -43,3 +43,17 @@ Q8. Write a SQL query to add a new column named is_active with a BOOLEAN data ty
 	ALTER TABLE users ADD is_active BOOLEAN DEFAULT TRUE;
 Q9. Write a SQL query to add a new column named discount_rate with a DECIMAL data type to a table named products.
 	ALTER TABLE products ADD discount_rate DECIMAL(5,2);
+
+
+Q10. Write a SQL query to change the data type of the salary column in the employees table from INTEGER to DECIMAL(10, 2).
+	ALTER TABLE Employees
+           MODIFY SALARY DECIMAL(10,2);
+Q11. Write a SQL query to modify the description column in the products table to allow longer text by changing its data type to TEXT.
+	ALTER TABLE PRODUCTS 
+		MODIFY description TEXT;
+Q12. Write a SQL query to change the data type of the date_of_birth column in the users table from DATE to DATETIME.
+	ALTER TABLE users
+		MODIFY date_of_birth DATETIME
+Q13. Write a SQL query to modify the quantity column in the inventory table from SMALLINT to INT.
+	ALTER TABLE inventory
+		MODIFY quantity INT
