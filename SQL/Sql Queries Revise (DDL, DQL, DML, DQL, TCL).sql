@@ -35,4 +35,11 @@ CREATE TABLE OrderDetails(
 	total_amount DECIMAL(10,2),
 	Status Varchar(30),
 
-
+Q6. Write a SQL query to add a new column named phone_number to an existing table called customers.
+	ALTER TABLE Customers ADD phone_number VARCHAR(10);
+Q7. Write a SQL query to add a new column named created_at with a default value of the current timestamp to a table named orders.
+	ALTER TABLE orders ADD created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+Q8. Write a SQL query to add a new column named is_active with a BOOLEAN data type to a table named users.
+	ALTER TABLE users ADD is_active BOOLEAN DEFAULT TRUE;
+Q9. Write a SQL query to add a new column named discount_rate with a DECIMAL data type to a table named products.
+	ALTER TABLE products ADD discount_rate DECIMAL(5,2);
