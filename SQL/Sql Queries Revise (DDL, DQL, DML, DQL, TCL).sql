@@ -57,3 +57,24 @@ Q12. Write a SQL query to change the data type of the date_of_birth column in th
 Q13. Write a SQL query to modify the quantity column in the inventory table from SMALLINT to INT.
 	ALTER TABLE inventory
 		MODIFY quantity INT
+
+Q14. Write a SQL query to drop a column from a table using IF EXISTS and CASCADE options to handle dependencies.
+	ALTER TABLE Users
+	DROP COLUMN IF EXISTS user_id CASCADE;
+Q15. Write a SQL query to remove multiple columns in one ALTER TABLE statement, ensuring proper order of removal.
+	ALTER TABLE Users
+		DROP COLUMN column1
+		DROP COLUMN column2
+		DROP COLUMN column3
+Q16. Write a SQL query to drop a column with a reserved keyword as its name by properly quoting the identifier.
+		ALTER TABLE Users
+			DROP COLUMN "column"
+Q17. Write a SQL query to conditionally drop a column only if it is not referenced by any views or constraints.
+	DO $$ 
+	BEGIN 
+	    IF NOT EXISTS (
+	        SELECT 1 FROM information_schema.constraint_column_usage WHERE column_name = 'column_name'
+	    ) THEN 
+	        ALTER TABLE table_name DROP COLUMN column_name;
+	    END IF;
+	END $$;
