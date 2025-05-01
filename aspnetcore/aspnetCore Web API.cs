@@ -599,8 +599,88 @@ URI: https://localhost:7167/api/cities/1
 
 
 
+
 <h2>
-Returning a File
+Getting a File
+1. Create FilesController.cs
+2. Registering DI:
+    FileExtensionContentTypeProvider is registered as a service into DI Container.
+    Constructor of FilesController.cs has a parameter FileExtensionContentTypeProvider. ASP.NET Core automatically resolves this dependency from the DI container when creating an instance of FilesController.
+    So, whenever FilesController is instantiated then .NET Core automatically provides an instance of this service to FilesController.cs
+    
+3. FilesController Constructor is injected with FileExtensionContentTypeProvider to determine MIME type (content type) of files based on their extensions.
+   - If the provider is not supplied, an ArgumentNullException is thrown to ensure the dependency is not null.
+4. GetFile() takes fileId as parameter and returns the hardcoded file from root directory
+  - Uses NotFound() helper method to handle file not found scenario
+  - TryGetContentType method of _fileExtensionContentTypeProvider is used to determine the MIME type of file
+  - if TryGetContentType method couldn't determine the file type then default content type of "application/octet-stream" is used
+
+## /Controllers/FilesController.cs
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
+
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    [Route("api/files")]
+    public class FilesController : ControllerBase
+    {
+        private readonly FileExtensionContentTypeProvider _fileExtensionContentTypeProvider;
+
+        public FilesController(FileExtensionContentTypeProvider fileExtensionContentTypeProvider)
+        {
+            _fileExtensionContentTypeProvider = fileExtensionContentTypeProvider
+                 ?? throw new System.ArgumentNullException(nameof(fileExtensionContentTypeProvider));
+        }
+        [HttpGet("{fileid}")]
+        public ActionResult GetFile(string fileId)
+        {
+            var pathToFile = "FSD-MERN-Stack-brochure.pdf";
+            if (!System.IO.File.Exists(pathToFile))
+            {
+                return NotFound();
+            }
+            if(!_fileExtensionContentTypeProvider.TryGetContentType(pathToFile, out var contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+            var bytes = System.IO.File.ReadAllBytes(pathToFile);
+            return File(bytes, contentType, Path.GetFileName(pathToFile));
+        }
+    }
+}
+
+##Program.cs
+using Microsoft.AspNetCore.StaticFiles;
+var builder = WebApplication.CreateBuilder(args);
+// Add services to the container.
+builder.Services.AddControllers(options =>
+{
+    options.ReturnHttpNotAcceptable = true; //return 406 if the client requests a format that is not supported
+}).AddXmlDataContractSerializerFormatters();
+builder.Services.AddEndpointsApiExplorer(); //endpoint discovery
+builder.Services.AddSwaggerGen(); //integrates Swagger
+builder.Services.AddSingleton<FileExtensionContentTypeProvider>(); //FileExtensionContentTypeProvider is used to get the content type of a file based on its extension
+
+var app = builder.Build(); // Build the app
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+app.UseRouting();
+app.UseHttpsRedirection(); //Http are re-directed to Https
+app.UseAuthorization();
+app.MapControllers(); //Maps Http Requests to controllers
+app.UseEndpoints(endpoints =>
+  {
+      endpoints.MapControllers();
+  });
+app.Run();
+
+
 
 
 <h1>
