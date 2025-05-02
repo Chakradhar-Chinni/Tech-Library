@@ -390,7 +390,7 @@ namespace CityInfo.API.Controllers
 
 
 <h2>
-  Returning Child Resources
+  Returning Child Resources - ActionResult<> to return cities/pointOfInterest ; cities/pointOfInterest/pointofinterestid
 
 Code Explanation
 1. Adding PointsOfInterest Collection to CityDto class
@@ -507,10 +507,10 @@ using Microsoft.AspNetCore.Http;
 namespace CityInfo.API.Controllers
 {
     [ApiController]
-    [Route("/api/cities/{cityId}/pointofinterest")]
+    [Route("/api/cities/{cityId}/pointofinterest")] //base route
     public class PointOfInterestController : ControllerBase
     {
-        [HttpGet] //https://localhost:7167/api/cities/1
+        [HttpGet] //https://localhost:7167/api/cities/1/pointofinterest (returns all pointsofinterest in city 1
         public ActionResult<IEnumerable<PointOfInterestDto>> GetPointsOfInterest(int cityId)
         {
             var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
@@ -522,7 +522,7 @@ namespace CityInfo.API.Controllers
         }
     }
 
-    [HttpGet("{pointofinterestid}")] //https://localhost:7167/api/cities/1/pointofinterest/1
+    [HttpGet("{pointofinterestid}")] //https://localhost:7167/api/cities/1/pointofinterest/1 (returns 1st point of interest in city 1)
     public ActionResult<IEnumerable<PointOfInterestDto>> GetPointOfInterest(int cityId, int pointOfInterestid)
     {
         var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);    
@@ -709,7 +709,83 @@ CRUD Operations,Validation Input
 2. Maintain separate DTOs for every operation like create, update, delete
 3. Data can be passed to API via many routes, route, binding source, query parameters
 
-<h2> Creating a Resource/ ENdpoint
+
+
+
+
+<h2> Creating a POST Resource
+
+##/Controllers/PointOfInterestController.cs
+using Microsoft.AspNetCore.Mvc;
+using CityInfo.API.Models;
+using Microsoft.AspNetCore.Http;
+
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    [Route("/api/cities/{cityId}/pointofinterest")]
+    public class PointOfInterestController : ControllerBase
+    {
+        [HttpGet]
+        public ActionResult<IEnumerable<PointOfInterestDto>> GetPointsOfInterest(int cityId)
+        {
+            var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
+
+            if(city == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(city.PointsOfInterest);
+
+        }
+
+        [HttpGet("{pointofinterestid}", Name="GetPointOfInterest")]
+        public ActionResult<PointOfInterestDto> GetPointOfInterest(int cityId, int pointOfInterestid)
+        {
+            var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
+            if(city == null)
+            {
+                return NotFound();
+            }
+            //find pointOfInterestId in above city
+            var pointOfInterest = city.PointsOfInterest.FirstOrDefault( p => p.Id == pointOfInterestid);
+            if (pointOfInterest == null)
+            {
+                return NotFound();
+            }
+            return Ok(pointOfInterest);
+        }
+
+        [HttpPost]
+        public ActionResult<PointOfInterestDto> CreatePointOfInterest(int cityId,PointOfInterestForCreationDto pointOfInterest)
+        {
+            var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
+            if(city == null)
+            {
+                return NotFound();
+            }
+
+            var maxPointOfInterestId = CitiesDataStore.Current.Cities.SelectMany(c => c.PointsOfInterest).Max(p => p.Id);
+            var finalPointOfInterest = new PointOfInterestDto()
+            {
+                Id = ++maxPointOfInterestId,
+                Name = pointOfInterest.Name,
+                Description = pointOfInterest.Description
+            };
+
+            city.PointsOfInterest.Add(finalPointOfInterest);           
+
+            //helper method of ControllerBase
+            return CreatedAtRoute("GetPointOfInterest",
+                new {
+                     cityId = cityId, 
+                     pointOfInterestId = finalPointOfInterest.Id 
+                    },
+                    finalPointOfInterest);
+        }
+    }
+}
 
 
 
