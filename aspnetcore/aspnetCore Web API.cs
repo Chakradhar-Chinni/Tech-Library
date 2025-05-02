@@ -510,7 +510,7 @@ namespace CityInfo.API.Controllers
     [Route("/api/cities/{cityId}/pointofinterest")]
     public class PointOfInterestController : ControllerBase
     {
-        [HttpGet]
+        [HttpGet] //https://localhost:7167/api/cities/1
         public ActionResult<IEnumerable<PointOfInterestDto>> GetPointsOfInterest(int cityId)
         {
             var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
@@ -520,6 +520,25 @@ namespace CityInfo.API.Controllers
             }
             return Ok(city.PointsOfInterest);
         }
+    }
+
+    [HttpGet("{pointofinterestid}")] //https://localhost:7167/api/cities/1/pointofinterest/1
+    public ActionResult<IEnumerable<PointOfInterestDto>> GetPointOfInterest(int cityId, int pointOfInterestid)
+    {
+        var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);    
+        if(city == null)
+        {
+            return NotFound();
+        }
+    
+        //find pointOfInterestId in above city
+        var pointOfInterest = city.PointsOfInterest.FirstOrDefault( p => p.Id == pointOfInterestid);
+    
+        if (pointOfInterest == null)
+        {
+            return NotFound();
+        }
+        return Ok(pointOfInterest);    
     }
 }
 
@@ -687,10 +706,10 @@ app.Run();
 CRUD Operations,Validation Input
 
 1. Data retrieved through API may not be same as in database. because business rules can perform data transformation
-2. Maintain separate Dtos for every operation like create, update, delete
+2. Maintain separate DTOs for every operation like create, update, delete
+3. Data can be passed to API via many routes, route, binding source, query parameters
 
-
-<h2>
+<h2> Creating a Resource/ ENdpoint
 
 
 
