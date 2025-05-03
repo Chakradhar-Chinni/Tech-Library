@@ -713,7 +713,9 @@ CRUD Operations,Validation Input
 
 
 
-<h2> Creating a POST Resource
+
+
+<h2> Creating a POST Resource with request body
 
 ##/Controllers/PointOfInterestController.cs
 using Microsoft.AspNetCore.Mvc;
@@ -735,9 +737,7 @@ namespace CityInfo.API.Controllers
             {
                 return NotFound();
             }
-
             return Ok(city.PointsOfInterest);
-
         }
 
         [HttpGet("{pointofinterestid}", Name="GetPointOfInterest")]
@@ -760,6 +760,15 @@ namespace CityInfo.API.Controllers
         [HttpPost]
         public ActionResult<PointOfInterestDto> CreatePointOfInterest(int cityId,PointOfInterestForCreationDto pointOfInterest)
         {
+            /*
+                URI: https://localhost:7167/api/cities/1/pointofinterest
+                Request Body:            
+                  {
+                    "fruit": "Green Museum",
+                    "label": "Co greem museum"
+                  }
+                Headers: Content-Type : application/json
+            */
             var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
             if(city == null)
             {
@@ -776,7 +785,7 @@ namespace CityInfo.API.Controllers
 
             city.PointsOfInterest.Add(finalPointOfInterest);           
 
-            //helper method of ControllerBase
+            //CreatedAtRoute is helper method of ControllerBase
             return CreatedAtRoute("GetPointOfInterest",
                 new {
                      cityId = cityId, 
@@ -787,5 +796,23 @@ namespace CityInfo.API.Controllers
     }
 }
 
+## /Models/PointOfInterestForCreationDto.cs
+using Microsoft.AspNetCore.Mvc;
+namespace CityInfo.API.Models
+{
+    public class PointOfInterestForCreationDto
+    {
+        public string Name { get; set; } = string.Empty;
+        public string? Description { get; set; }
+    }
+}
+
+
+
+
+
+
+<h2> Validating Request Body
+1. PointOfInterestForCreationDto doesnot have 
 
 
