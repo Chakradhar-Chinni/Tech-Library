@@ -811,8 +811,62 @@ namespace CityInfo.API.Models
 
 
 
-
 <h2> Validating Request Body
-1. PointOfInterestForCreationDto doesnot have 
+1. DataAnnotations can be used for validations.
+2. PointOfInterestForCreationDto now has validation with [Required] [Maxlength()]
+3. ModelState is a dictionary containing data
+3. Controller class has commented code, which will ensure DataAnnotations are validated. 
+4. [ApiController] attribute at top of class will provide the same functionality of ModelState. So ModelState block can be commented
 
+## /Models/PointOfInterestForCreationDto.cs
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+namespace CityInfo.API.Models
+{
+    public class PointOfInterestForCreationDto
+    {
+        [Required]
+        public string Name { get; set; } = string.Empty;       
+        [MaxLength(10)]
+        public string? Description { get; set; }
+    }
+}
+
+## /Controllers/PointOfInterestController.cs
+[ApiController]
+[Route("/api/cities/{cityId}/pointofinterest")]
+
+    [HttpPost]
+    public ActionResult<PointOfInterestDto> CreatePointOfInterest(int cityId,PointOfInterestForCreationDto pointOfInterest)
+    {
+      /* 
+        if(!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+      */
+        var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
+        if(city == null)
+        {
+            return NotFound();
+        }
+        var maxPointOfInterestId = CitiesDataStore.Current.Cities.SelectMany(c => c.PointsOfInterest).Max(p => p.Id);
+        var finalPointOfInterest = new PointOfInterestDto()
+        {
+            Id = ++maxPointOfInterestId,
+            Name = pointOfInterest.Name,
+            Description = pointOfInterest.Description
+        };
+
+        city.PointsOfInterest.Add(finalPointOfInterest);           
+
+        //helper method of ControllerBase
+        return CreatedAtRoute("GetPointOfInterest",
+            new {
+                 cityId = cityId, 
+                 pointOfInterestId = finalPointOfInterest.Id 
+                },
+                finalPointOfInterest);
+    }
+}
 
