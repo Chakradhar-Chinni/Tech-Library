@@ -874,7 +874,7 @@ namespace CityInfo.API.Models
 
 
 
-<h2> Updating Resource
+<h2> Updating Resource using PUT
 1. As a general rule, create a new DTO for updating resource
 2. Create ActionREsult method to update resources 
 3. DTO class has marked Name field with [Required] Data annotation. So, in the request body Name is mandatory but Description is optional
@@ -949,7 +949,7 @@ namespace CityInfo.API.Controllers
 {
     [ApiController]
     [Route("/api/cities/{cityId}/pointofinterest")]
-      [HttpPut("{pointofinterestId}")]
+      [HttpPut("{pointofinterestId}")] //URI:  https://localhost:7167/api/cities/2/pointofinterest/1
       public ActionResult UpdatePointOfInterest(int cityId,int pointOfInterestId, PointOfInterestForUpdateDto pointOfInterest)
       {
           var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
@@ -970,3 +970,45 @@ namespace CityInfo.API.Controllers
           return NoContent();
       }
 }
+
+
+<h2> Updating Resource using PATCH (partial updates)
+1. Install Nuget Packages Microsoft.AspNetCore.JsonPatch, Microsoft.AspNetCore.Mvc.NewtonsoftJson
+2. add newtonsoft controller to program.cs
+      // Add services to the container.
+      builder.Services.AddControllers(options =>
+      {
+          options.ReturnHttpNotAcceptable = true; //return 406 if the client requests a format that is not supported
+      }).AddNewtonsoftJson()
+         .AddXmlDataContractSerializerFormatters();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
