@@ -870,3 +870,103 @@ namespace CityInfo.API.Models
     }
 }
 
+
+
+
+
+<h2> Updating Resource
+1. As a general rule, create a new DTO for updating resource
+2. Create ActionREsult method to update resources 
+3. DTO class has marked Name field with [Required] Data annotation. So, in the request body Name is mandatory but Description is optional
+  - by definition, [HTTPPut] is meant for updating entire resource.
+  - if description is not provided in the request body, then default value of null will be assigned to description
+
+/* API Data 
+  GET:https://localhost:7167/api/cities/2
+    {
+      "id": 2,
+      "name": "Texas",
+      "description": "Texas is a city in the USA",
+      "numberOfPointsOfInterest": 2,
+      "pointsOfInterest": [
+        {
+          "id": 1,
+          "name": "Central Park",
+          "description": "Central Park is most visited place"
+        },
+        {
+          "id": 2,
+          "name": "Empire Building",
+          "description": "Empire Building is most historic"
+        }
+      ]
+    }
+URI:  https://localhost:7167/api/cities/2/pointofinterest/1
+Request Body: 
+{
+ "name":"Central Theme Park - updated name using HTTP PUT"  
+}
+-- After calling API with above request body, description is null as it is not mentioned in Request body
+    {
+      "id": 2,
+      "name": "Texas",
+      "description": "Texas is a city in the USA",
+      "numberOfPointsOfInterest": 2,
+      "pointsOfInterest": [
+        {
+          "id": 1,
+          "name": "Central Theme Park - updated name using HTTP PUT",
+          "description": null
+        },
+        {
+          "id": 2,
+          "name": "Empire Building",
+          "description": "Empire Building is most historic"
+        }
+      ]
+    }
+*/
+
+## /Models/PointOfInterestForUpdateDto.cs
+using System.ComponentModel.DataAnnotations;
+namespace CityInfo.API.Models
+{
+    public class PointOfInterestForUpdateDto
+    {
+        [Required]
+        public string Name { get; set; } = string.Empty;        
+        public string? Description { get; set; }
+    }
+}
+
+
+## /Controllers/PointOfInterestController.cs
+using Microsoft.AspNetCore.Mvc;
+using CityInfo.API.Models;
+using Microsoft.AspNetCore.Http;
+
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    [Route("/api/cities/{cityId}/pointofinterest")]
+      [HttpPut("{pointofinterestId}")]
+      public ActionResult UpdatePointOfInterest(int cityId,int pointOfInterestId, PointOfInterestForUpdateDto pointOfInterest)
+      {
+          var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
+          if (city == null)
+          {
+              return NotFound();
+          }
+      
+          var pointOfInterestFromStore = city.PointsOfInterest.FirstOrDefault(p => p.Id == pointOfInterestId);
+          if(pointOfInterestFromStore==null)
+          {
+              return NotFound();
+          }
+      
+          pointOfInterestFromStore.Name = pointOfInterest.Name;
+          pointOfInterestFromStore.Description = pointOfInterest.Description;
+    
+          return NoContent();
+      }
+}
