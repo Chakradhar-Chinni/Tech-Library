@@ -240,6 +240,12 @@ Code Explanation
 1. Create /Models folder
 2. Create a CityDto model under Models/CityDto.cs
 3. create /CitiesDataStore.cs and create mock data list using citydto
+4. CitiesDataStore.cs contains a static property with get method. It provides data globally to every class.
+     - Its like a singleton patttern, provides single shared instance
+Note: 
+  - If constuctor of the class is private then an object cannot be instantiated. The static property approach will work
+  - for a static class, object is not required as data is accessible using class name
+  - Factory method can be used for controlled object creation, as it would have private constructor and return the object after creation
 
 ## Models/CityDto.cs
 namespace CityInfo.API.Models
