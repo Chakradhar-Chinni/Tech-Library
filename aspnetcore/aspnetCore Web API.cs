@@ -980,7 +980,12 @@ namespace CityInfo.API.Controllers
 
 <h2> Updating Resource using PATCH (partial updates)
 1. Install Nuget Packages Microsoft.AspNetCore.JsonPatch, Microsoft.AspNetCore.Mvc.NewtonsoftJson
-2. add newtonsoft controller to program.cs
+2. add NewtonSoft controller to program.cs
+3. ModelState will validate the available fields only. Even if Name is required it will pass the model because Name is not avaialble in the object. SO, it wont compare it
+4. TryValidateModel(pointOfInterestToPatch) validates every thing. If a required field is missing it will fail the validation.
+
+
+## Program.cs
       // Add services to the container.
       builder.Services.AddControllers(options =>
       {
@@ -989,9 +994,81 @@ namespace CityInfo.API.Controllers
          .AddXmlDataContractSerializerFormatters();
 
 
+## /Models/PointOfInterestForUpdateDto.cs
+using System.ComponentModel.DataAnnotations;
+namespace CityInfo.API.Models
+{
+    public class PointOfInterestForUpdateDto
+    {
+        [Required]
+        public string Name { get; set; } = string.Empty;        
+        public string? Description { get; set; }
+    }
+}
 
 
+## /Controllers/PointofInterestController.cs
+/*
+  PATCH: https://localhost:7167/api/cities/1/pointofinterest/1
+  Request Body
+              [
+                {
+                  "op": "remove",
+                  "path": "/name",
+                  "value" : ""
+                }
+              ]
+*/
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    [Route("/api/cities/{cityId}/pointofinterest")]
+    public class PointOfInterestController : ControllerBase
+    {
+        [HttpPatch("{pointofinterestid}")]
+        public ActionResult PartiallyUpdatePointOfInterest(int cityId, int pointOfInterestId,JsonPatchDocument<PointOfInterestForUpdateDto> patchDocument)
+        {
+            var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
+            if(city==null)
+            {
+                return NotFound();
+            }
+        
+            var pointOfInterestFromStore = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == pointOfInterestId);
+            if(pointOfInterestFromStore == null)
+            {
+                return NotFound();
+            }
 
+            //updatable object
+            var pointOfInterestToPatch = new PointOfInterestForUpdateDto()
+            {
+                Name = pointOfInterestFromStore.Name,
+                Description = pointOfInterestFromStore.Description
+            };
+
+            //apply patch to updatable object
+            patchDocument.ApplyTo(pointOfInterestToPatch, ModelState);
+          
+            if(! ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            //validating model after patching
+            if(!TryValidateModel(pointOfInterestToPatch))
+            {
+                return BadRequest(ModelState);
+            }
+            
+            //update data in store from updatable object
+            pointOfInterestFromStore.Name = pointOfInterestToPatch.Name;
+            pointOfInterestFromStore.Description = pointOfInterestToPatch.Description;
+        
+            return NoContent();
+        }
+    }
+  }
 
 
 
