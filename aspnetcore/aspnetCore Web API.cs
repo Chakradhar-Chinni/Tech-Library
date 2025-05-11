@@ -1320,5 +1320,137 @@ Error Message:
 
 
 
-        
+
+
+<h2> Setting Up Serilog 
+1) .NET core logging provider doesnot support additional features like database logging, file logging. & linux containers dont support in-built logging provider. 
+2) So, developers often prefer 3rd parties like nlog, serilog etc..
+3) Setting up Serilog & removing default logging mechanism
+4) Serilog.AspNetCore,  Serilog.Sinks.Console,  Serilog.Sinks.File
+
+##Program.cs
+using CityInfo.API.Services;
+using Microsoft.AspNetCore.StaticFiles;
+using Serilog;
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console()
+    .WriteTo.File("logs/cityinfo.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+var builder = WebApplication.CreateBuilder(args);
+//builder.Logging.ClearProviders();
+//builder.Logging.AddConsole();
+builder.Host.UseSerilog();
+
+/*
+previous code would work as it is without changes
+public class CitiesController : ControllerBase
+    {
+        private readonly ILogger<CitiesController> _logger;
+        public CitiesController(ILogger<CitiesController> logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+    } */
+
+
+
+
+
+
+<h2> Implemeting a Custom Mail Service and using it via Dependency Injection (Transient)
+1. Create /Services/LocalMailService.cs
+2. Register the new class in program.cs so, we just have to inject it in the dependency
+3. Inject in Constructor of PointOfInterestController.cs and use it in any ActionREsult methods
+
+##/Services/LocalMailService.cs
+namespace CityInfo.API.Services
+{
+    public class LocalMailService
+    {
+        private string _mailTo = "admin@company.com";
+        private string _mailFrom = "noreply@company.com";
+
+        public void Send(string subject, string message)
+        {
+            Console.WriteLine($"Mail from {_mailFrom} to {_mailTo}");
+            Console.WriteLine($"Subject: {subject}");
+            Console.WriteLine($"Message: {message}");
+        }
+    }
+}
+
+##program.cs
+builder.Services.AddEndpointsApiExplorer(); 
+builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
+builder.Services.AddTransient<LocalMailService>();  //new line
+var app = builder.Build(); // Build the app
+
+
+## PointOfInterestController.cs
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    [Route("/api/cities/{cityId}/pointofinterest")]
+    public class PointOfInterestController : ControllerBase
+    {
+        private readonly ILogger<PointOfInterestController> _logger;
+        private readonly LocalMailService _mailService;
+
+        public PointOfInterestController(ILogger<PointOfInterestController> logger,LocalMailService mailService)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _mailService = mailService ?? throw new ArgumentNullException(nameof(mailService));
+        }
+       
+       [HttpDelete("{pointofinterestid}")]
+       public ActionResult DeletePointOfInterest(int cityId,int pointofinterestid)
+       {
+           var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
+           if(city == null)
+           {
+               return NotFound();
+           }
+      
+           var pointofInterestFromStore = city.PointsOfInterest.FirstOrDefault(c => c.Id == pointofinterestid);
+           if (pointofInterestFromStore == null)
+           {
+               return NotFound();
+           }
+      
+           city.PointsOfInterest.Remove(pointofInterestFromStore);
+      
+           _mailService.Send("Point Of Interest deleted", $"{pointofInterestFromStore.Name} is deleted");
+      
+           return NoContent();
+       }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
