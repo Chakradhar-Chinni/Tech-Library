@@ -1344,7 +1344,7 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Logging.AddConsole();
 builder.Host.UseSerilog();
 
-/*
+/*  
 previous code would work as it is without changes
 public class CitiesController : ControllerBase
     {
@@ -1360,7 +1360,7 @@ public class CitiesController : ControllerBase
 
 
 
-<h2> Implemeting a Custom Mail Service and using it via Dependency Injection (Transient)
+<h2> Implemeting a Custom Mail Service and using it via Dependency Injection (concrete class implementation)
 1. Create /Services/LocalMailService.cs
 2. Register the new class in program.cs so, we just have to inject it in the dependency
 3. Inject in Constructor of PointOfInterestController.cs and use it in any ActionREsult methods
