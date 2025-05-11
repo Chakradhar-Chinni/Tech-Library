@@ -978,6 +978,10 @@ namespace CityInfo.API.Controllers
 }
 
 
+
+
+
+
 <h2> Updating Resource using PATCH (partial updates)
 1. Install Nuget Packages Microsoft.AspNetCore.JsonPatch, Microsoft.AspNetCore.Mvc.NewtonsoftJson
 2. add NewtonSoft controller to program.cs
@@ -1076,6 +1080,70 @@ namespace CityInfo.API.Controllers
 
 
 
+<h2> Dependency Injection using ILogger
+1. ILogger is built in service in .NET core, so registration is not required
+2. Constructor Injection is preferred way of requesting dependencies. If thats not possible use HttpContext.RequestServices
+3. Constructor of CitiesController is injected with _logger to use logging methods
+4. private readonly ILogger<CitiesController> _logger; This declares a private, read-only field named _logger that holds an instance of ILogger<CitiesController>. The ILogger interface is used for logging messages, 
+     helping developers track events, errors, or other information during runtime.
+5. _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+  This assigns the logger parameter to the _logger field, but with a safeguard:
+  - If logger is null, an ArgumentNullException is thrown.
+  - nameof(logger) ensures that the exception message references the correct parameter name, improving debugging.
+6. appsettings.json
+    CitiesController default logging level is Information, so Information & above will be logged
+    PointOfInterestController default logging level is Warning, so Warning above only will be logged
+    Logging Levels (Lowest to Highest)
+      └── 0 - Trace      - Most detailed logs for debugging
+          ├── 1 - Debug      - Debugging-level information
+          │   ├── 2 - Information - General application flow details
+          │   │   ├── 3 - Warning     - Potential issues that may not cause failure
+          │   │   │   ├── 4 - Error       - Issues that prevent normal execution
+          │   │   │   │   ├── 5 - Critical    - Severe issues that may crash the application
+          │   │   │   │   │   └── 6 - None        - Disables logging
+
+
+
+## CitiesController.cs
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    //[Route("api/cities")]
+    [Route("api/[controller]")]
+    public class CitiesController : ControllerBase
+    {
+        private readonly ILogger<CitiesController> _logger;
+        public CitiesController(ILogger<CitiesController> logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<CityDto>> GetCities()
+        {
+            _logger.LogInformation("Cities are returned");
+            return Ok(CitiesDataStore.Current.Cities);
+        }
+    }
+}
+
+##appsettings.jsom
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "CityInfo.API.Controllers.CitiesController": "Information",
+      "CityInfo.API.Controllers.PointOfInterestController": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+
+
+##program.cs
+builder.Logging.ClearProviders(); //disables log config
+builder.Logging.AddConsole(); // enables config for console only
 
 
 
@@ -1083,14 +1151,36 @@ namespace CityInfo.API.Controllers
 
 
 
+<h2> Logging Exceptions
+1. return Statement in catchblock will send message to API consumer. So, don't any implementation details
 
+##CitiesController.cs
+[HttpGet]
+public ActionResult<IEnumerable<PointOfInterestDto>> GetPointsOfInterest(int cityId)
+{
+    try
+    {
+        throw new Exception("Raised Exception");
+        var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
 
+        if(city == null)
+        {
+            return NotFound();
+        }
 
+        _logger.LogInformation("Points of interest are returned for city with id {cityId}", cityId);
+        return Ok(city.PointsOfInterest);
+    }
+    catch(Exception ex)
+    {
+        _logger.LogCritical($"Exception Occured while getting points of interest for city with id {cityId}");
+        return StatusCode(500, "A problem happened while handling your request");
+    }
+}
 
-
-
-
-
+//Exception message on Console
+crit: CityInfo.API.Controllers.PointOfInterestController[0]
+      Exception Occured while getting points of interest for city with id 1
 
 
 
