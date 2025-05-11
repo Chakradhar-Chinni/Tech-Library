@@ -1152,7 +1152,7 @@ builder.Logging.AddConsole(); // enables config for console only
 
 
 <h2> Logging Exceptions
-1. return Statement in catchblock will send message to API consumer. So, don't any implementation details
+1. return Statement in catchblock will send message to API consumer. So, don't send any implementation details
 
 ##CitiesController.cs
 [HttpGet]
@@ -1184,4 +1184,141 @@ crit: CityInfo.API.Controllers.PointOfInterestController[0]
 
 
 
+
+        
+        
+        
+<h2> Globally Handling and Logging Exceptions
+
+Instead of scattering try-catch blocks throughout the code, you can centralize exception handling using middleware.
+summary: add builder.services.AddProgramDetails(); in program.cs to show the error messages in a format
+
+
+lets raise a exception & see the error message of unhandled exception
+
+## CitiesCOntroller.cs
+[HttpGet]
+public ActionResult<IEnumerable<CityDto>> GetCities()
+{
+    throw new Exception("Cities Exception");
+    _logger.LogInformation("Cities are returned");
+    return Ok(CitiesDataStore.Current.Cities);
+}
+
+#region Exception Message
+ /*
+Error: response status is 500
+Response body
+System.Exception: Cities Exception
+   at CityInfo.API.Controllers.CitiesController.GetCities() in C:\dotnet\Pluralsight\CityInfo\CityInfo.API\Controllers\CitiesController.cs:line 20
+   at lambda_method2(Closure, Object, Object[])
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.SyncObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeNextActionFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+
+HEADERS
+=======
+Accept: text/plain
+Host: localhost:7167
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36
+Accept-Encoding: gzip, deflate, br, zstd
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+Referer: https://localhost:7167/swagger/index.html
+sec-ch-ua-platform: "Windows"
+sec-ch-ua: "Chromium";v="136", "Google Chrome";v="136", "Not.A/Brand";v="99"
+sec-ch-ua-mobile: ?0
+sec-fetch-site: same-origin
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+priority: u=1, i
+*/
+#endregion
+
+ the above exception is a trace message, which is required for developers only, consumers should never see it. THis can be handled using Exception Middleware in .NET core
+
+
+
+##
+handling exception with .AddProblemDetails() in program.cs
+add ons: just add builder.services.AddProgramDetails(); in program.cs to show the error messages in a format
+
+
+
+##Program.cs
+using Microsoft.AspNetCore.StaticFiles;
+var builder = WebApplication.CreateBuilder(args);
+// Add services to the container.
+builder.Services.AddControllers(options =>
+{
+    options.ReturnHttpNotAcceptable = true; //return 406 if the client requests a format that is not supported
+}).AddNewtonsoftJson()
+   .AddXmlDataContractSerializerFormatters();
+
+builder.Services.AddProblemDetails();  /////////////////////////////////////this line is added
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer(); //endpoint discovery
+builder.Services.AddSwaggerGen(); //integrates Swagger
+builder.Services.AddSingleton<FileExtensionContentTypeProvider>(); //FileExtensionContentTypeProvider is used to get the content type of a file based on its extension
+
+var app = builder.Build(); // Build the app
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandler();
+}
+
+app.UseRouting();
+app.UseHttpsRedirection(); //Http are re-directed to Https
+
+app.UseAuthorization();
+
+app.MapControllers(); //Maps Http Requests to controllers
+
+app.UseEndpoints(endpoints =>
+  {
+      endpoints.MapControllers();
+  });
+app.Run();
+
+
+Error Message:
+/*
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.6.1",
+  "title": "System.Exception",
+  "status": 500,
+  "detail": "Cities Exception",
+  "traceId": "00-dddee0f567d8d026dd669a7918f63eea-2304645274d8a374-00",
+  "exception": {
+    "valueKind": 1
+  }
+}
+*/
+
+
+
+
+        
 
