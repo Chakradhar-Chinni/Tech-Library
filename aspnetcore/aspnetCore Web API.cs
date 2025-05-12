@@ -1434,17 +1434,113 @@ namespace CityInfo.API.Controllers
 
 
 
+<h2> Registering a Service by Interface
+
+In Previous module, concrete implementation is provided, now turning that to Interface to promote loose coupling
+1. Using Interface for Send()
+2. LocalMailService implements ILocalMailService
+3. CloudMailService implements ILocalMailService
+4. Program.cs - in Debug Mode LocalCloudService will be registered else CloudMailService will be registered 
+5. In the Controller, Inject the ILocalMailService instead of Concrete implementation
+
+## /Services/ILocalMailService.cs
+namespace CityInfo.API.Services
+{
+    public interface ILocalMailService
+    {
+        void Send(string subject, string message);
+    }
+}
+
+
+##/Services/LocalMailService.cs
+namespace CityInfo.API.Services
+{
+    public class LocalMailService : ILocalMailService
+    {
+        private string _mailTo = "admin@company.com";
+        private string _mailFrom = "noreply@company.com";
+
+        public void Send(string subject, string message)
+        {
+            Console.WriteLine($"Mail from Local {_mailFrom} to {_mailTo}");
+            Console.WriteLine($"Subject: {subject}");
+            Console.WriteLine($"Message: {message}");
+        }
+    }
+}
+
+##/Services/CloudMailService.cs
+namespace CityInfo.API.Services
+{
+    public class CloudMailService : ILocalMailService
+    {
+        private string _mailTo = "admin@company.com";
+        private string _mailFrom = "noreply@company.com";
+
+        public void Send(string subject, string message)
+        {
+            Console.WriteLine($"Mail from Cloud {_mailFrom} to {_mailTo}");
+            Console.WriteLine($"Subject: {subject}");
+            Console.WriteLine($"Message: {message}");
+        }
+
+    }
+}
+
+
+##Program.cs
+#if DEBUG
+builder.Services.AddTransient<ILocalMailService, LocalMailService>();
+#else
+builder.Services.AddTransient<ILocalMailService, CloudMailService>();
+#endif
+var app = builder.Build(); // Build the app
+
+## /Controllers/PointOfInterestController.cs
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    [Route("/api/cities/{cityId}/pointofinterest")]
+    public class PointOfInterestController : ControllerBase
+    {
+        private readonly ILogger<PointOfInterestController> _logger;
+        private readonly ILocalMailService _mailService;
+
+        public PointOfInterestController(ILogger<PointOfInterestController> logger,ILocalMailService mailService)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _mailService = mailService ?? throw new ArgumentNullException(nameof(mailService));
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<PointOfInterestDto>> GetPointsOfInterest(int cityId)
+        {
+            try
+            {
+                //throw new Exception("Raised Exception");
+                var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
+
+                if(city == null)
+                {
+                    return NotFound();
+                }
+
+                _mailService.Send("Get Points of Interest", $"Points of interest are returned for city with id {cityId}");
+                _logger.LogInformation("Points of interest are returned for city with id {cityId}", cityId);
+                return Ok(city.PointsOfInterest);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogCritical($"Exception Occured while getting points of interest for city with id {cityId}");
+                return StatusCode(500, "A problem happened while handling your request");
+            }
+        }
 
 
 
 
-
-
-
-
-
-
-
+<h2> CitiesDataStore 
 
 
 
