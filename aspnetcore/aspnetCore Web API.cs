@@ -1540,11 +1540,123 @@ namespace CityInfo.API.Controllers
 
 
 
-<h2> CitiesDataStore 
 
 
 
+<h2> turning CitiesDataStore to a service interface
 
+1./CitiesDataStore.cs
+  - static thing is diabled 
+2. Program.cs
+    CitiesDataStore is registed into DI Container
+3. /Controllers/CitiesController.cs
+   - CitiesDataStore is injected into constructor of the class
+   - data in CitiesDataStore can be accessed using _citiesDataStore
+
+##/CitiesDataStore.cs
+using CityInfo.API.Models;
+using CityInfo.API.Services;
+
+namespace CityInfo.API
+{
+    public class CitiesDataStore
+    {
+        public List<CityDto> Cities { get; set; }
+        //public static CitiesDataStore Current { get; } = new CitiesDataStore();
+        public CitiesDataStore()
+        {
+            Cities = new List<CityDto>()
+            {
+                new CityDto()
+                {
+                    Id=1,
+                    Name="Newyork",
+                    Description="Newyork is a city in the USA with big park",
+                    PointsOfInterest = new List<PointOfInterestDto>()
+                    {
+                        new PointOfInterestDto()
+                        {
+                            Id = 1,
+                            Name= "Water park",
+                            Description="A water park having many themes"
+                        },
+                        new PointOfInterestDto()
+                        {
+                            Id = 2,
+                            Name= "Art Library",
+                            Description="Art Library with dozens of paintings"
+                        }
+                    }
+                },
+                new CityDto()
+                {
+                    Id=2,
+                    Name="Texas",
+                    Description="Texas is a city in the USA",
+                    PointsOfInterest = new List<PointOfInterestDto>()
+                    {
+                        new PointOfInterestDto()
+                        {
+                            Id = 1,
+                            Name= "Central Park",
+                            Description="Central Park is most visited place"
+                        },
+                        new PointOfInterestDto()
+                        {
+                            Id = 2,
+                            Name= "Empire Building",
+                            Description="Empire Building is most historic"
+                        }
+                    }
+                },
+                new CityDto()
+                {
+                    Id=3,
+                    Name="California",
+                    Description="California is a city in the USA"
+                }
+            };
+        }
+    }
+}
+
+
+##Program.cs
+builder.Services.AddSingleton<CitiesDataStore>(); //new line - registering the CitiesDataStore to DI Container
+var app = builder.Build(); 
+
+
+
+##/Controllers/CitiesController.cs
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    //[Route("api/cities")]
+    [Route("api/[controller]")]
+    public class CitiesController : ControllerBase
+    {
+        private readonly ILogger<CitiesController> _logger;
+        private readonly CitiesDataStore _citiesDataStore;
+        public CitiesController(ILogger<CitiesController> logger, CitiesDataStore citiesDataStore)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _citiesDataStore = citiesDataStore;
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<CityDto>> GetCities()
+        {
+            //throw new Exception("Cities Exception");
+            _logger.LogInformation("Cities are returned");
+            return Ok(_citiesDataStore.Cities);
+        }
+   }
+}
+
+
+
+<h2> Working with configuration Files
+json,xml, cmd, env, in-memory
 
 
 
