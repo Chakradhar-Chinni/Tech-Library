@@ -1747,3 +1747,93 @@ namespace CityInfo.API.Services
 }
 
 
+
+
+
+
+
+
+<h2> Creating Entities and making table relation using Primary & Foreign key
+1. Create New folder Entities
+
+## /Entities/City.cs
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+namespace CityInfo.API.Entities
+{
+    public class City
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string Name { get; set; }
+        
+        [MaxLength(200)]
+        public string? Description { get; set; }
+
+        public ICollection<PointOfInterest> PointsOfInterest { get; set; } = new List<PointOfInterest>();
+
+
+        public City(string name)
+        {
+            Name = name;
+        }
+    }
+}
+
+
+## /Entities/PointOfInterest.cs
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+namespace CityInfo.API.Entities
+{
+    public class PointOfInterest
+    {
+        [Key] //primary key
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] //sql will auto-increment value
+        public int Id { get; set; }
+        
+        [Required]
+        [MaxLength(50)]
+        public string Name { get; set; } = string.Empty;
+
+        [ForeignKey("CityId")]
+        public City? City { get; set; }
+        
+        public int CityId { get; set; }
+
+        public PointOfInterest(string name)
+        {
+            Name = name;
+        }
+    }
+}
+
+
+
+<h2> Creating DbContext
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
