@@ -131,7 +131,7 @@ class Program
 }
 
 - executing raw sql query directly in EF Core (complicated queries, temp tables in sql)
-1. FromSqlRaw or ExecuteSqlRaw methods to execute stored procedures that create and manipulate temporary tables.
+1. FromSqlRaw() or ExecuteSqlRaw() methods to execute stored procedures that create and manipulate temporary tables.
 
 var result = context.Database.ExecuteSqlRaw("EXEC YourStoredProcedure @param1, @param2", parameters);
 var results = context.CustomEntity.FromSqlRaw("EXEC YourStoredProcedure @param1, @param2", parameters).ToList();
