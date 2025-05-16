@@ -1655,10 +1655,95 @@ namespace CityInfo.API.Controllers
 
 
 
+
+
+
 <h2> Working with configuration Files
-json,xml, cmd, env, in-memory
+1. json,xml, cmd, env, in-memory are various sources to save data
+2. lets see how to use appsettings.json
+3. /appsettings.json
+   - added mailSettings{}
+4. /Services/LocalMailService.cs
+   - Constructor is injected with IConfiguration which is by default provided by aspnetcore
+   - appsettings.json is expected naming convention & the default to obe used to use the IConfiguration 
+   - learn more at src code; aspnetcore/src/DefaultBuilder/WebHost.cs builder.ConfigureCOnfiguration()
+
+## /appsettings.json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "CityInfo.API.Controllers.CitiesController": "Information",
+      "CityInfo.API.Controllers.PointOfInterestController": "Information"
+    }
+  },
+  "mailSettings": {
+    "mailTo": "user@company.in",
+    "mailFrom":  "admin@company.in"
+  },
+  "AllowedHosts": "*"
+}
 
 
 
+## /Services/LocalMailService.cs
+namespace CityInfo.API.Services
+{
+    public class LocalMailService : ILocalMailService
+    {
+        private string _mailTo = string.Empty;
+        private string _mailFrom = string.Empty;
+
+        public LocalMailService(IConfiguration configuration)
+        {
+            _mailTo = configuration["mailSettings:mailTo"];
+            _mailFrom = configuration["mailSettings:mailFrom"];
+        }
+        public void Send(string subject, string message)
+        {
+            Console.WriteLine($"Mail from Local {_mailFrom} to {_mailTo}");
+            Console.WriteLine($"Subject: {subject}");
+            Console.WriteLine($"Message: {message}");
+        }
+    }
+}
+
+
+## leveraging environment configuration and scoping configuration
+1. right click on project > add > Add new item > search setting > select App Settings File
+2. create files, appsettings.Development.json and appsettings.Production.json
+3. LaunchSettings.Json > "ASPNETCORE_ENVIRONMENT": "Production" uses production.json and "ASPNETCORE_ENVIRONMENT": "Development" uses development json
+4. This flexibility is provided default by aspnetcore to easily switch between dev & production
+
+## appsettings.production.json
+{
+  "mailSettings": {
+    "mailTo": "user@company.in",
+    "mailFrom": "prod-admin@company.in"
+  }
+}
+
+
+## appsettings.development.json
+{
+  "mailSettings": {
+    "mailTo": "user@company.in",
+    "mailFrom": "dev-admin@company.in"
+  }
+}
+
+## appsettings.json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "CityInfo.API.Controllers.CitiesController": "Information",
+      "CityInfo.API.Controllers.PointOfInterestController": "Information"
+    }
+  },
+  "AllowedHosts": "*"
+}
 
 
