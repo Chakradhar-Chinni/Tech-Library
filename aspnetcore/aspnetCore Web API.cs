@@ -1848,8 +1848,126 @@ builder.Services.AddDbContext<CityInfoContext>(dbContextOptions
 var app = builder.Build();
 
 
+<h2> Workign with Migrations
+1. Microsoft.EntityFrameworkCore.Tools - for migration add,delete
+2. sqlite database can be used with VS using extension
+   - Extensions > Manage Extensions > SQLite and SQL Server Compact Toolbox
+3. Package manager console > add-migration CityInfoDBInitialMigration
+    This will create a new folder "Migrations" with 2 files (1) Migration File - contains operations needed to apply (2)Model Snapshot - a snapshot of current model so EF determines what changes to be made
+4. Package Manager console > update-database
+   This cmd will update the database with pending migrations
+5. Open the database in VS and click on add connection, it will auto fetch .db file
+    VS > View > Other > SQLite and SQL Server Compact Toolbox
+6. see the tables _EFMigrationshistory, Cities, PointOfInterest are created in DB
 
-Microsoft.EntityFrameworkCore.Tools - for migration add,delete
+
+
+
+
+
+<h2> Seeding database with data using OnModelCreating()
+1. using OnModelCreating() seed the data to database
+2. add-migrations InitialSeeding
+3. update-database
+
+
+## /DbContexts/CityInfoContext.cs
+
+using Microsoft.EntityFrameworkCore;
+using CityInfo.API.Entities;
+namespace CityInfo.API.DbContexts
+{
+    public class CityInfoContext : DbContext
+    {
+
+        public DbSet<City> Cities { get; set; }
+        public DbSet<PointOfInterest> PointOfInterest { get; set; }
+        public CityInfoContext(DbContextOptions<CityInfoContext> options) : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<City>()
+                .HasData(
+                    new City("New York City") { Id = 1, Description = "The Big Apple" },
+                    new City("Los Angeles") { Id = 2, Description = "The City of Angels" },
+                    new City("Chicago") { Id = 3, Description = "The Windy City" }
+                );
+
+            modelBuilder.Entity<PointOfInterest>()
+                .HasData(
+                new PointOfInterest("Central Park") { Id = 1, CityId = 1, Description = "A large public park in New York City" },
+                new PointOfInterest("Hollywood Sign") { Id = 2, CityId = 2, Description = "An iconic landmark in Los Angeles" },
+                new PointOfInterest("Willis Tower") { Id = 3, CityId = 3, Description = "A skyscraper in Chicago" },
+                new PointOfInterest("Statue of Liberty") { Id = 4, CityId = 1, Description = "A symbol of freedom and democracy" },
+                new PointOfInterest("Griffith Observatory") { Id = 5, CityId = 2, Description = "An observatory in Los Angeles" },
+                new PointOfInterest("Navy Pier") { Id = 6, CityId = 3, Description = "A popular tourist destination in Chicago" },
+                new PointOfInterest("Lincoln Park Zoo") { Id = 7, CityId = 3, Description = "A free zoo in Chicago" },
+                new PointOfInterest("The Getty Center") { Id = 8, CityId = 2, Description = "An art museum in Los Angeles" },
+                new PointOfInterest("Brooklyn Bridge") { Id = 9, CityId = 1, Description = "A historic bridge in New York City" }
+                );
+            base.OnModelCreating(modelBuilder);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+<h2> storing Connection Strings safely
+1. appsettings is not preferred, because connection strings contain passwords, sometimes it may also have usernames & passwords
+2. appsetting goes to source control, so its risky to store connection details
+3. in prod region, add it to Sytem > Environment Variables
+4. best to use Azure Key Vault - ToDo: implement this 
+
+
+
+
+<h2> SQL Injection Attack
+
+SELECT * FROM Cities WHERE City="Newyork";
+Newyork; drop table Cities --
+If Sql injection is performed on above string literal, data loss happens
+-- is sql comment
+
+ SQL Injectiona attacks can be mitigated by encapsulation and parameterizing SQL commands using DB Parameters
+
+Safe Approaches
+ LINQ: .FromSql() .FromSqlInterpolated()
+
+ Unsafe
+ EF: .FromSqlRaw()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
