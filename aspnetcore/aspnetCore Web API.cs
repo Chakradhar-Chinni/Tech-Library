@@ -1748,12 +1748,12 @@ namespace CityInfo.API.Services
 
 
 
+Introducing Entity Framework Core to the project
 
 
 
 
-
-<h2> Creating Entities and making table relation using Primary & Foreign key
+<h2> Creating Entities and making table relations using Primary & Foreign key
 1. Create New folder Entities
 
 ## /Entities/City.cs
@@ -1816,8 +1816,36 @@ namespace CityInfo.API.Entities
 
 <h2> Creating DbContext
 
+1. DbContext: represents Session with database
+2. Add package : dotnet add package microsoft.entityframeworkcore --version 8.0.0
+3. package can be instaled in 3 ways (1) Manage Nuget Packages -GUI (2) Package Manager Console (3) CMD line installation  
+EF core may providers - sql, postgres- check docs
+4. Create /DbContexts/CityInfoContext.cs
+     - make it a derived class by inheriting DbContext from using Microsoft.EntityFrameworkCore
+     - create DbSet for Cities,pointOfInterest
+install Microsoft.EntityFrameworkCore.Sqlite (v8.0.0). v8 is compatible with my .NET version of the project
+5. Program.cs
+    - register the DbContext with Lifetime scope
 
 
+## /DbContexts/CityInfoContext.cs
+using Microsoft.EntityFrameworkCore;
+using CityInfo.API.Entities;
+namespace CityInfo.API.DbContexts
+{
+    public class CityInfoContext : DbContext
+    {
+        public DbSet<City> Cities {get;set; }
+        public DbSet<City> PointOfInterest { get; set; }
+        public CityInfoContext(DbContextOptions<CityInfoContext> options) : base(options) { }
+    }
+}
+
+
+## Program.cs
+builder.Services.AddDbContext<CityInfoContext>(dbContextOptions 
+    => dbContextOptions.UseSqlite("Data Source=CityInfo.db"));   //new line 
+var app = builder.Build();
 
 
 
