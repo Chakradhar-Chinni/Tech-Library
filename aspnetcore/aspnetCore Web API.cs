@@ -1849,7 +1849,7 @@ var app = builder.Build();
 
 
 
-
+Microsoft.EntityFrameworkCore.Tools - for migration add,delete
 
 
 
