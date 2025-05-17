@@ -1936,10 +1936,14 @@ If Sql injection is performed on above string literal, data loss happens
  SQL Injectiona attacks can be mitigated by encapsulation and parameterizing SQL commands using DB Parameters
 
 Safe Approaches
- LINQ: .FromSql() .FromSqlInterpolated()
+ LINQ: 
+ .FromSql() (from EF v7.0)
+ .FromSqlInterpolated() (before EF v7.0)
 
  Unsafe
  EF: .FromSqlRaw()
+
+ Learn more: https://learn.microsoft.com/en-us/ef/core/querying/sql-queries?tabs=sqlserver
 
 
 
