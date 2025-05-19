@@ -1818,7 +1818,7 @@ namespace CityInfo.API.Entities
 
 1. DbContext: represents Session with database
 2. Add package : dotnet add package microsoft.entityframeworkcore --version 8.0.0
-3. package can be instaled in 3 ways (1) Manage Nuget Packages -GUI (2) Package Manager Console (3) CMD line installation  
+3. package can be instaled in 3 ways (1) Manage Nuget Packages -GUI (2) Package Manager Console (Install-Package Azure.Identity) (3) CMD line installation (dotnet add package Azure.Identity)
 EF core may providers - sql, postgres- check docs
 4. Create /DbContexts/CityInfoContext.cs
      - make it a derived class by inheriting DbContext from using Microsoft.EntityFrameworkCore
