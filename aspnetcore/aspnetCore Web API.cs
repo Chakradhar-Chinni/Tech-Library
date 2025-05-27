@@ -822,7 +822,11 @@ namespace CityInfo.API.Models
 2. PointOfInterestForCreationDto now has validation with [Required] [Maxlength()]
 3. ModelState is a dictionary containing data
 3. Controller class has commented code, which will ensure DataAnnotations are validated. 
-4. [ApiController] attribute at top of class will provide the same functionality of ModelState. So ModelState block can be commented
+4. [ApiController] attribute at top of class will provide the same functionality of ModelState. So ModelState block can be commented . This is implicit validation and it can return 400 with error details
+    a. For complex validation → Use FluentValidation
+    b. For centralized validation → Use Middleware
+    c. For quick custom rules → Use Manual validation
+
 
 ## /Models/PointOfInterestForCreationDto.cs
 using Microsoft.AspNetCore.Mvc;
@@ -882,7 +886,7 @@ namespace CityInfo.API.Models
 
 <h2> Updating Resource using PUT
 1. As a general rule, create a new DTO for updating resource
-2. Create ActionREsult method to update resources 
+2. Create ActionResult method to update resources 
 3. DTO class has marked Name field with [Required] Data annotation. So, in the request body Name is mandatory but Description is optional
   - by definition, [HTTPPut] is meant for updating entire resource.
   - if description is not provided in the request body, then default value of null will be assigned to description
