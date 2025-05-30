@@ -1954,9 +1954,75 @@ Safe Approaches
 
 
 
+<h2>Repository Pattern
+Decoupling business logic from data access logic
 
 
 
+
+<h2> Implementing Repository Pattern for Data Access using EF Core
+1. Create /Services/ICityInfoRepository.cs
+2. Create /Services/CityInfoRepository.cs
+
+
+## /Services/ICityInfoRepository.cs
+
+using CityInfo.API.Entities;
+namespace CityInfo.API.Services
+{
+    public interface ICityInfoRepository 
+    {
+        Task<IEnumerable<City>> GetCitiesAsync();
+        Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest);
+        Task<IEnumerable<PointOfInterest>> GetPointsOfInterestForCityAsync(int cityId);
+        Task<PointOfInterest?> GetPointOfInterestForCityAsync(int cityId, int pointOfInterestId);
+    }
+}
+
+/Services/CityInfoRepository.cs
+using CityInfo.API.DbContexts;
+using CityInfo.API.Entities;
+using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
+
+namespace CityInfo.API.Services
+{
+    public class CityInfoRepository : ICityInfoRepository
+    {
+        private readonly CityInfoContext _context;
+        public CityInfoRepository(CityInfoContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+        public async Task<IEnumerable<City>> GetCitiesAsync()
+        {
+            return await _context.Cities.OrderBy(c => c.Name).ToListAsync();
+        }
+
+        public async Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest)
+        {
+            if (includePointsOfInterest)
+            {
+                return await _context.Cities.Include(c => c.PointsOfInterest).Where(c => c.Id == cityId).FirstOrDefaultAsync();
+            }
+
+            return await _context.Cities.Where(c => c.Id == cityId).FirstOrDefaultAsync();
+        }
+
+        public async Task<PointOfInterest?> GetPointOfInterestForCityAsync(int cityId, int pointOfInterestId)
+        {
+            return await _context.PointsOfInterest
+                            .Where(p => p.CityId == cityId && p.Id == pointOfInterestId)
+                            .FirstOrDefaultAsync();
+        }
+        public async Task<IEnumerable<PointOfInterest>> GetPointsOfInterestForCityAsync(int cityId)
+        {
+            return await _context.PointsOfInterest
+                .Where(p => p.CityId == cityId).ToListAsync();
+        }
+
+    }
+}
 
 
 
