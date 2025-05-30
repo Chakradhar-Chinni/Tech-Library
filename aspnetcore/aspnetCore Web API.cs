@@ -1961,8 +1961,13 @@ Decoupling business logic from data access logic
 
 
 <h2> Implementing Repository Pattern for Data Access using EF Core
+
+Till now, Controller has returned data from in memory object. As DAL is setup using EF Core, lets implement data access directly from database instead of in memory objects
+
 1. Create /Services/ICityInfoRepository.cs
+    Interface provides all the method definitions
 2. Create /Services/CityInfoRepository.cs
+    This class provides implementation for the created Interface
 
 
 ## /Services/ICityInfoRepository.cs
@@ -2029,13 +2034,74 @@ var app = builder.Build();
 
 
 
+<h2> Returning Data from Repository (CitiesController.cs)
+1.Create /Models/CityWithoutPointsOfInterestDto.cs
+    Cities Table in DB has Id,Name,Description. So, GetCities() will return cities data without PointOfInterest details
+    For this reason, CityWithoutPointsOfInterestDto.cs is created without pointofinterest list
+2. CitiesController.cs
+     ICityInfoRepository is injected to constructor as AddScoped
+     It will fetch the data from DB and return
+     
+  
+
+##/Models/CityWithoutPointsOfInterestDto.cs
+namespace CityInfo.API.Models
+{
+    public class CityWithoutPointsOfInterestDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string? Description { get; set; }
+    }
+}
+
+##/Controller/CitiesController.cs
+using Microsoft.AspNetCore.Mvc;
+using CityInfo.API.Models;
+using CityInfo.API.Services;
+
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    //[Route("api/cities")]
+    [Route("api/[controller]")]
+    public class CitiesController : ControllerBase
+    {
+        private readonly ILogger<CitiesController> _logger;
+        private readonly ICityInfoRepository _cityInfoRepository;
+        public CitiesController(ILogger<CitiesController> logger, ICityInfoRepository cityInfoRepository)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _cityInfoRepository = cityInfoRepository;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CityWithoutPointsOfInterestDto>>> GetCities()
+        {
+            var cityEntities = await _cityInfoRepository.GetCitiesAsync();           
+            
+            var results = new List<CityWithoutPointsOfInterestDto>();
+            foreach(var cityEntity in cityEntities)
+            {
+                results.Add(new CityWithoutPointsOfInterestDto
+                {
+                    Id = cityEntity.Id,
+                    Description = cityEntity.Description,
+                    Name = cityEntity.Name,
+                });
+            }
+         
+            _logger.LogInformation("Cities are returned");
+            return Ok(results);
+        }
+    }
+}
 
 
 
 
 
-
-
+Todo: GetCitiesAsync() add API URL and data
 
 
 
