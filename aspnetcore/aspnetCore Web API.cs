@@ -1966,7 +1966,6 @@ Decoupling business logic from data access logic
 
 
 ## /Services/ICityInfoRepository.cs
-
 using CityInfo.API.Entities;
 namespace CityInfo.API.Services
 {
@@ -1979,7 +1978,7 @@ namespace CityInfo.API.Services
     }
 }
 
-/Services/CityInfoRepository.cs
+## /Services/CityInfoRepository.cs
 using CityInfo.API.DbContexts;
 using CityInfo.API.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -2024,6 +2023,9 @@ namespace CityInfo.API.Services
     }
 }
 
+## Program.cs
+builder.Services.AddScoped<ICityInfoRepository, CityInfoRepository>(); //new line added
+var app = builder.Build(); 
 
 
 
