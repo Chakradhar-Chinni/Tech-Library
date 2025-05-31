@@ -2034,6 +2034,12 @@ var app = builder.Build();
 
 
 
+
+
+
+
+
+
 <h2> Returning Data from Repository (CitiesController.cs)
 1.Create /Models/CityWithoutPointsOfInterestDto.cs
     Cities Table in DB has Id,Name,Description. So, GetCities() will return cities data without PointOfInterest details
@@ -2041,7 +2047,31 @@ var app = builder.Build();
 2. CitiesController.cs
      ICityInfoRepository is injected to constructor as AddScoped
      It will fetch the data from DB and return
+     var cityEntities has the data from DB which might also contain DB metadata or additional columns which is unwanted for the api/GetCities request
+     So, results list will hold the properly formatted data. In other words, DB data will be mapped to a DTO. API will return this DTO
+     Here City Entity and CityWithoutPointsOfInterestDto are mapped manually. (AutoMapper will be used in next tutorial)
      
+    
+    /* Here, all cities are ordered by Name as GetCitiesAsync() uses LINQ order by
+    GET: https://localhost:7167/api/cities
+      [
+    {
+      "id": 3,
+      "name": "Chicago",
+      "description": "The Windy City"
+    },
+    {
+      "id": 2,
+      "name": "Los Angeles",
+      "description": "The City of Angels"
+    },
+    {
+      "id": 1,
+      "name": "New York City",
+      "description": "The Big Apple"
+    }
+  ]
+*/
   
 
 ##/Models/CityWithoutPointsOfInterestDto.cs
@@ -2101,11 +2131,88 @@ namespace CityInfo.API.Controllers
 
 
 
-Todo: GetCitiesAsync() add API URL and data
+<h2> Using AutoMapper to map Entities with DTOs
+
+- AutoMapper is a Nuget package which helps in mapping Entities with DTOs. Instead of manually mapping, AutoMapper can automatically do this process
+
+Is Mapping necessary? Yes, because Database might contain columns that are unwanted for the request. By mapping Entity to a proper DTO, only the required data will be sent in proper format
+
+1. Tools > Nuget Package Manager Console > Install "AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0"
+2. Program.cs
+  register the automapper to Services
+3. Create /Profiles folder
+4. Create /Profiles/CityProfile.cs
+   CityProfile should be derived from Profile. using AutoMapper;
+   CreateMap<> from Profile class is used to map entities to DTOs
+5. /Controllers/CitiesController.cs
+   IMapper is injected in Constructor
+   Map() from IMapper is used to Map Entity with DTO and returned
+   
 
 
+## Program.cs
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+var app = builder.Build();
 
 
+## /Profiles/CityProfile.cs
+using AutoMapper; 
+namespace CityInfo.API.Profiles
+{
+    public class CityProfile : Profile
+    {
+        public CityProfile()
+        {
+            CreateMap<Entities.City, Models.CityWithoutPointsOfInterestDto>();
+        }
+    }
+}
+
+
+## /Controllers/CitiesController.cs
+using Microsoft.AspNetCore.Mvc;
+using CityInfo.API.Models;
+using CityInfo.API.Services;
+using AutoMapper;
+
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    //[Route("api/cities")]
+    [Route("api/[controller]")]
+    public class CitiesController : ControllerBase
+    {
+        private readonly ILogger<CitiesController> _logger;
+        private readonly ICityInfoRepository _cityInfoRepository;
+        private readonly IMapper _mapper;
+
+        public CitiesController(ILogger<CitiesController> logger, ICityInfoRepository cityInfoRepository, IMapper mapper)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _cityInfoRepository = cityInfoRepository;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CityWithoutPointsOfInterestDto>>> GetCities()
+        {
+            var cityEntities = await _cityInfoRepository.GetCitiesAsync();
+            return Ok(_mapper.Map<IEnumerable<CityWithoutPointsOfInterestDto>>(cityEntities));
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<IEnumerable<CityDto>> GetCity(int id)
+        {
+            //var cityToReturn = _citiesDataStore.Cities.First(c => c.Id == id);
+            //if(cityToReturn == null)
+            //{
+            //    return NotFound();
+            //}
+            //return Ok(_citiesDataStore.Cities.First(c=> c.Id == id));
+            return Ok();
+        }
+    }
+}
 
 
 
