@@ -2131,7 +2131,9 @@ namespace CityInfo.API.Controllers
 
 
 
-<h2> Using AutoMapper to map Entities with DTOs
+
+
+<h2> Using AutoMapper to map Entities with DTOs - Part 1
 
 - AutoMapper is a Nuget package which helps in mapping Entities with DTOs. Instead of manually mapping, AutoMapper can automatically do this process
 
@@ -2219,9 +2221,106 @@ namespace CityInfo.API.Controllers
 
 
 
+<h2> Using AutoMapper to map Entities with DTOs - Part 2
+1. Create /Profiles/PointOfInterestProfile.cs
+    CreateMap() for Entity.PointOfInterest and Dto
+2. /Controllers/CitiesController.cs
+    call GetCityAsync() method and return the mapped result
+    GetCity() method has 2nd paramater 'bool includePointOfInterest'. For this argument needs to be used as ?includePointOfInterest=true. See below examples
+
+/*
+ GET https://localhost:7167/api/cities/2/?includePointOfInterest=false
+ {
+  "id": 2,
+  "name": "Los Angeles",
+  "description": "The City of Angels",
+  "numberOfPointsOfInterest": 0,
+  "pointsOfInterest": []
+ }
+
+  GET https://localhost:7167/api/cities/2/?includePointOfInterest=true
+  {
+    "id": 2,
+    "name": "Los Angeles",
+    "description": "The City of Angels",
+    "numberOfPointsOfInterest": 3,
+    "pointsOfInterest": [
+      {
+        "id": 2,
+        "name": "Hollywood Sign",
+        "description": "An iconic landmark in Los Angeles"
+      },
+      {
+        "id": 5,
+        "name": "Griffith Observatory",
+        "description": "An observatory in Los Angeles"
+      },
+      {
+        "id": 8,
+        "name": "The Getty Center",
+        "description": "An art museum in Los Angeles"
+      }
+    ]
+  }
+  
+*/
 
 
 
+## /Profiles/PointOfInterestProfile.cs
+using AutoMapper;
+namespace CityInfo.API.Profiles
+{
+    public class PointOfInterestProfile : Profile
+    {
+        public PointOfInterestProfile()
+        {
+            CreateMap<Entities.PointOfInterest, Models.PointOfInterestDto>();
+        }
+    }
+}
+
+
+
+## /Controllers/CitiesController.cs
+using Microsoft.AspNetCore.Mvc;
+using CityInfo.API.Models;
+using CityInfo.API.Services;
+using AutoMapper;
+
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    //[Route("api/cities")]
+    [Route("api/[controller]")]
+    public class CitiesController : ControllerBase
+    {
+        private readonly ILogger<CitiesController> _logger;
+        private readonly ICityInfoRepository _cityInfoRepository;
+        private readonly IMapper _mapper;
+
+        public CitiesController(ILogger<CitiesController> logger, ICityInfoRepository cityInfoRepository,IMapper mapper)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _cityInfoRepository = cityInfoRepository;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CityWithoutPointsOfInterestDto>>> GetCities()
+        {
+            var cityEntities = await _cityInfoRepository.GetCitiesAsync();
+            return Ok(_mapper.Map<IEnumerable<CityWithoutPointsOfInterestDto>>(cityEntities));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<CityDto>>> GetCity(int id,bool includePointOfInterest)
+        {
+            var cityEntity = await _cityInfoRepository.GetCityAsync(id, includePointOfInterest);
+            return Ok(_mapper.Map<CityDto>(cityEntity));
+        }
+    }
+}
 
 
 
