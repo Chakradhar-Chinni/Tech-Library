@@ -2328,6 +2328,159 @@ namespace CityInfo.API.Controllers
 
 
 
+<h2> Using AutoMapper to map entities - /PointOfInterestController/GetPointsOfInterest(int CityId)
+
+1. CityExistsAsync is added to ICityInfoRepository. Its implementation is provided accordingly
+2. .AnyAsync() returns boolean value
+3. /Controllers/CitiesController.cs
+   CityExistsAsync() checks if city exists and returns pointofinterest details
+/*
+GET https://localhost:7167/api/cities/1/pointofinterest/
+[
+  {
+    "id": 1,
+    "name": "Central Park",
+    "description": "A large public park in New York City"
+  },
+  {
+    "id": 4,
+    "name": "Statue of Liberty",
+    "description": "A symbol of freedom and democracy"
+  },
+  {
+    "id": 9,
+    "name": "Brooklyn Bridge",
+    "description": "A historic bridge in New York City"
+  }
+]
+
+*/
+
+## /Services/ICityInfoRepository.cs
+using CityInfo.API.Entities;
+namespace CityInfo.API.Services
+{
+    public interface ICityInfoRepository 
+    {
+        Task<IEnumerable<City>> GetCitiesAsync();
+        Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest);
+        Task<IEnumerable<PointOfInterest>> GetPointsOfInterestForCityAsync(int cityId);
+        Task<PointOfInterest?> GetPointOfInterestForCityAsync(int cityId, int pointOfInterestId);
+        Task<bool> CityExistsAsync(int cityId); //added
+    }
+}
+
+
+## /Services/CityInfoRepository.cs
+using CityInfo.API.DbContexts;
+using CityInfo.API.Entities;
+using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
+
+namespace CityInfo.API.Services
+{
+    public class CityInfoRepository : ICityInfoRepository
+    {
+        private readonly CityInfoContext _context;
+        public CityInfoRepository(CityInfoContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+        public async Task<IEnumerable<City>> GetCitiesAsync()
+        {
+            return await _context.Cities.OrderBy(c => c.Name).ToListAsync();
+        }
+
+        public async Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest)
+        {
+            if (includePointsOfInterest)
+            {
+                return await _context.Cities.Include(c => c.PointsOfInterest).Where(c => c.Id == cityId).FirstOrDefaultAsync();
+            }
+
+            return await _context.Cities.Where(c => c.Id == cityId).FirstOrDefaultAsync();
+        }
+
+        public async Task<PointOfInterest?> GetPointOfInterestForCityAsync(int cityId, int pointOfInterestId)
+        {
+            return await _context.PointsOfInterest
+                            .Where(p => p.CityId == cityId && p.Id == pointOfInterestId)
+                            .FirstOrDefaultAsync();
+        }
+        public async Task<IEnumerable<PointOfInterest>> GetPointsOfInterestForCityAsync(int cityId)
+        {
+            return await _context.PointsOfInterest
+                .Where(p => p.CityId == cityId).ToListAsync();
+        }
+        
+        public async Task<bool> CityExistsAsync(int cityId) //added
+        {
+            return await _context.Cities.AnyAsync(c => c.Id == cityId);
+        }
+    }
+}
+
+
+
+
+## /Controllers/CitiesController.cs
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    [Route("/api/cities/{cityId}/pointofinterest")]
+    public class PointOfInterestController : ControllerBase
+    {
+
+        private readonly ILogger<PointOfInterestController> _logger;
+        private readonly ILocalMailService _mailService;
+        private readonly CitiesDataStore _citiesDataStore;
+        private readonly ICityInfoRepository _cityInfoRepository;
+        private readonly IMapper _mapper;
+
+        public PointOfInterestController(ILogger<PointOfInterestController> logger,ILocalMailService mailService, CitiesDataStore citiesDataStore
+                    ICityInfoRepository cityInfoRepository,IMapper mapper)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _mailService = mailService ?? throw new ArgumentNullException(nameof(mailService));
+            _citiesDataStore = citiesDataStore;
+            _cityInfoRepository = cityInfoRepository;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PointOfInterestDto>>> GetPointsOfInterest(int cityId) //modified
+        {
+            try
+            {
+                if (! await _cityInfoRepository.CityExistsAsync(cityId))
+                {
+                    return NotFound();
+                }
+                var pointsOfInterestForCity = await _cityInfoRepository.GetPointsOfInterestForCityAsync(cityId);
+                return Ok(_mapper.Map<IEnumerable<PointOfInterestDto>>(pointsOfInterestForCity));
+            }
+            catch(Exception ex)
+            {
+                _logger.LogCritical($"Exception Occured while getting points of interest for city with id {cityId}");
+                return StatusCode(500, "A problem happened while handling your request");
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+<h2>
+
+
+
+
+
+
 
 
 
