@@ -2421,8 +2421,6 @@ namespace CityInfo.API.Services
 }
 
 
-
-
 ## /Controllers/CitiesController.cs
 namespace CityInfo.API.Controllers
 {
@@ -2474,9 +2472,185 @@ namespace CityInfo.API.Controllers
 
 
 
-<h2>
+
+<h2> Creating a Resource - using EF Core
+
+/*
+POST: https://localhost:7167/api/cities/1/pointofinterest
+Headers: Application/Json
+Request Body: {
+  "name": "gems collection",
+  "description":"many gems"
+}
+
+response: 201 Created
+{
+  "id": 10,
+  "name": "gems collection",
+  "description": "many gems"
+}
+*/
 
 
+## /Controllers/PointOfInterestController.cs
+using Microsoft.AspNetCore.Mvc;
+using CityInfo.API.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
+using System.Linq.Expressions;
+using CityInfo.API.Services;
+using Microsoft.VisualBasic.FileIO;
+using AutoMapper;
+
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    [Route("/api/cities/{cityId}/pointofinterest")]
+    public class PointOfInterestController : ControllerBase
+    {
+
+        private readonly ILogger<PointOfInterestController> _logger;
+        private readonly ILocalMailService _mailService;
+        private readonly CitiesDataStore _citiesDataStore;
+        private readonly ICityInfoRepository _cityInfoRepository;
+        private readonly IMapper _mapper;
+
+        public PointOfInterestController(ILogger<PointOfInterestController> logger,ILocalMailService mailService, CitiesDataStore citiesDataStore,
+                    ICityInfoRepository cityInfoRepository,IMapper mapper)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _mailService = mailService ?? throw new ArgumentNullException(nameof(mailService));
+            _citiesDataStore = citiesDataStore;
+            _cityInfoRepository = cityInfoRepository;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
+
+         [HttpPost]
+         public async Task<ActionResult<PointOfInterestDto>> CreatePointOfInterest(int cityId,PointOfInterestForCreationDto pointOfInterest)
+         {
+        
+             if(! await _cityInfoRepository.CityExistsAsync(cityId))
+             {
+                 return NotFound();
+             }
+        
+             var finalPointOfInterest = _mapper.Map<Entities.PointOfInterest>(pointOfInterest);
+             await _cityInfoRepository.AddPointOfInterestForCityAsync(cityId, finalPointOfInterest);        
+             await _cityInfoRepository.SaveChangesAsync();        
+             var createdPointOfInterestToReturn = _mapper.Map<Models.PointOfInterestDto>(finalPointOfInterest);
+        
+             return CreatedAtRoute("GetPointOfInterest",
+             new
+             {
+                 cityId = cityId,
+                 pointOfInterestId = createdPointOfInterestToReturn.Id
+             },
+                 createdPointOfInterestToReturn);
+         }
+}
+
+
+## /Services/ ICityInfoRepository.cs
+using CityInfo.API.Entities;
+using CityInfo.API.Models;
+
+namespace CityInfo.API.Services
+{
+    public interface ICityInfoRepository 
+    {
+        Task<IEnumerable<City>> GetCitiesAsync();
+        Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest);
+        Task<IEnumerable<PointOfInterest>> GetPointsOfInterestForCityAsync(int cityId);
+        Task<PointOfInterest?> GetPointOfInterestForCityAsync(int cityId, int pointOfInterestId);
+        Task<bool> CityExistsAsync(int cityId);
+        Task AddPointOfInterestForCityAsync(int cityId, PointOfInterest pointOfInterest); //newly added 
+        Task<bool> SaveChangesAsync(); //newly added
+    }
+}
+
+
+## /Services/CityInfoRepository
+using CityInfo.API.DbContexts;
+using CityInfo.API.Entities;
+using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
+
+namespace CityInfo.API.Services
+{
+    public class CityInfoRepository : ICityInfoRepository
+    {
+        private readonly CityInfoContext _context;
+        public CityInfoRepository(CityInfoContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+        public async Task<IEnumerable<City>> GetCitiesAsync()
+        {
+            return await _context.Cities.OrderBy(c => c.Name).ToListAsync();
+        }
+
+        public async Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest)
+        {
+            if (includePointsOfInterest)
+            {
+                return await _context.Cities.Include(c => c.PointsOfInterest).Where(c => c.Id == cityId).FirstOrDefaultAsync();
+            }
+
+            return await _context.Cities.Where(c => c.Id == cityId).FirstOrDefaultAsync();
+        }
+
+        public async Task<PointOfInterest?> GetPointOfInterestForCityAsync(int cityId, int pointOfInterestId)
+        {
+            return await _context.PointsOfInterest
+                            .Where(p => p.CityId == cityId && p.Id == pointOfInterestId)
+                            .FirstOrDefaultAsync();
+        }
+        public async Task<IEnumerable<PointOfInterest>> GetPointsOfInterestForCityAsync(int cityId)
+        {
+            return await _context.PointsOfInterest
+                .Where(p => p.CityId == cityId).ToListAsync();
+        }
+        
+        public async Task<bool> CityExistsAsync(int cityId)
+        {
+            return await _context.Cities.AnyAsync(c => c.Id == cityId);
+        }
+
+        public async Task AddPointOfInterestForCityAsync(int cityId, PointOfInterest pointOfInterest) //newly added
+        {
+            var city = await GetCityAsync(cityId, false);
+            if (city != null)
+            {
+                city.PointsOfInterest.Add(pointOfInterest);
+            }
+        }
+
+        public async Task<bool> SaveChangesAsync() //newly added
+        {
+            return (await _context.SaveChangesAsync() >= 0 );
+        }
+
+    }
+}
+
+
+
+## /Profiles/PointOfInterestProfile.cs
+using AutoMapper;
+using CityInfo.API.Entities;
+using CityInfo.API.Models;
+namespace CityInfo.API.Profiles
+{
+    public class PointOfInterestProfile : Profile
+    {
+        public PointOfInterestProfile()
+        {
+            CreateMap<Entities.PointOfInterest, Models.PointOfInterestDto>();
+            CreateMap<Models.PointOfInterestForCreationDto, Entities.PointOfInterest>();
+            
+        }
+    }
+}
 
 
 
