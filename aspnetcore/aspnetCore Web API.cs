@@ -2667,6 +2667,28 @@ namespace CityInfo.API.Profiles
 
 <h2> Updating Resources 
 
+/*
+PUT: https://localhost:7167/api/cities/2/pointofinterest/2
+
+Request Body:
+{
+ "name":"An iconic landmark in Los Angeles<EF Core>"  
+}
+
+Response: 204 No Content
+
+
+after updating
+GET: https://localhost:7167/api/cities/2/pointofinterest/
+
+[
+  {
+    "id": 2,
+    "name": "An iconic landmark in Los Angeles<EF Core>",
+    "description": null
+  },
+]
+*/
 
 ## /Profiles/PointOfInterestProfile.cs
 using AutoMapper;
