@@ -2663,8 +2663,6 @@ namespace CityInfo.API.Profiles
 
 
 
-
-
 <h2> Updating Resources 
 
 /*
@@ -2762,6 +2760,159 @@ namespace CityInfo.API.Controllers
             return NoContent();
         }
 }
+
+
+
+
+
+
+
+
+
+
+
+<h2> Partially Updating Resources
+
+/*
+PATCH: https://localhost:7167/api/cities/1/pointofinterest/1
+Request Body:
+[
+  {
+    "op": "replace",
+    "path": "/name",
+    "value" : "updated - central park"
+  }
+]
+Response: 204 No Content
+
+
+before updating
+GET: https://localhost:7167/api/cities/1/pointofinterest/
+
+[
+  {
+    "id": 1,
+    "name": "central park",
+    "description": "A large public park in New York City"
+  },
+]
+
+after updating:
+GET: https://localhost:7167/api/cities/1/pointofinterest/
+
+[
+  {
+    "id": 1,
+    "name": "updated - central park",
+    "description": "A large public park in New York City"
+  },
+]
+
+*/
+
+
+## /Profiles/PointOfInterestProfile.cs
+using AutoMapper;
+using CityInfo.API.Entities;
+using CityInfo.API.Models;
+namespace CityInfo.API.Profiles
+{
+    public class PointOfInterestProfile : Profile
+    {
+        public PointOfInterestProfile()
+        {
+            CreateMap<Entities.PointOfInterest, Models.PointOfInterestDto>();
+            CreateMap<Models.PointOfInterestForCreationDto, Entities.PointOfInterest>();
+            CreateMap<Models.PointOfInterestForUpdateDto, Entities.PointOfInterest>();
+            CreateMap<Entities.PointOfInterest,Models.PointOfInterestForUpdateDto>(); //newly added
+        }
+    }
+}
+
+
+
+
+## /Controllers/PointOfInterestControllers.cs
+using Microsoft.AspNetCore.Mvc;
+using CityInfo.API.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
+using System.Linq.Expressions;
+using CityInfo.API.Services;
+using Microsoft.VisualBasic.FileIO;
+using AutoMapper;
+
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    [Route("/api/cities/{cityId}/pointofinterest")]
+    public class PointOfInterestController : ControllerBase
+    {
+        private readonly ILogger<PointOfInterestController> _logger;
+        private readonly ILocalMailService _mailService;
+        private readonly CitiesDataStore _citiesDataStore;
+        private readonly ICityInfoRepository _cityInfoRepository;
+        private readonly IMapper _mapper;
+
+        public PointOfInterestController(ILogger<PointOfInterestController> logger,ILocalMailService mailService, CitiesDataStore citiesDataStore,
+                    ICityInfoRepository cityInfoRepository,IMapper mapper)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _mailService = mailService ?? throw new ArgumentNullException(nameof(mailService));
+            _citiesDataStore = citiesDataStore;
+            _cityInfoRepository = cityInfoRepository;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
+
+        [HttpPatch("{pointofinterestid}")]
+        public async Task<ActionResult> PartiallyUpdatePointOfInterest(int cityId, int pointOfInterestId,JsonPatchDocument<PointOfInterestForUpdateDto> patchDocument)
+        {
+        
+            if (!await _cityInfoRepository.CityExistsAsync(cityId))
+            {
+                return NotFound();
+            }
+        
+            var pointOfInterestEntity = await _cityInfoRepository.GetPointOfInterestForCityAsync(cityId, pointOfInterestId);
+            if (pointOfInterestEntity == null)
+            {
+                return NotFound();
+            }
+        
+            var pointOfInterestToPatch = _mapper.Map<PointOfInterestForUpdateDto>(pointOfInterestEntity);
+        
+            patchDocument.ApplyTo(pointOfInterestToPatch, ModelState);
+        
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+        
+            if (!TryValidateModel(pointOfInterestToPatch))
+            {
+                return BadRequest(ModelState);
+            }
+        
+            _mapper.Map(pointOfInterestToPatch, pointOfInterestEntity);
+            await _cityInfoRepository.SaveChangesAsync();
+        
+            return NoContent();
+        }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
