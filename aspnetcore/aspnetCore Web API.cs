@@ -3068,7 +3068,221 @@ namespace CityInfo.API.Controllers
 
 
 
+## Searching, Filtering, Paging Resources
 
 
+
+<h2> Filtering Resources
+
+GET: https://localhost:7167/api/cities?name=Chicago
+200 OK
+[
+  {
+    "id": 3,
+    "name": "Chicago",
+    "description": "The Windy City"
+  }
+]
+
+Tip: parameters should be passed using ?
+
+GetCities() in citiesController accepts a nullable name. If city name is passed then GetCitiesAsync() in CityInfoRepository.cs will be executed which has .Where() clause
+.Where() clause fetches only filtered results from DB which becomes efficient search. So Filtering is applied using .Where
+
+## /Controllers/CitiesController.cs
+using Microsoft.AspNetCore.Mvc;
+using CityInfo.API.Models;
+using CityInfo.API.Services;
+using AutoMapper;
+
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    //[Route("api/cities")]
+    [Route("api/[controller]")]
+    public class CitiesController : ControllerBase
+    {
+        private readonly ILogger<CitiesController> _logger;
+        private readonly ICityInfoRepository _cityInfoRepository;
+        private readonly IMapper _mapper;
+
+        public CitiesController(ILogger<CitiesController> logger, ICityInfoRepository cityInfoRepository,
+            IMapper mapper)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _cityInfoRepository = cityInfoRepository;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CityWithoutPointsOfInterestDto>>> GetCities(string? name) //modified
+        {
+            var cityEntities = await _cityInfoRepository.GetCitiesAsync(name);
+
+            return Ok(_mapper.Map<IEnumerable<CityWithoutPointsOfInterestDto>>(cityEntities));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<CityDto>>> GetCity(int id,bool includePointOfInterest)
+        {
+            var cityEntity = await _cityInfoRepository.GetCityAsync(id, includePointOfInterest);
+             
+            return Ok(_mapper.Map<CityDto>(cityEntity));
+        }
+    }
+}
+
+
+
+
+##/Services/ICityInfoRepository.cs
+using CityInfo.API.Entities;
+using CityInfo.API.Models;
+namespace CityInfo.API.Services
+{
+    public interface ICityInfoRepository 
+    {
+        Task<IEnumerable<City>> GetCitiesAsync();
+        Task<IEnumerable<City>> GetCitiesAsync(string? name); //added
+        Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest);
+        Task<IEnumerable<PointOfInterest>> GetPointsOfInterestForCityAsync(int cityId);
+        Task<PointOfInterest?> GetPointOfInterestForCityAsync(int cityId, int pointOfInterestId);
+        Task<bool> CityExistsAsync(int cityId);
+        Task AddPointOfInterestForCityAsync(int cityId, PointOfInterest pointOfInterest);
+        Task<bool> SaveChangesAsync();
+
+        void DeletePointOfInterest(PointOfInterest pointofInterest);
+    }
+}
+
+
+
+
+##/Services/CityInfoRepository.cs
+using CityInfo.API.DbContexts;
+using CityInfo.API.Entities;
+using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
+
+namespace CityInfo.API.Services
+{
+    public class CityInfoRepository : ICityInfoRepository
+    {
+        private readonly CityInfoContext _context;
+        public CityInfoRepository(CityInfoContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+        public async Task<IEnumerable<City>> GetCitiesAsync() //added
+        {
+            return await _context.Cities.OrderBy(c => c.Name).ToListAsync();
+        }
+
+        public async Task<IEnumerable<City>> GetCitiesAsync(string? name)
+        {
+            if(string.IsNullOrEmpty(name))
+            {
+                return await GetCitiesAsync();
+            }
+            return await _context.Cities
+                .Where( c=> c.Name == name)
+                .OrderBy(c => c.Name)
+                .ToListAsync();
+        }
+
+        public async Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest)
+        {
+            if (includePointsOfInterest)
+            {
+                return await _context.Cities.Include(c => c.PointsOfInterest).Where(c => c.Id == cityId).FirstOrDefaultAsync();
+            }
+
+            return await _context.Cities.Where(c => c.Id == cityId).FirstOrDefaultAsync();
+        }
+
+        public async Task<PointOfInterest?> GetPointOfInterestForCityAsync(int cityId, int pointOfInterestId)
+        {
+            return await _context.PointsOfInterest
+                            .Where(p => p.CityId == cityId && p.Id == pointOfInterestId)
+                            .FirstOrDefaultAsync();
+        }
+        public async Task<IEnumerable<PointOfInterest>> GetPointsOfInterestForCityAsync(int cityId)
+        {
+            return await _context.PointsOfInterest
+                .Where(p => p.CityId == cityId).ToListAsync();
+        }
+        
+        public async Task<bool> CityExistsAsync(int cityId)
+        {
+            return await _context.Cities.AnyAsync(c => c.Id == cityId);
+        }
+
+        public async Task AddPointOfInterestForCityAsync(int cityId, PointOfInterest pointOfInterest)
+        {
+            var city = await GetCityAsync(cityId, false);
+            if (city != null)
+            {
+                city.PointsOfInterest.Add(pointOfInterest);
+            }
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return (await _context.SaveChangesAsync() >= 0 );
+        }
+
+        public void DeletePointOfInterest(PointOfInterest pointofInterest)
+        {
+            _context.PointsOfInterest.Remove(pointofInterest);
+        }
+    }
+}
+
+
+##/appsettings.development.json
+{
+  "mailSettings": {
+    "mailTo": "user@company.in",
+    "mailFrom": "dev-admin@company.in"
+  },
+  "ConnectionStrings": {
+    "CityInfoDBConnectionString": "Data Source=CityInfo.db;"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "CityInfo.API.Controllers": "Information",
+      "Microsoft.EntityFrameworkCore.Database.Command": "Information" //added
+    }
+  }
+}
+
+modify the setting to Infromation so EF query can be seen in console window (only in dev region)
+## Console screen
+[20:52:25 DBG] Entity Framework Core 8.0.0 initialized 'CityInfoContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:8.0.0' with options: None
+[20:52:25 DBG] Creating DbConnection.
+[20:52:25 DBG] Created DbConnection. (0ms).
+[20:52:25 DBG] Opening connection to database 'main' on server 'CityInfo.db'.
+[20:52:25 DBG] Opened connection to database 'main' on server 'C:\dotnet\Pluralsight\CityInfo\CityInfo.API\CityInfo.db'.
+[20:52:25 DBG] Creating DbCommand for 'ExecuteReader'.
+[20:52:25 DBG] Created DbCommand for 'ExecuteReader' (3ms).
+[20:52:25 DBG] Initialized DbCommand for 'ExecuteReader' (6ms).
+[20:52:25 DBG] Executing DbCommand [Parameters=[@__name_0='?' (Size = 7)], CommandType='Text', CommandTimeout='30']
+SELECT "c"."Id", "c"."Description", "c"."Name"
+FROM "Cities" AS "c"
+WHERE "c"."Name" = @__name_0
+ORDER BY "c"."Name"
+[20:52:25 INF] Executed DbCommand (5ms) [Parameters=[@__name_0='?' (Size = 7)], CommandType='Text', CommandTimeout='30']
+SELECT "c"."Id", "c"."Description", "c"."Name"
+FROM "Cities" AS "c"
+WHERE "c"."Name" = @__name_0
+ORDER BY "c"."Name"
+[20:52:25 DBG] Context 'CityInfoContext' started tracking 'City' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+[20:52:25 DBG] Closing data reader to 'main' on server 'C:\dotnet\Pluralsight\CityInfo\CityInfo.API\CityInfo.db'.
+[20:52:25 DBG] A data reader for 'main' on server 'C:\dotnet\Pluralsight\CityInfo\CityInfo.API\CityInfo.db' is being disposed after spending 5ms reading results.
+[20:52:25 DBG] Closing connection to database 'main' on server 'C:\dotnet\Pluralsight\CityInfo\CityInfo.API\CityInfo.db'.
+[20:52:25 DBG] Closed connection to database 'main' on server 'CityInfo.db' (5ms).
+[20:52:25 DBG] List of registered output formatters, in the following order: ["Microsoft.AspNetCore.Mvc.Formatters.HttpNoContentOutputFormatter", "Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter", "Microsoft.AspNetCore.Mvc.Formatters.StreamOutputFormatter", "Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonOutputFormatter", "Microsoft.AspNetCore.Mvc.Formatters.XmlDataContractSerializerOutputFormatter"]
 
 
