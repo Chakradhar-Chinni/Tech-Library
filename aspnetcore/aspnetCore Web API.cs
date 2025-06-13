@@ -3286,3 +3286,236 @@ ORDER BY "c"."Name"
 [20:52:25 DBG] List of registered output formatters, in the following order: ["Microsoft.AspNetCore.Mvc.Formatters.HttpNoContentOutputFormatter", "Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter", "Microsoft.AspNetCore.Mvc.Formatters.StreamOutputFormatter", "Microsoft.AspNetCore.Mvc.Formatters.NewtonsoftJsonOutputFormatter", "Microsoft.AspNetCore.Mvc.Formatters.XmlDataContractSerializerOutputFormatter"]
 
 
+
+
+
+
+
+
+
+
+<h2> Searching through Resources
+
+/*
+GET: https://localhost:7167/api/cities?SearchQuery=City
+200 OK
+[
+  {
+    "id": 3,
+    "name": "Chicago",
+    "description": "The Windy City"
+  },
+  {
+    "id": 2,
+    "name": "Los Angeles",
+    "description": "The City of Angels"
+  },
+  {
+    "id": 1,
+    "name": "New York City",
+    "description": "The Big Apple"
+  }
+]
+
+GET: https://localhost:7167/api/cities?name=Chicago&searchquery=The
+
+200 OK
+
+[
+  {
+    "id": 3,
+    "name": "Chicago",
+    "description": "The Windy City"
+  },
+  {
+    "id": 2,
+    "name": "Los Angeles",
+    "description": "The City of Angels"
+  },
+  {
+    "id": 1,
+    "name": "New York City",
+    "description": "The Big Apple"
+  }
+]
+*/
+
+
+## /Controllers/CitiesController.cs
+using Microsoft.AspNetCore.Mvc;
+using CityInfo.API.Models;
+using CityInfo.API.Services;
+using AutoMapper;
+
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    //[Route("api/cities")]
+    [Route("api/[controller]")]
+    public class CitiesController : ControllerBase
+    {
+        private readonly ILogger<CitiesController> _logger;
+        private readonly ICityInfoRepository _cityInfoRepository;
+        private readonly IMapper _mapper;
+
+        public CitiesController(ILogger<CitiesController> logger, ICityInfoRepository cityInfoRepository,
+            IMapper mapper)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _cityInfoRepository = cityInfoRepository;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CityWithoutPointsOfInterestDto>>> GetCities(string? name, string? searchQuery) //added searchQuery param
+        {
+            var cityEntities = await _cityInfoRepository.GetCitiesAsync(name,searchQuery);
+
+            return Ok(_mapper.Map<IEnumerable<CityWithoutPointsOfInterestDto>>(cityEntities));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<CityDto>>> GetCity(int id,bool includePointOfInterest)
+        {
+            var cityEntity = await _cityInfoRepository.GetCityAsync(id, includePointOfInterest);
+             
+            return Ok(_mapper.Map<CityDto>(cityEntity));
+        }
+    }
+}
+
+
+
+
+
+## /Services/ICityInfoRepository.cs
+
+using CityInfo.API.Entities;
+using CityInfo.API.Models;
+
+namespace CityInfo.API.Services
+{
+    public interface ICityInfoRepository 
+    {
+        Task<IEnumerable<City>> GetCitiesAsync();
+        Task<IEnumerable<City>> GetCitiesAsync(string? name,string? searchQuery); //added param
+        Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest);
+        Task<IEnumerable<PointOfInterest>> GetPointsOfInterestForCityAsync(int cityId);
+        Task<PointOfInterest?> GetPointOfInterestForCityAsync(int cityId, int pointOfInterestId);
+        Task<bool> CityExistsAsync(int cityId);
+        Task AddPointOfInterestForCityAsync(int cityId, PointOfInterest pointOfInterest);
+        Task<bool> SaveChangesAsync();
+
+        void DeletePointOfInterest(PointOfInterest pointofInterest);
+    }
+}
+
+
+
+
+## /Services/CityInfoRepository.cs
+using CityInfo.API.DbContexts;
+using CityInfo.API.Entities;
+using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
+
+namespace CityInfo.API.Services
+{
+    public class CityInfoRepository : ICityInfoRepository
+    {
+        private readonly CityInfoContext _context;
+        public CityInfoRepository(CityInfoContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+        public async Task<IEnumerable<City>> GetCitiesAsync()
+        {
+            return await _context.Cities.OrderBy(c => c.Name).ToListAsync();
+        }
+
+        public async Task<IEnumerable<City>> GetCitiesAsync(string? name,string? searchQuery) //modified the method logic
+        {
+            if(string.IsNullOrEmpty(name) && string.IsNullOrEmpty(searchQuery))
+            {
+                return await GetCitiesAsync();
+            }
+
+            var collection = _context.Cities as IQueryable<City>;
+
+            if(!string.IsNullOrWhiteSpace(name))
+            {
+                name = name.Trim();
+                collection = collection.Where(c => c.Name == name);
+            }
+
+            if(!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                searchQuery = searchQuery.Trim();
+                collection = collection.Where(a=> a.Name.Contains(searchQuery)
+                || (a.Description != null && a.Description.Contains(searchQuery)));
+            }
+
+            return await collection.OrderBy(c => c.Name).ToListAsync();
+        }
+
+        public async Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest)
+        {
+            if (includePointsOfInterest)
+            {
+                return await _context.Cities.Include(c => c.PointsOfInterest).Where(c => c.Id == cityId).FirstOrDefaultAsync();
+            }
+
+            return await _context.Cities.Where(c => c.Id == cityId).FirstOrDefaultAsync();
+        }
+
+        public async Task<PointOfInterest?> GetPointOfInterestForCityAsync(int cityId, int pointOfInterestId)
+        {
+            return await _context.PointsOfInterest
+                            .Where(p => p.CityId == cityId && p.Id == pointOfInterestId)
+                            .FirstOrDefaultAsync();
+        }
+        public async Task<IEnumerable<PointOfInterest>> GetPointsOfInterestForCityAsync(int cityId)
+        {
+            return await _context.PointsOfInterest
+                .Where(p => p.CityId == cityId).ToListAsync();
+        }
+        
+        public async Task<bool> CityExistsAsync(int cityId)
+        {
+            return await _context.Cities.AnyAsync(c => c.Id == cityId);
+        }
+
+        public async Task AddPointOfInterestForCityAsync(int cityId, PointOfInterest pointOfInterest)
+        {
+            var city = await GetCityAsync(cityId, false);
+            if (city != null)
+            {
+                city.PointsOfInterest.Add(pointOfInterest);
+            }
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return (await _context.SaveChangesAsync() >= 0 );
+        }
+
+        public void DeletePointOfInterest(PointOfInterest pointofInterest)
+        {
+            _context.PointsOfInterest.Remove(pointofInterest);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
