@@ -3776,3 +3776,212 @@ LIMIT @__p_0 OFFSET @__p_0
 [16:07:28 DBG] Closed connection to database 'main' on server 'CityInfo.db' (1ms).
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2> Returning Pagination metadata 
+
+  showin pagenumber, pagezie , previous page, next page in API response
+  Header: X-Pagination - add this in controller. After executing API, check headers tab to see the pagination metadata
+
+  /*
+    GET: https://localhost:7167/api/cities?pagesize=2&pagenumber=2
+    RESPONSE TAB
+    [
+      {
+        "id": 1,
+        "name": "New York City",
+        "description": "The Big Apple"
+      }
+    ]
+    
+    HEADERS TAB
+    content-length	63
+    content-type	application/json; charset=utf-8
+    date	Fri, 13 Jun 2025 11:28:48 GMT
+    server	Kestrel
+    x-pagination	{"TotalItemCount":3,"TotalPageCount":2,"PageSize":2,"CurrentPage":2}
+
+  */
+
+create
+##/Services/PaginationMetadata.cs
+namespace CityInfo.API.Services
+{
+    public class PaginationMetadata
+    {
+
+        public int TotalItemCount { get; set; }
+        public int TotalPageCount { get; set; }
+        public int PageSize { get; set; }
+
+        public int CurrentPage { get; set; }
+
+
+        public PaginationMetadata(int totalItemCount, int pageSize, int currentPage)
+        {
+
+            TotalItemCount = totalItemCount;
+            PageSize = pageSize;
+            CurrentPage = currentPage;
+            TotalPageCount = (int)Math.Ceiling(totalItemCount / (double)pageSize);
+
+        }
+    }
+}
+
+  
+##/Services/ICityInfoRepository.cs
+
+using CityInfo.API.Entities;
+using CityInfo.API.Models;
+
+namespace CityInfo.API.Services
+{
+    public interface ICityInfoRepository 
+    {
+        Task<IEnumerable<City>> GetCitiesAsync();
+        Task<(IEnumerable<City>, PaginationMetadata)> GetCitiesAsync(string? name,string? searchQuery, int pageNumber, int pageSize); //modified to language construct - Tuple
+        Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest);
+        Task<IEnumerable<PointOfInterest>> GetPointsOfInterestForCityAsync(int cityId);
+        Task<PointOfInterest?> GetPointOfInterestForCityAsync(int cityId, int pointOfInterestId);
+        Task<bool> CityExistsAsync(int cityId);
+        Task AddPointOfInterestForCityAsync(int cityId, PointOfInterest pointOfInterest);
+        Task<bool> SaveChangesAsync();
+
+        void DeletePointOfInterest(PointOfInterest pointofInterest);
+    }
+}
+
+
+
+## /Services/CityInfoRepository.cs
+  using CityInfo.API.DbContexts;
+using CityInfo.API.Entities;
+using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
+
+namespace CityInfo.API.Services
+{
+    public class CityInfoRepository : ICityInfoRepository
+    {
+        private readonly CityInfoContext _context;
+        public CityInfoRepository(CityInfoContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+        public async Task<IEnumerable<City>> GetCitiesAsync()
+        {
+            return await _context.Cities.OrderBy(c => c.Name).ToListAsync();
+        }
+
+        public async Task<(IEnumerable<City>,PaginationMetadata)> GetCitiesAsync(string? name,string? searchQuery, int pageNumber, int pageSize) //modified to language construct - Tuple and added X-pagination header
+        {
+            //if(string.IsNullOrEmpty(name) && string.IsNullOrEmpty(searchQuery))
+            //{
+            //    return await GetCitiesAsync();
+            //}
+
+            var collection = _context.Cities as IQueryable<City>;
+
+            if(!string.IsNullOrWhiteSpace(name))
+            {
+                name = name.Trim();
+                collection = collection.Where(c => c.Name == name);
+            }
+
+            if(!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                searchQuery = searchQuery.Trim();
+                collection = collection.Where(a=> a.Name.Contains(searchQuery)
+                || (a.Description != null && a.Description.Contains(searchQuery)));
+            }
+
+            var totalItemCount = await collection.CountAsync();
+            var paginationMetadata = new PaginationMetadata(totalItemCount, pageSize, pageNumber);
+
+            var collextionToReturn = await collection.OrderBy(c => c.Name)
+                .Skip(pageSize * (pageNumber-1))  //.Skip(1) if pageNumber is 2, then 1st page records are skipped. pagesize=1, pagenumber=2
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (collextionToReturn, paginationMetadata);
+        }
+
+        public async Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest)
+        {
+            if (includePointsOfInterest)
+            {
+                return await _context.Cities.Include(c => c.PointsOfInterest).Where(c => c.Id == cityId).FirstOrDefaultAsync();
+            }
+
+            return await _context.Cities.Where(c => c.Id == cityId).FirstOrDefaultAsync();
+        }
+
+        public async Task<PointOfInterest?> GetPointOfInterestForCityAsync(int cityId, int pointOfInterestId)
+        {
+            return await _context.PointsOfInterest
+                            .Where(p => p.CityId == cityId && p.Id == pointOfInterestId)
+                            .FirstOrDefaultAsync();
+        }
+        public async Task<IEnumerable<PointOfInterest>> GetPointsOfInterestForCityAsync(int cityId)
+        {
+            return await _context.PointsOfInterest
+                .Where(p => p.CityId == cityId).ToListAsync();
+        }
+        
+        public async Task<bool> CityExistsAsync(int cityId)
+        {
+            return await _context.Cities.AnyAsync(c => c.Id == cityId);
+        }
+
+        public async Task AddPointOfInterestForCityAsync(int cityId, PointOfInterest pointOfInterest)
+        {
+            var city = await GetCityAsync(cityId, false);
+            if (city != null)
+            {
+                city.PointsOfInterest.Add(pointOfInterest);
+            }
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return (await _context.SaveChangesAsync() >= 0 );
+        }
+
+        public void DeletePointOfInterest(PointOfInterest pointofInterest)
+        {
+            _context.PointsOfInterest.Remove(pointofInterest);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
