@@ -3528,14 +3528,251 @@ IEnumerable<T> - for querying in-memory data objects
 
 <h2> Paging through Resources
 
+1. collection resource often hrows quite large
+2. Paging helps avoid performance issues
+3. pass the pagination parameters via query string
+4. limit the page size, client should enter 1000 page when there are only 10 pages
+5. 1st page will be returned by default if pagination parametrs are not provided
+
+/*
+
+In this case, Total results are 3. 
+pagesize=1 means three pages are created as 1 page can contain only 1 result
+pagesize=2 means two pages are created. Page 1 will have 2 results. Page 2 will have 3rd result
+
+pagesize=1&pagenumber=3 means 3rd page data will be returned with pagesize 1
+
+
+GET: https://localhost:7167/api/cities?pagesize=1&pagenumber=1
+[
+  {
+    "id": 3,
+    "name": "Chicago",
+    "description": "The Windy City"
+  }
+]
+
+
+GET: https://localhost:7167/api/cities?pagesize=2&pagenumber=1
+[
+  {
+    "id": 3,
+    "name": "Chicago",
+    "description": "The Windy City"
+  },
+  {
+    "id": 2,
+    "name": "Los Angeles",
+    "description": "The City of Angels"
+  }
+]
+
+GET: https://localhost:7167/api/cities?pagesize=1&pagenumber=2
+[
+  {
+    "id": 2,
+    "name": "Los Angeles",
+    "description": "The City of Angels"
+  }
+]
+
+*/
+
+
+## /Controllers/CitiesController.cs
+using Microsoft.AspNetCore.Mvc;
+using CityInfo.API.Models;
+using CityInfo.API.Services;
+using AutoMapper;
+
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    //[Route("api/cities")]
+    [Route("api/[controller]")]
+    public class CitiesController : ControllerBase
+    {
+        private readonly ILogger<CitiesController> _logger;
+        private readonly ICityInfoRepository _cityInfoRepository;
+        private readonly IMapper _mapper;
+        const int maxCitiesPageSize = 20; //added
+
+        public CitiesController(ILogger<CitiesController> logger, ICityInfoRepository cityInfoRepository,
+            IMapper mapper)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _cityInfoRepository = cityInfoRepository;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CityWithoutPointsOfInterestDto>>> GetCities(string? name, string? searchQuery, int pageNumber=1, int pageSize=10) //enhanced
+        {
+            if(pageSize>maxCitiesPageSize)
+            {
+                pageSize = maxCitiesPageSize;
+            }
+            var cityEntities = await _cityInfoRepository.GetCitiesAsync(name,searchQuery,pageNumber,pageSize);
+
+            return Ok(_mapper.Map<IEnumerable<CityWithoutPointsOfInterestDto>>(cityEntities));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<CityDto>>> GetCity(int id,bool includePointOfInterest)
+        {
+            var cityEntity = await _cityInfoRepository.GetCityAsync(id, includePointOfInterest);
+             
+            return Ok(_mapper.Map<CityDto>(cityEntity));
+        }
+    }
+}
+
+
+
+## /Services/ICityInfoRepository.cs
+using CityInfo.API.Entities;
+using CityInfo.API.Models;
+
+namespace CityInfo.API.Services
+{
+    public interface ICityInfoRepository 
+    {
+        Task<IEnumerable<City>> GetCitiesAsync();
+        Task<IEnumerable<City>> GetCitiesAsync(string? name,string? searchQuery, int pageNumber, int pageSize);
+        Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest);
+        Task<IEnumerable<PointOfInterest>> GetPointsOfInterestForCityAsync(int cityId);
+        Task<PointOfInterest?> GetPointOfInterestForCityAsync(int cityId, int pointOfInterestId);
+        Task<bool> CityExistsAsync(int cityId);
+        Task AddPointOfInterestForCityAsync(int cityId, PointOfInterest pointOfInterest);
+        Task<bool> SaveChangesAsync();
+
+        void DeletePointOfInterest(PointOfInterest pointofInterest);
+    }
+}
 
 
 
 
+##/Services/CityInfoRepository.cs
+using CityInfo.API.DbContexts;
+using CityInfo.API.Entities;
+using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
+
+namespace CityInfo.API.Services
+{
+    public class CityInfoRepository : ICityInfoRepository
+    {
+        private readonly CityInfoContext _context;
+        public CityInfoRepository(CityInfoContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+        public async Task<IEnumerable<City>> GetCitiesAsync()
+        {
+            return await _context.Cities.OrderBy(c => c.Name).ToListAsync();
+        }
+
+        public async Task<IEnumerable<City>> GetCitiesAsync(string? name,string? searchQuery, int pageNumber, int pageSize)
+        {
+            //if(string.IsNullOrEmpty(name) && string.IsNullOrEmpty(searchQuery))
+            //{
+            //    return await GetCitiesAsync();
+            //}
+
+            var collection = _context.Cities as IQueryable<City>;
+
+            if(!string.IsNullOrWhiteSpace(name))
+            {
+                name = name.Trim();
+                collection = collection.Where(c => c.Name == name);
+            }
+
+            if(!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                searchQuery = searchQuery.Trim();
+                collection = collection.Where(a=> a.Name.Contains(searchQuery)
+                || (a.Description != null && a.Description.Contains(searchQuery)));
+            }
+
+            return await collection.OrderBy(c => c.Name)
+                .Skip(pageSize * (pageNumber-1))  //.Skip(1) if pageNumber is 2, then 1st page records are skipped. pagesize=1, pagenumber=2
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest)
+        {
+            if (includePointsOfInterest)
+            {
+                return await _context.Cities.Include(c => c.PointsOfInterest).Where(c => c.Id == cityId).FirstOrDefaultAsync();
+            }
+
+            return await _context.Cities.Where(c => c.Id == cityId).FirstOrDefaultAsync();
+        }
+
+        public async Task<PointOfInterest?> GetPointOfInterestForCityAsync(int cityId, int pointOfInterestId)
+        {
+            return await _context.PointsOfInterest
+                            .Where(p => p.CityId == cityId && p.Id == pointOfInterestId)
+                            .FirstOrDefaultAsync();
+        }
+        public async Task<IEnumerable<PointOfInterest>> GetPointsOfInterestForCityAsync(int cityId)
+        {
+            return await _context.PointsOfInterest
+                .Where(p => p.CityId == cityId).ToListAsync();
+        }
+        
+        public async Task<bool> CityExistsAsync(int cityId)
+        {
+            return await _context.Cities.AnyAsync(c => c.Id == cityId);
+        }
+
+        public async Task AddPointOfInterestForCityAsync(int cityId, PointOfInterest pointOfInterest)
+        {
+            var city = await GetCityAsync(cityId, false);
+            if (city != null)
+            {
+                city.PointsOfInterest.Add(pointOfInterest);
+            }
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return (await _context.SaveChangesAsync() >= 0 );
+        }
+
+        public void DeletePointOfInterest(PointOfInterest pointofInterest)
+        {
+            _context.PointsOfInterest.Remove(pointofInterest);
+        }
+    }
+}
 
 
+## //console logger - observe db query formation
 
-
-
+[16:07:28 DBG] Creating DbConnection.
+[16:07:28 DBG] Created DbConnection. (0ms).
+[16:07:28 DBG] Opening connection to database 'main' on server 'CityInfo.db'.
+[16:07:28 DBG] Opened connection to database 'main' on server 'C:\dotnet\Pluralsight\CityInfo\CityInfo.API\CityInfo.db'.
+[16:07:28 DBG] Creating DbCommand for 'ExecuteReader'.
+[16:07:28 DBG] Created DbCommand for 'ExecuteReader' (0ms).
+[16:07:28 DBG] Initialized DbCommand for 'ExecuteReader' (1ms).
+[16:07:28 DBG] Executing DbCommand [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SELECT "c"."Id", "c"."Description", "c"."Name"
+FROM "Cities" AS "c"
+ORDER BY "c"."Name"
+LIMIT @__p_0 OFFSET @__p_0
+[16:07:28 INF] Executed DbCommand (6ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SELECT "c"."Id", "c"."Description", "c"."Name"
+FROM "Cities" AS "c"
+ORDER BY "c"."Name"
+LIMIT @__p_0 OFFSET @__p_0
+[16:07:28 DBG] Context 'CityInfoContext' started tracking 'City' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+[16:07:28 DBG] Closing data reader to 'main' on server 'C:\dotnet\Pluralsight\CityInfo\CityInfo.API\CityInfo.db'.
+[16:07:28 DBG] A data reader for 'main' on server 'C:\dotnet\Pluralsight\CityInfo\CityInfo.API\CityInfo.db' is being disposed after spending 1ms reading results.
+[16:07:28 DBG] Closing connection to database 'main' on server 'C:\dotnet\Pluralsight\CityInfo\CityInfo.API\CityInfo.db'.
+[16:07:28 DBG] Closed connection to database 'main' on server 'CityInfo.db' (1ms).
 
 
