@@ -3513,6 +3513,26 @@ namespace CityInfo.API.Services
 
 
 
+<h2> Deferred Execution
+
+Query execution occurs after query is constructed
+IQueryable<T> - for querying external data sources. Execution is deferred until query is iterated over loop/ToList, TOArray, ToDictionary, Singleton queries
+IEnumerable<T> - for querying in-memory data objects
+
+
+
+
+
+
+
+
+<h2> Paging through Resources
+
+
+
+
+
+
 
 
 
