@@ -3969,18 +3969,63 @@ namespace CityInfo.API.Services
 
 
 
+<h1> Securing APIs
+
+UN & PW auth for every request is bad idea and is vulnerable for attackers
+Token based Authentication is best 
+ - send a token on each request which represents consent
+ - validate token at API level
+
+
+Token Structure:
+Payload  - token creation time and some info about user
+Signature - hash of payload, used to ensure the data wasn't tampered
+Header - Essential token information like the key algorithm used for signing
+
+Token-based security uses signed JWTs containing a header, payload, and signature to authenticate API requests. A login endpoint issues tokens after verifying credentials. Clients must send the token in the Authorization header for access. All API endpoints, except login, require a valid token to ensure secure communication and prevent tampering.
+
+
+
+
+Here's a simple terminal-style diagram using only keyboard symbols to represent the token-based authentication flow:
+
+
++------------------+       POST /login       +------------------+
+|   Client (App)   | ----------------------> |   API Endpoint   |
+| (Postman, App)   |  {username, password}   |   /login         |
++------------------+                         +------------------+
+              ^                                        |
+              |                                        | Validate credentials
+              |                                        v
+              |                                +------------------------+
+              |                                |   Generate JWT Token   |
+              |                                |  (Header, Payload,     |
+              |                                |   Signature)           |
+              |                                +------------------------+
+              |                                        |
+              |                                        v
+              | ------------------- Token --------- +------------------+
+                                                    |   API Endpoint   |
+                                                    +------------------+
+
+On Subsequent Requests:
++------------------+     Authorization: Bearer <token>     +------------------+
+|   Client (App)   | ------------------------------------> |   Protected API   |
++------------------+                                       |   Endpoints       |
+                                                           +------------------+
+                                                                  |
+                                                                  | Validate Token
+                                                                  v
+                                                           +------------------+
+                                                           |   Access Granted |
+                                                           +------------------+
 
 
 
 
 
-
-
-
-
-
-
-
+ 
+  
 
   
 
