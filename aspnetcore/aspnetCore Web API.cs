@@ -3971,8 +3971,8 @@ namespace CityInfo.API.Services
 
 <h1> Securing APIs
 
-UN & PW auth for every request is bad idea and is vulnerable for attackers
-Token based Authentication is best 
+1. UN & PW auth for every request is bad idea and is vulnerable for attackers
+2. Token based Authentication is best 
  - send a token on each request which represents consent
  - validate token at API level
 
@@ -4004,7 +4004,7 @@ Here's a simple terminal-style diagram using only keyboard symbols to represent 
               |                                +------------------------+
               |                                        |
               |                                        v
-              | ------------------- Token --------- +------------------+
+              | <------------------ Token --------- +------------------+
                                                     |   API Endpoint   |
                                                     +------------------+
 
@@ -4023,6 +4023,10 @@ On Subsequent Requests:
 
 
 
+
+
+  
+<h2> Creating a token
 
  
   
