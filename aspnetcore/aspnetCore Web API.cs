@@ -4181,8 +4181,11 @@ namespace CityInfo.API.Controllers
 
 
 
-  
-<h2> Validating a token, including authentication middleware. FInally [Authorize] every Controller
+
+
+
+
+<h2> Validating a token, add authentication middleware and [Authorize] every Controller
 
 /*
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -4383,8 +4386,16 @@ namespace CityInfo.API.Controllers
     //[Route("api/cities")]
     [Authorize]
     [Route("api/[controller]")]
-
+}
 
   
 
+
+
+
+
+
+
+<h2> Using Information from the token in Controller
+in other word, claim based authentication
 
