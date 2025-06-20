@@ -4184,6 +4184,56 @@ namespace CityInfo.API.Controllers
   
 <h2> Validating a token, including authentication middleware. FInally [Authorize] every Controller
 
+/*
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+POST: https://localhost:7167/api/authentication/authenticate
+Request Body: 
+{
+  "Username":"Kevin",
+  "Password": "DOckx"
+}
+
+Response:
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZ2l2ZW5fbmFtZSI6IktldmluIiwiZmFtaWx5X25hbWUiOiJEb2NreCIsImNpdHkiOiJBbnR3ZXJwIiwibmJmIjoxNzUwNDI1MDk2LCJleHAiOjE3NTA0Mjg2OTYsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcxNjciLCJhdWQiOiJjaXR5aW5mb2FwaSJ9.YBqGWP69aE66TfHH1OWFWEPhXzFyIWXlLL0f02GSQpI
+
+Status: 200 OK
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+GET: https://localhost:7167/api/cities
+Authorization: None
+
+Status: 401 Unauthorized
+Response:
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+GET: https://localhost:7167/api/cities
+Authorization: None
+
+Status: 200 OK
+Response:
+[
+  {
+    "id": 3,
+    "name": "Chicago",
+    "description": "The Windy City"
+  },
+  {
+    "id": 2,
+    "name": "Los Angeles",
+    "description": "The City of Angels"
+  },
+  {
+    "id": 1,
+    "name": "New York City",
+    "description": "The Big Apple"
+  }
+]
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Note: If a 2nd token is generated before 1st token expires, then both tokens are valid. To avoid previous token when new tokens are generated implement RefreshTokens mechanism
+
+*/
+
+
 
 1. Program.cs
     Add bearer authentication, UseAuthentication() middleware 
