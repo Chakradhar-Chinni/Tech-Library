@@ -1,3 +1,6 @@
 
 <h2> Prompt for Creating Flow Charts or UML Diagrams
 Create a clean and simple terminal-style diagram using only keyboard symbols (ASCII art) to represent the flow of token-based authentication.
+
+<h2> Transcript to article
+Create an article in the structured format using this transcript
