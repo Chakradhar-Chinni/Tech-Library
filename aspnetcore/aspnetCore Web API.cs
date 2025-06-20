@@ -4025,10 +4025,151 @@ On Subsequent Requests:
 
 
 
+
+
+  
+
   
 <h2> Creating a token
 
- 
+Create Authentication Controller.cs
+Add Authentication array in appsettings.development.json
+
+## /appsettings.Development.json
+{
+  "mailSettings": {
+    "mailTo": "user@company.in",
+    "mailFrom": "dev-admin@company.in"
+  },
+  "ConnectionStrings": {
+    "CityInfoDBConnectionString": "Data Source=CityInfo.db;"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "CityInfo.API.Controllers": "Information",
+      "Microsoft.EntityFrameworkCore.Database.Command": "Information"
+    }
+  },
+  "Authentication": {
+    "SecretForKey": "RgDldLrK+p+T0JisAKdD7THnT/npmWYl4vV3UUiRSVE=",
+    "Issuer": "https://localhost:7167",
+    "Audience": "cityinfoapi"
+  }
+}
+
+
+
+ ## /Controllers/AuthenticationController.cs
+
+/*
+POST: https://localhost:7167/api/authentication/authenticate
+REquest BOdy: 
+{
+  "Username":"Kevin",
+  "Password": "DOckx"
+}
+
+Response:
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZ2l2ZW5fbmFtZSI6IktldmluIiwiZmFtaWx5X25hbWUiOiJEb2NreCIsImNpdHkiOiJBbnR3ZXJwIiwibmJmIjoxNzUwNDI1MDk2LCJleHAiOjE3NTA0Mjg2OTYsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcxNjciLCJhdWQiOiJjaXR5aW5mb2FwaSJ9.YBqGWP69aE66TfHH1OWFWEPhXzFyIWXlLL0f02GSQpI
+
+Status: 200 OK
+
+*/
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    [Route("api/authentication")]
+    public class AuthenticationController : ControllerBase
+    {
+        private readonly IConfiguration _configuration;
+
+        public AuthenticationController(IConfiguration configuration)
+        {
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        }
+
+        public class AuthenticationRequestBody
+        {
+            public string UserName { get; set; }
+            public string Password { get; set; }
+        }
+
+        private class CityInfoUser
+        {
+            public int UserId { get; }
+            public string UserName { get; }
+            public string FirstName { get; }
+            public string LastName { get; }
+            public string City { get; }
+
+            public CityInfoUser(int userId, string userName, string firstName, string lastName, string city)
+            {
+                UserId = userId;
+                UserName = userName;
+                FirstName = firstName;
+                LastName = lastName;
+                City = city;
+            }
+        }
+
+        [HttpPost("authenticate")]
+        public ActionResult<string> Authenticate( AuthenticationRequestBody authenticationRequestBody)
+        {
+
+            //Step1: Validate username, password
+            var user = ValidateUserCredentials(authenticationRequestBody.UserName, authenticationRequestBody.Password);
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+
+            //step2: create a token
+            var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["Authentication:SecretForKey"]));
+            var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            //the Claims that
+            var claimsForToken = new List<Claim>();
+            
+                claimsForToken.Add(new Claim("sub", user.UserId.ToString()));
+                claimsForToken.Add(new Claim("given_name", user.FirstName));
+                claimsForToken.Add(new Claim("family_name", user.LastName));
+                claimsForToken.Add(new Claim("city", user.City));
+            
+
+            var jwtSecurityToken = new JwtSecurityToken(
+                _configuration["Authentication:Issuer"],
+                _configuration["Authentication:Audience"],
+                claimsForToken,
+                DateTime.UtcNow,
+                DateTime.UtcNow.AddHours(1),
+                signingCredentials);
+
+            var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+
+            return Ok(tokenToReturn);
+        }
+
+        private CityInfoUser ValidateUserCredentials(string? userName, string? password)
+        {
+            // In real scenarios, validate against a database
+            return new CityInfoUser(1, userName?? "", "Kevin", "Dockx", "Antwerp");
+        }
+    }
+}
+
   
 
   
