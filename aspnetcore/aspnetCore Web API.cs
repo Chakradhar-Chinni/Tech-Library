@@ -4062,10 +4062,11 @@ Add Authentication array in appsettings.development.json
 
 
  ## /Controllers/AuthenticationController.cs
+Todo: 2 packages need to be installed here
 
 /*
 POST: https://localhost:7167/api/authentication/authenticate
-REquest BOdy: 
+Request Body: 
 {
   "Username":"Kevin",
   "Password": "DOckx"
@@ -4075,6 +4076,8 @@ Response:
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZ2l2ZW5fbmFtZSI6IktldmluIiwiZmFtaWx5X25hbWUiOiJEb2NreCIsImNpdHkiOiJBbnR3ZXJwIiwibmJmIjoxNzUwNDI1MDk2LCJleHAiOjE3NTA0Mjg2OTYsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcxNjciLCJhdWQiOiJjaXR5aW5mb2FwaSJ9.YBqGWP69aE66TfHH1OWFWEPhXzFyIWXlLL0f02GSQpI
 
 Status: 200 OK
+
+Tip: Go to jwt.io and paste this token to check the format
 
 */
 using Microsoft.AspNetCore.Mvc;
@@ -4170,7 +4173,167 @@ namespace CityInfo.API.Controllers
     }
 }
 
+
+
+
+
+
+
+
+
   
+<h2> Validating a token, including authentication middleware. FInally [Authorize] every Controller
+
+
+1. Program.cs
+    Add bearer authentication, UseAuthentication() middleware 
+2. for every controller, add [Authorize] with using Microsoft.AspNetCore.Authorization
+
+## Nuget Packages
+Install Microsoft.AspNetCore.Authentication.JwtBearer v8.0.0
+
+
+  
+## Program.cs
+using CityInfo.API;
+using CityInfo.API.DbContexts;
+using CityInfo.API.Services;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens.Experimental;
+using Serilog;
+using System.Text;
+//using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console()
+    .WriteTo.File("logs/cityinfo.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+var builder = WebApplication.CreateBuilder(args);
+//builder.Logging.ClearProviders();
+//builder.Logging.AddConsole();
+builder.Host.UseSerilog();
+
+
+//builder.Host.UseSerilog(Log.Logger);
+
+// Add services to the container.
+builder.Services.AddControllers(options =>
+{
+    options.ReturnHttpNotAcceptable = true; //return 406 if the client requests a format that is not supported
+}).AddNewtonsoftJson()
+   .AddXmlDataContractSerializerFormatters();
+
+builder.Services.AddProblemDetails();
+
+// Send Additional error messages
+//builder.Services.AddProblemDetails(options =>
+//{
+//    options.CustomizeProblemDetails = ctx =>
+//    {
+//        ctx.ProblemDetails.Instance = ctx.HttpContext.Request.Path;
+//        ctx.ProblemDetails.Title = "Custom Error";
+//        ctx.ProblemDetails.Detail = "Custom error message";
+//        ctx.ProblemDetails.Extensions.Add("Process Id", Environment.ProcessId);
+//    };
+//});
+
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer(); //endpoint discovery
+builder.Services.AddSwaggerGen(); //integrates Swagger
+builder.Services.AddSingleton<FileExtensionContentTypeProvider>(); //FileExtensionContentTypeProvider is used to get the content type of a file based on its extension
+
+builder.Services.AddDbContext<CityInfoContext>(dbContextOptions 
+    => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:CityInfoDBConnectionString"]));
+
+builder.Services.AddSingleton<CitiesDataStore>();
+builder.Services.AddScoped<ICityInfoRepository, CityInfoRepository>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddAuthentication("Bearer") //added
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new()// TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Authentication:Issuer"],
+            ValidAudience = builder.Configuration["Authentication:Audience"],
+            //IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(builder.Configuration["Authentication:SecretForKey"]))
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.ASCII.GetBytes(builder.Configuration["Authentication:SecretForKey"]))
+        };
+    } 
+    );
+
+#if DEBUG
+builder.Services.AddTransient<ILocalMailService, LocalMailService>();
+#else
+builder.Services.AddTransient<ILocalMailService, CloudMailService>();
+#endif
+
+var app = builder.Build(); // Build the app
+
+
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+   // app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandler();
+}
+
+app.UseRouting();
+app.UseHttpsRedirection(); //Http are re-directed to Https
+
+
+app.UseAuthentication(); //added
+
+app.UseAuthorization();
+
+app.MapControllers(); //Maps Http Requests to controllers
+
+app.UseEndpoints(endpoints =>
+  {
+      endpoints.MapControllers();
+  });
+
+//app.Run(async (context) =>
+//{
+//    await context.Response.WriteAsync("Hello World!");
+//});
+
+app.Run();
+
+
+
+
+## Authorize every Controller
+using Microsoft.AspNetCore.Mvc;
+using CityInfo.API.Models;
+using CityInfo.API.Services;
+using AutoMapper;
+using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
+
+
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    //[Route("api/cities")]
+    [Authorize]
+    [Route("api/[controller]")]
+
 
   
 
