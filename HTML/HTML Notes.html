@@ -1,0 +1,210 @@
+head,body tags are children of html tags
+head,body tags are siblings
+<p> tag</p> is paragraph tag  -> In body tag
+<title> </title>  -> In Head 
+p is the grand child of html tag
+meta tags provide information about the file (imp for SEO also)
+
+#1
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="This is a description">
+        Title
+    </head>
+    <body>
+        <h1>This is h1 tag</h1>
+        <h2>This is h2 tag</h2>
+        <p>This is a paragraph tag</p>
+        <p>This is another paragraph tag</p>
+        <p>This is a <i><b>p</b>aragraph</i> tag</p>
+    </body>
+</html>
+
+comments
+<!--
+   line 1
+   line 2
+   -->
+
+few tags 
+italic,bold,big,small,subscript,superscipt
+
+<i>Italic Tag</i>
+<b>Bold Tag</b>
+<big>Big tag</big>
+<small> Small Tag<small>
+<sub> Sub Script Tag</sub>
+<sup>Super Script Tag</sup>
+
+
+<p style="color:aqua">This is paragraph 2</p>
+<p style = "color:blue;background-color:black";>This is Paragraph 1</p>
+
+
+==========================================================
+BASIC STRUCTURE OF A WEB PAGE
+The below tags are used by most of the developers,as it follows a standard and hence increases the readability of the code
+though other tag names like containers can be used, they could not be readable as compared to standard tags
+
+
+<header>
+    <nav>
+
+    </nav>
+</header>
+
+<footer>
+    <main>
+        <article>
+                <section>
+                        <aside>content is only indirectly related to the document's main content
+                        </aside>
+                </section>
+                        <aside>
+                        </aside>
+                <section>
+
+                </section>
+        <article>
+    </main>
+</footer>
+==========================================================
+
+
+
+Links
+Navigating to External Websites
+<a href = "https://www.google.com">Google Home Page</a><br>
+<a href = "https://www.linkedin.com">Linkedin</a>
+
+Navigating to other HTML pages
+<a href = "page2.html">Page2</a>
+
+Navigating to html pages in other directory(folder)
+<a href = "dir1/page1.html">Page2</a>
+
+Navigating to files in our web page
+<a href = "img1.jpg"> Image </a>
+
+
+
+
+
+
+Images
+<img src = "pic-1.png" alt = "PNG image on a html page"><br>
+<img src = "pic-1.png" alt = "PNG with width & height" width = 100 height = 100>
+<img src = "pic-1.png" alt = "PNG with width" width = 120>
+<img src = "pic-1.png" alt = "PNG with height" height = 100>
+img tag directly displays the image on the web page, if image is unable to load, then it shows the text available in alt tag
+
+
+Videos
+<video src = "video-1.mp4">alt="Video File 1">
+in the above linehere the video will not play 
+
+<video src = "video-1.mp4" controls width = "3000">alt="Video File 1">
+In the above line video will play as 'controls' have been mentioned and width will be set to 3000 and height will be adjusted 
+automatically according to width
+
+<video src = "video-1.mp4" poster="pic-1.png">alt="Video File 1">
+poster is used to set the thumbnail of the video
+
+<video src = "video-1.mp4" controls autoplay loop >alt = "Video File 1"</video>
+autoplay is used to play the video on loading the webpage
+loop is used to play the video repeatedly 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/pQN-pnXPaVg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+To play the youtube videos on our web page, embed the youtube video and copy the youtube's iframe video embed url and paste
+on the web page
+
+
+Lists
+<ol type ='A'>
+          <li>User 1</li>
+          <li>User 2</li>
+</ol>
+
+<ol type ='A'>
+          <li><a href = '#'>User 1</a></li>
+          <li><a href ='#'>User 2</a></li>
+         
+      </ol>
+
+<ol>
+    <li>One</li>
+    <li>Two</li>
+    <li>Three</li>
+    <li>Four</li>
+</ol>
+
+<ul>
+    <li>One</li>
+    <li>Two</li>
+    <li>Three</li>
+    <li>Four</li>
+</ul>
+
+
+==========
+Tables
+
+
+<table>
+            <tr>
+                <th>I</th>
+                <th>II</th>
+                <th>III</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+            </tr>
+            <tr>
+                <td colspan="3">9</td>
+                <td >99</td>
+            </tr>
+</table>
+
+<table> tag indicates the table 
+<tr> indicates table row
+<td> indicates table data
+<th> indicates table header
+<td colspan ="3"> indicates, that specific td occupies 3 columns of space
+========================
+
+======================================================================
+block elemens occupy the entire width of that specific block
+in-line elemens occupy only required lines or spaces
+
+spans are in-line containers
+divs are block containers
+
+<span>1</span>
+<span>2</span>
+
+<div>1d</div>
+<div>2d</div>
+
+======================================================================
+
+Inputs and Forms
+ <input type="range"><br><br>
+        <input type="email"><br><br>
+        <input type="date"><br><br>
+        <input type="file"><br><br>
+        <input type ="slider"><br><br>
+        <input type="text" placeholder="First Name"><br><br>
+        <input type="Password" placeholder="password"><br><br>
+
+
+==============
+Meta tags
+The <meta> tag defines metadata about an HTML document. Metadata is data (information) about data.
