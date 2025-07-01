@@ -1,1 +1,18 @@
+## C# Language
 
+https://dotnettutorials.net/lesson/basic-csharp-interview-questions/ (includes OOPS, Exception Handling)
+
+## ADO.NET
+https://dotnettutorials.net/lesson/top-50-ado-net-core-interview-questions-and-answers/
+
+
+## Entity Framework Core
+https://dotnettutorials.net/lesson/top-100-entity-framework-core-interview-questions-and-answers/
+
+## Web API
+https://dotnettutorials.net/lesson/web-api-interview-questions/
+
+
+## SQL 
+https://www.geeksforgeeks.org/sql-interview-questions/
+https://www.geeksforgeeks.org/sql-query-interview-questions/
