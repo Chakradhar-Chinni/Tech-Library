@@ -6,6 +6,9 @@ https://dotnettutorials.net/lesson/basic-csharp-interview-questions/ (includes O
 https://dotnettutorials.net/lesson/top-50-ado-net-core-interview-questions-and-answers/
 
 
+##LINQ
+Refer github notes
+
 ## Entity Framework Core
 https://dotnettutorials.net/lesson/top-100-entity-framework-core-interview-questions-and-answers/
 
