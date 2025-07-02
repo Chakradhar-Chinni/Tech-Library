@@ -54,8 +54,31 @@ check nodejsversion: node -v or node --version
 install angular
 npm install -g @angular/cli@16.0.0
 
+create new project: ng new joes-robot-shop
+
+open project in vs code and start the app using: npm start
+
+website will be opened at localhost:4200 (or another port number)
+
+nice landing page will be shown on first view
+
+initial looks:
+index.html has <app-root> element which is a angular component. check its mapping in app.component.ts. like below. It has its own html, css page. 
+over-write .html file with <h1> tag and notice it auto changes on website
+
+## /src/app/app.component.ts
+import { Component } from '@angular/core';
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+}
 
 
+##/./app.component.html
+<h1> Hello World> 
 
 
 
