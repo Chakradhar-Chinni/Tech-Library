@@ -206,3 +206,30 @@ import { Component, OnInit } from '@angular/core';
 Prefix should be always unique, even if 3rd party packages are used. Angular reserved keywords shouldn't be used for prefix.
 
 
+
+
+
+
+
+
+<<h2>> Using Inline styles
+
+1) Template, style are using inline html, css. so, .html & .css file of 'bot-home' component can be deleted.
+2) Inline template, style is not preferred unless its just 1 oe 2 lines of code. 
+3) This is just to understand, inline is also possible
+
+import { Component, OnInit } from '@angular/core';
+@Component({
+  selector: 'bot-home',
+  template: `<p> Inline home works </p>`,
+  styles: [`
+    p{
+      color:blue;
+    }
+  `],
+})
+
+
+
+
+
