@@ -85,3 +85,100 @@ export class AppComponent {
 
 
 
+
+
+
+<<h2>> Creating First Angular Component
+cmd> ng generate compoenent home 
+
+1)) home component is created at /src/app/home/  with the following files
+1) home.component.css
+2) home.component.html
+3) home.component.spec.ts
+4) home.component.ts
+    - specifies the 'app-home' as home component selector, has the .html file used by home component
+    - [styleUrls] is in array - multiple css files can be used
+
+2)) /src/app/app.module.ts
+   Home component is auto imported & declared in NgModule - CLI does this automatically, good thing
+   In this file, declarations must be done otherwise app doesn't know where to look for our components
+
+## /home/home.component.css
+ blank
+
+## /home/home.component.html
+<p>home works!</p>
+
+
+## /home/home.component.spec.ts
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { HomeComponent } from './home.component';
+
+describe('HomeComponent', () => {
+  let component: HomeComponent;
+  let fixture: ComponentFixture<HomeComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ HomeComponent ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HomeComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+
+
+## /home/home.component.ts
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
+})
+export class HomeComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}
+
+## /src/app/app.module.ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HomeComponent
+  ],
+  imports: [
+    BrowserModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+
+
+
+
+
+
