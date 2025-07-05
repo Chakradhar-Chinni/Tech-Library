@@ -182,3 +182,27 @@ export class AppModule { }
 
 
 
+
+<<h2>> Application prefix for components
+
+in /home/component.ts
+selector: 'app-home' is created by CLI. THe prrefix app comes from /angular.json file, like below.
+
+"prefix": "app",
+
+update the prefix value to "bot" and observe the new components will have prefix as bot instead of home
+
+after updating "prefix": "bot", and deleting home component. regenerate the home component and notice the change below
+
+## /home/home.component.ts
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'bot-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
+})
+
+Prefix should be always unique, even if 3rd party packages are used. Angular reserved keywords shouldn't be used for prefix.
+
+
