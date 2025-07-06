@@ -228,6 +228,7 @@ export class CatalogComponent {
 
 
 <<h2>> Repeating data with *ngFor
+output image: Many products on Catalog page (4 images)
 
 1. catalog.component.ts
     - Iproduct is made as array  Iproduct[]
