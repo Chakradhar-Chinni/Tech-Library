@@ -233,3 +233,239 @@ import { Component, OnInit } from '@angular/core';
 
 
 
+
+
+
+
+<<h2>> Accessing and Displaying Images
+Angular.json will have assets array
+
+"assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+
+1. any images or static files path can be mentioned here and referenced in code
+2. Apart from src/, new paths can be added to project folder and added to assets array
+3. while referencing in code, directly use /assets
+  3.1 HTML ex: <img src="/assets/images/robot-parts/torso-gauged.png" alt="Robot Torsos" />
+  3.2 CSS ex:   background-image: url("/assets/images/hero-banner.png");
+
+
+## /src/home/home.component.html
+<div class="container">
+  <div class="hero"></div>
+
+  <div class="promoted">
+    <img src="/assets/images/robot-parts/head-friendly.png" alt="Friendly Robot Head" />
+    <div class="promo-text">
+      <div class="promo-main-text">DISPELL THE ROBOT APOCALYPSE MYTH</div>
+      <div class="promo-sub-text cta">
+        <div>SAVE 20% ON OUR FRIENDLIEST</div>
+        <div>ROBOT HEADS</div>
+      </div>
+    </div>
+    <img src="/assets/images/robot-parts/head-big-eye.png" alt="Big Eye Head" />
+  </div>
+
+  <ul class="robot-parts-cta">
+    <li>
+      <a class="part">
+        <img src="/assets/images/robot-parts/head-shredder.png" alt="Robot Heads" />
+        <div>ROBOT HEADS</div>
+      </a>
+    </li>
+    <li>
+      <a class="part">
+        <img src="/assets/images/robot-parts/arm-articulated-claw.png" alt="Robot Arms" />
+        <div>ROBOT ARMS</div>
+      </a>
+    </li>
+    <li>
+      <a class="part">
+        <img src="/assets/images/robot-parts/torso-gauged.png" alt="Robot Torsos" />
+        <div>ROBOT TORSOS</div>
+      </a>
+    </li>
+    <li>
+      <a class="part">
+        <img src="/assets/images/robot-parts/base-spring.png" alt="Robot Bases" />
+        <div>ROBOT BASES</div>
+      </a>
+    </li>
+  </ul>
+
+  <div class="white-paper">
+    <img src="/assets/images/robot-apocalypse.png" alt="Robot Apocalyse" />
+    <div class="text">
+      <div>
+        <div class="header-text cta">Will they kill us all?</div>
+        <div class="sub-text">
+          <p>10 Myths About the</p>
+          <p>Robot Apocalyse</p>
+        </div>
+      </div>
+      <div class="large-text">WHITE PAPER</div>
+      <a href="" class="learn-more">Learn More</a>
+    </div>
+  </div>
+</div>
+
+
+
+## /src/home/home.component.css
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  background-image: url("/assets/images/hero-banner.png");
+  background-repeat: no-repeat;
+  height: 300px;
+  background-size: cover;
+  background-position: center center;
+  text-align: center;
+  margin-left: -8px;
+  margin-right: -8px;
+}
+
+.promoted {
+  display: flex;
+  justify-content: space-between;
+  margin: 25px;
+  border-top: 2px solid #888;
+  border-bottom: 2px solid #888;
+  padding: 10px 150px 10px 150px;
+}
+
+.promoted img {
+  width: 150px;
+  height: 150px;
+}
+
+.promo-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin: 40px 0 40px 0;
+}
+
+.promo-main-text {
+  font-size: 24px;
+  text-align: center;
+}
+
+.promo-sub-text {
+  font-size: 20px;
+  text-align: center;
+}
+
+.robot-parts-cta {
+  display: flex;
+  justify-content: space-between;
+  margin: 0px 100px 25px 100px;
+  padding: 10px 0;
+}
+
+.part {
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.part img {
+  width: 180px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #888;
+}
+
+.white-paper {
+  display: flex;
+  height: 100%;
+  margin: 0 25px;
+}
+
+.white-paper img {
+  width: 75%;
+}
+
+.white-paper .text {
+  display: flex;
+  width: 25%;
+  flex-direction: column;
+  background-color: #333;
+  text-align: center;
+  justify-content: space-between;
+}
+
+.white-paper .header-text {
+  margin-top: 50px;
+  font-size: 30px;
+}
+
+.white-paper .sub-text {
+  font-size: 20px;
+  color: #5cadd2;
+  margin-top: 10px;
+  padding: 0 15%;
+}
+
+.white-paper .sub-text p {
+  margin: 0;
+}
+
+.white-paper .large-text {
+  border-top: 2px solid #666;
+  border-bottom: 2px solid #666;
+  margin-top: -50px;
+  padding: 20px 0;
+  font-size: 35px;
+  color: #fff;
+}
+
+.white-paper .learn-more {
+  background-color: #d25ca1;
+  color: white;
+  padding: 15px 25px;
+  text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
