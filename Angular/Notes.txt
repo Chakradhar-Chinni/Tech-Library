@@ -443,19 +443,57 @@ Angular.json will have assets array
 
 
 
+<<h2>> Component Life Cycle hooks
+
+These are special methods that Angular calls at specific points in a component's life—from creation to destruction. They allow developers to tap into key moments to run custom logic, such as initializing data, reacting to changes, or cleaning up resources.
+
+THey get triggered at different phases of component existence, like Creation, Change detection, View rendering, Destruction
 
 
+Commonly used hooks:
+OnInit - logic initialization 
+OnChanges
+OnDestroy - to rpevent memory leaks
 
 
+Example:  import the required interfaces and add them to method
+import { Component, OnInit, OnDestroy } from '@angular/core';
+@Component({
+  selector: 'app-example',
+  template: `<p>Example works!</p>`
+})
+export class ExampleComponent implements OnInit, OnDestroy {
 
+  ngOnInit() {
+    console.log('Component initialized');
+  }
 
+  ngOnDestroy() {
+    console.log('Component destroyed');
+  }
+}
 
+ the **Angluar Lifecycle Hooks with Examples** table 
 
-
-
-
-
-
++---------------------------+--------------------------------------------------+-----------------------------------------------+
+|          Hook             |                    Purpose                       |              Example Use Case                 |
++---------------------------+--------------------------------------------------+-----------------------------------------------+
+| ngOnInit()                | Called once after the component is initialized   | Fetch data from an API                        |
++---------------------------+--------------------------------------------------+-----------------------------------------------+
+| ngOnChanges(changes)      | Called when any @Input() property changes        | React to changes in input-bound properties    |
++---------------------------+--------------------------------------------------+-----------------------------------------------+
+| ngDoCheck()               | Called during every change detection run         | Implement custom change detection logic       |
++---------------------------+--------------------------------------------------+-----------------------------------------------+
+| ngAfterContentInit()      | Called after content is projected                | Access projected content via <ng-content>     |
++---------------------------+--------------------------------------------------+-----------------------------------------------+
+| ngAfterContentChecked()   | Called after every check of projected content    | Respond to changes in projected content       |
++---------------------------+--------------------------------------------------+-----------------------------------------------+
+| ngAfterViewInit()         | Called after the component’s view is initialized| Access child components or DOM elements       |
++---------------------------+--------------------------------------------------+-----------------------------------------------+
+| ngAfterViewChecked()      | Called after every check of the component’s view| Perform actions after view updates            |
++---------------------------+--------------------------------------------------+-----------------------------------------------+
+| ngOnDestroy()             | Called just before the component is destroyed    | Clean up resources like subscriptions/timers  |
++---------------------------+--------------------------------------------------+-----------------------------------------------+
 
 
 
