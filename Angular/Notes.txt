@@ -508,3 +508,312 @@ export class ExampleComponent implements OnInit, OnDestroy {
 
 
 <<h2>> Creating Additional Components
+
+creating catalog component, site-header component
+
+cmd> ng generate component catalog
+cmd> ng generate component site-header
+
+
+for each catalog 4 files will be created as below
+
+catalog component is created at /src/app/catalog/  with the following files
+1) catalog.component.css
+2) catalog.component.html
+3) catalog.component.spec.ts
+4) catalog.component.ts
+
+
+site-header component is created at /src/app/site-header/  with the following files
+1) site-header.component.css
+2) site-header.component.html
+3) site-header.component.spec.ts
+4) site-header.component.ts
+
+
+catalog component codes
+
+## /src/app/catalog/catalog.component.css
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.filters {
+  display: flex;
+  justify-content: space-between;
+  padding: 25px 200px;
+}
+
+.filters button {
+  width: 100px;
+}
+
+.products {
+  margin: 0 100px;
+  border-top: 2px solid #999;
+}
+
+.product-item {
+  border-bottom: 2px solid #999;
+}
+
+/* Product Details */
+.product {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 25px;
+}
+
+.product .product-details {
+  display: flex;
+  align-items: center;
+}
+
+.product img {
+  width: 125px;
+}
+
+.product .product-info {
+  margin-left: 25px;
+}
+
+.product .name {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.product .description {
+  margin-top: 3px;
+  font-size: 18px;
+}
+
+.product .category {
+  margin-top: 20px;
+  color: #777;
+}
+
+.product .price {
+  display: flex;
+  flex-direction: column;
+  font-size: 25px;
+  justify-content: space-around;
+  align-items: center;
+  min-width: 190px;
+  color: #555;
+  border-left: 2px solid #aaa;
+  margin-left: 50px;
+}
+
+.product .price button {
+  padding: 10px;
+  width: 100px;
+}
+
+
+
+## /src/app/catalog/catalog.component.html
+<div class="container">
+  <div class="filters">
+    <a class="button">Heads</a>
+    <a class="button">Arms</a>
+    <a class="button">Torsos</a>
+    <a class="button">Bases</a>
+    <a class="button">All</a>
+  </div>
+
+  <ul class="products">
+    <li class="product-item">
+      <div class="product">
+        <div class="product-details">
+          <img src="" alt="" />
+          <div class="product-info">
+            <div class="name"></div>
+            <div class="description"></div>
+            <div class="category">Part Type: </div>
+          </div>
+        </div>
+        <div class="price">
+          <div></div>
+          <button class="cta">Buy</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+
+
+## /src/app/catalog/catalog.component.spec.ts
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CatalogComponent } from './catalog.component';
+describe('CatalogComponent', () => {
+  let component: CatalogComponent;
+  let fixture: ComponentFixture<CatalogComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ CatalogComponent ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(CatalogComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+
+
+
+## /src/app/catalog/catalog.component.ts
+import { Component, OnInit } from '@angular/core';
+@Component({
+  selector: 'bot-catalog',
+  templateUrl: './catalog.component.html',
+  styleUrls: ['./catalog.component.css']
+})
+export class CatalogComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}
+
+
+
+
+site-header component codes
+## /src/app/site-header/site-header.component.css
+.container {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24px;
+  margin-bottom: 10px;
+  margin: -3px -8px 0 -8px;
+  padding: 0 8px 5px 8px;
+  border-bottom: 2px solid #818285;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.left * {
+  margin-right: 25px;
+}
+
+.logo {
+  height: 65px;
+}
+
+.cart {
+  display: flex;
+  position: relative;
+}
+
+.cartCount {
+  position: absolute;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  top: -7px;
+  right: -15px;
+  border-radius: 25px;
+  background-color: #f590c4;
+  color: white;
+  font-size: 14px;
+}
+
+.cartCount div {
+  margin: auto;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  margin-right: 25px;
+}
+
+.right * {
+  margin-left: 25px;
+}
+
+.right img {
+  height: 40px;
+  cursor: pointer;
+}
+
+.sign-out {
+  position: absolute;
+  top: 60px;
+  right: 30px;
+}
+## /src/app/site-header/site-header.component.html
+<div class="container">
+  <div class="left">
+    <img class="logo" src="/assets/images/logo.png" alt="Logo" />
+    <a>Home</a>
+    <a href="">Catalog</a>
+    <div class="cart">
+      <a href="">Cart</a>
+    </div>
+  </div>
+  <div class="right">
+    <a href="">Sign In</a>
+    <a href="" class="cta">Register</a>
+  </div>
+</div>
+## /src/app/site-header/site-header.component.spec.ts
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { SiteHeaderComponent } from './site-header.component';
+
+describe('SiteHeaderComponent', () => {
+  let component: SiteHeaderComponent;
+  let fixture: ComponentFixture<SiteHeaderComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ SiteHeaderComponent ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(SiteHeaderComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+
+## /src/app/site-header/site-header.component.ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'bot-site-header',
+  templateUrl: './site-header.component.html',
+  styleUrls: ['./site-header.component.css']
+})
+export class SiteHeaderComponent {
+
+  constructor() { }
+
+}
+
+
+
