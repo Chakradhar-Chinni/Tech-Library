@@ -13,6 +13,7 @@
 
   
 <<h2>> Binding to component data with Interpolation
+output image: One product on Catalog page
 
 1. product.model.ts - Interface IProduct is created
 2. catalog.component.ts
