@@ -1,19 +1,19 @@
 
-<h2>
+<<h2>>
 Angular 16 is used for this course. Released in 2023
 
 old web frameworks : click on "add to cart" . webPage refreshes and loads everything again
 modern frameworks: cart gets updated without much changes
 
 
-<h2>
+<<h2>>
 routing takes care of such things
 component - a web page item 
 angular application would have hierarchies, like many child scenarios
 
 
 
-<h2>
+<<h2>>
 Type Script is used for its type safety.
 
 Type sctipt:
@@ -29,14 +29,17 @@ Javascript doesn't provide typesafety, but TS does
 
 
 
-<h2> Major Typescript components
+
+
+<<h2>>
+Major Typescript components
 Static Typing
 Interfaces
 Class Properties
 Public/Private accessibility
 
 
-<h2>
+<<h2>>
 Setting up development environment
 Visual Studio Code
 nodejs (nvm)
