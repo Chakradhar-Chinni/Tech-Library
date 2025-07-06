@@ -1,5 +1,6 @@
 
 <<h2>> Interpolation Expressions
+output image: Interploation demo
 
 {{ }} interplolation syntax can evaluate simple expression, like example below. It's better to not use it for complex calculations
 
@@ -11,7 +12,12 @@
 <bot-home>  </bot-home>
 <bot-catalog> </bot-catalog>
 
-  
+
+
+
+
+
+    
 <<h2>> Binding to component data with Interpolation
 output image: One product on Catalog page
 
