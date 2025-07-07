@@ -19,3 +19,12 @@ https://dotnettutorials.net/lesson/web-api-interview-questions/
 ## SQL 
 https://www.geeksforgeeks.org/sql-interview-questions/
 https://www.geeksforgeeks.org/sql-query-interview-questions/
+
+
+Front End Preparation
+
+HTML 
+CSS
+JavaScript
+Jquery
+Angular
