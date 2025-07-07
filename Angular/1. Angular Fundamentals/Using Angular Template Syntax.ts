@@ -4,7 +4,7 @@ output image: Interploation demo
 
 {{ }} interplolation syntax can evaluate simple expression, like example below. It's better to not use it for complex calculations
 
-
+ 
 ##/src/app/app.component.html
     
 <bot-site-header></bot-site-header>
