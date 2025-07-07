@@ -27,4 +27,5 @@ HTML
 CSS
 JavaScript
 Jquery
+TypeScript
 Angular
