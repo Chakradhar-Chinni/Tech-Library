@@ -489,6 +489,13 @@ export class CatalogComponent {
 
 <<h2>> Handling events with event bindings
 
+output image:
+Clicked on Heads button
+Clicked on Arms button
+Clicked on Torsos button
+Clicked on Bases button
+Clicked on All button
+ 
 **1. User Clicks the Button**
 ```html
 <a class="button" (click)="filter='Heads'">Heads</a>
