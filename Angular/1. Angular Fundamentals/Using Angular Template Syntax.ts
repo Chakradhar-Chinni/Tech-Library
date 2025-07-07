@@ -489,6 +489,50 @@ export class CatalogComponent {
 
 <<h2>> Handling events with event bindings
 
+**1. User Clicks the Button**
+```html
+<a class="button" (click)="filter='Heads'">Heads</a>
+```
+- The `(click)` event binding is triggered.
+- Angular executes the expression: `filter = 'Heads'`.
+
+**2. Component Property Updates**
+```ts
+filter: string = '';
+```
+- The `filter` property in the `CatalogComponent` is now updated to `'Heads'`.
+
+**3. Angular Change Detection Runs**
+- Angular automatically detects that a bound property (`filter`) has changed.
+- It re-evaluates any bindings or expressions in the template that depend on `filter`.
+
+ **4. Template Re-renders the Product List**
+```html
+<li class="product-item" *ngFor="let product of getFilteredProducts()">
+```
+- Angular calls the `getFilteredProducts()` method again.
+- Inside this method:
+  ```ts
+  return this.products.filter(product => product.category === this.filter);
+  ```
+  - Since `filter = 'Heads'`, only products with `category === 'Heads'` are returned.
+
+ **5. Filtered Products Are Displayed**
+- The DOM is updated to show only the products in the "Heads" category.
+- All other products are removed from the view.
+
+### 🔁 Summary of the Flow
+
+| Step | What Happens |
+|------|--------------|
+| 1 | User clicks "Heads" |
+| 2 | `filter` is set to `'Heads'` |
+| 3 | Angular detects the change |
+| 4 | `getFilteredProducts()` returns only "Heads" products |
+| 5 | View updates to show filtered list |
+
+
+
 ## /src/app/catalog/catalog.component.ts
 import { Component, OnInit } from '@angular/core';
 import {IProduct } from './product.model';
@@ -739,53 +783,6 @@ export class CatalogComponent {
 
 
 
-**1. User Clicks the Button**
-```html
-<a class="button" (click)="filter='Heads'">Heads</a>
-```
-- The `(click)` event binding is triggered.
-- Angular executes the expression: `filter = 'Heads'`.
-
-**2. Component Property Updates**
-```ts
-filter: string = '';
-```
-- The `filter` property in the `CatalogComponent` is now updated to `'Heads'`.
-
-**3. Angular Change Detection Runs**
-- Angular automatically detects that a bound property (`filter`) has changed.
-- It re-evaluates any bindings or expressions in the template that depend on `filter`.
-
- **4. Template Re-renders the Product List**
-```html
-<li class="product-item" *ngFor="let product of getFilteredProducts()">
-```
-- Angular calls the `getFilteredProducts()` method again.
-- Inside this method:
-  ```ts
-  return this.products.filter(product => product.category === this.filter);
-  ```
-  - Since `filter = 'Heads'`, only products with `category === 'Heads'` are returned.
-
- **5. Filtered Products Are Displayed**
-- The DOM is updated to show only the products in the "Heads" category.
-- All other products are removed from the view.
-
----
-
-### 🔁 Summary of the Flow
-
-| Step | What Happens |
-|------|--------------|
-| 1 | User clicks "Heads" |
-| 2 | `filter` is set to `'Heads'` |
-| 3 | Angular detects the change |
-| 4 | `getFilteredProducts()` returns only "Heads" products |
-| 5 | View updates to show filtered list |
-
----
-
-Would you like to add a visual indicator to highlight the selected filter button? Or maybe add animations when the product list updates?
 
 
 
