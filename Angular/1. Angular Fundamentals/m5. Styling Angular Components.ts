@@ -177,5 +177,16 @@ a{
 
 
 
+<<h2>> NgClass directive
 
+
+
+
+
+
+
+
+
+
+<<h2>> NgStyle directive
   
