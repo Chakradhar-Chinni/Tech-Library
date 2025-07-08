@@ -1070,6 +1070,47 @@ remove safe navigation operator and reset code to previous state
 
 
 
+ 
+
+
+<<h2>> Handling and showing content with *ngIf
+output image: using *ngIf for conditional rendering of prices
+
+1. <div class="price"> is using *ngIf to conditionally display prices
+
+
+## /src/app/catalog/catalog.component.html
+<div class="container">
+  <div class="filters">
+    <a class="button" (click)="filter='Heads'">Heads</a>
+    <a class="button" (click)="filter='Arms'">Arms</a>
+    <a class="button" (click)="filter='Torsos'">Torsos</a>
+    <a class="button" (click)="filter='Bases'">Bases</a>
+    <a class="button" (click)="filter=''">All</a>
+  </div>
+
+  <ul class="products">
+    <li class="product-item" *ngFor = "let product of getFilteredProducts()" >
+      <div class="product">
+        <div class="product-details">
+          <img [src]=" getImageUrl(product)" [alt]="product?.name" />
+          <div class="product-info">
+            <div class="name"> {{ product.name}} </div>
+            <div class="description"> {{product.description}} </div>
+            <div class="category">Part Type: {{product.category}} </div>
+          </div>
+        </div>
+        <div class="price">
+          <div *ngIf="product.discount===0">${{product.price.toFixed(2)}}</div>
+          <div *ngIf="product.discount >0"class="discount">
+            ${{(product.price *(1-product.discount)).toFixed(2)}}
+          </div>
+          <button class="cta">Buy</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
 
 
 
@@ -1077,6 +1118,53 @@ remove safe navigation operator and reset code to previous state
 
 
 
+
+
+           
+
+
+
+
+<<h2>> Formatting Data with Angular Pipes
+
+1. <div class="price"> is using pipe symbol followed by currency keyword, this built in pipe is great as $ .toFixed() need not be mentioned (refer previous module)
+2. currency pipe by default uses $. to use other currency follow the syntax below
+   {{product.price | currency:'INR' }}
+   {{product.price | currency:'GBP' }}
+
+
+## /src/app/catalog/catalog.component.html
+<div class="container">
+  <div class="filters">
+    <a class="button" (click)="filter='Heads'">Heads</a>
+    <a class="button" (click)="filter='Arms'">Arms</a>
+    <a class="button" (click)="filter='Torsos'">Torsos</a>
+    <a class="button" (click)="filter='Bases'">Bases</a>
+    <a class="button" (click)="filter=''">All</a>
+  </div>
+
+  <ul class="products">
+    <li class="product-item" *ngFor = "let product of getFilteredProducts()" >
+      <div class="product">
+        <div class="product-details">
+          <img [src]=" getImageUrl(product)" [alt]="product?.name" />
+          <div class="product-info">
+            <div class="name"> {{ product.name}} </div>
+            <div class="description"> {{product.description}} </div>
+            <div class="category">Part Type: {{product.category}} </div>
+          </div>
+        </div>
+        <div class="price">
+          <div *ngIf="product.discount===0">{{product.price | currency }}</div>
+          <div *ngIf="product.discount >0"class="discount">
+            {{(product.price *(1-product.discount)) | currency}}
+         </div>
+          <button class="cta">Buy</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
 
 
 
