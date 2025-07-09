@@ -564,3 +564,18 @@ export class AppComponent {
     </li>
   </ul>
 </div>
+
+
+
+
+
+
+
+
+
+
+              
+
+
+<<h2>> Using CSS Frameworks with Angular
+scss, bootstrap can be used, by simply changing styles[] value in component.ts file
