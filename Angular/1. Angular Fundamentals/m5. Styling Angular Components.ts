@@ -179,6 +179,9 @@ a{
 
 <<h2>> NgClass directive
 
+
+In short: NgClass is used to apply css files conditionally. NgStyle is used to apply inline CSS conditionally.
+
 ngClass is built-in directive to adynamically apply CSS classes to HTML elements based on component logic
     Syntax:  <div [ngClass]="{'class-name': condition}"></div>
 
@@ -492,9 +495,72 @@ export class CatalogComponent {
 
 
 
+
+
+
+
 <<h2>> NgStyle directive
 ngClass is built-in directive to adynamically apply inline CSS to HTML elements based on component logic
 
 --------------------------------------------Sample Code Example--------------------------------------------
+Syntax: <div [ngStyle]="{'property': value}"></div>
+
+    
+<!-- app.component.ts -->
+export class AppComponent {
+  isSpecial = true;
+}
+
+<!-- app.component.html -->
+<div [ngStyle]="{'font-weight': isSpecial ? 'bold' : 'normal', 'color': isSpecial ? 'blue' : 'gray'}">
+  This text is styled dynamically.
+</div>
 
 ----------------------------------------------------------------------------------------
+
+
+##src\app\catalog\catalog.component.html
+    
+<div class="container">
+  <div class="filters">
+    <a class="button " (click)="filter='Heads'">Heads</a>
+    <a class="button" (click)="filter='Arms'">Arms</a>
+    <a class="button" (click)="filter='Torsos'">Torsos</a>
+    <a class="button" (click)="filter='Bases'">Bases</a>
+    <a class="button" (click)="filter=''">All</a>
+  </div>
+
+  <ul class="products">
+    <li class="product-item" *ngFor = "let product of getFilteredProducts()" >
+      <div class="product">
+        <div class="product-details">
+          <img [src]=" getImageUrl(product)" [alt]="product?.name" />
+          <div class="product-info">
+            <div class="name"> {{ product.name}} </div>
+            <div class="description"> {{product.description}} </div>
+            <div class="category">Part Type: {{product.category}} </div>
+          </div>
+        </div>
+        <div class="price">
+
+          <!-- <div [ngClass]="{'strikethrough' : product.discount>0}">
+            {{product.price | currency }}
+          </div> -->
+
+              //new
+          <div [ngStyle]="{color: product.discount>0 ? 'red':''}"
+                [ngClass]="{strikethrough: product.discount>0}">
+            {{product.price | currency}}
+          </div>
+
+          <div *ngIf="product.discount >0" class="discount">
+            {{(product.price *(1-product.discount)) | currency}}
+          </div>
+
+
+          <button class="cta">Buy</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
