@@ -380,3 +380,94 @@ export class ParentComponent {
     this.message = msg;
   }
 }
+
+
+
+
+
+
+
+
+
+<<h2>> Communicating with Parent Components Using Outputs
+
+
+## src\app\product-details\product-details.component.html
+<div class="product">
+        <div class="product-details">
+          <img [src]=" getImageUrl(product)" [alt]="product?.name" />
+          <div class="product-info">
+            <div class="name"> {{ product.name}} </div>
+            <div class="description"> {{product.description}} </div>
+            <div class="category">Part Type: {{product.category}} </div>
+          </div>
+        </div>
+
+        <div class="price">
+          <div [ngStyle]="{color: product.discount>0 ? 'red':''}"
+                [ngClass]="{strikethrough: product.discount>0}">
+            {{product.price | currency}}
+          </div>
+
+          <div *ngIf="product.discount >0" class="discount">
+            {{(product.price *(1-product.discount)) | currency}}
+          </div>
+
+          <button class="cta" (click)="buyButtonClicked(product)">Buy</button>
+        </div>
+</div>
+
+
+
+
+## src\app\product-details\product-details.component.ts
+import { Component, Input,Output, EventEmitter} from '@angular/core';
+import {IProduct } from '../catalog/product.model';
+
+@Component({
+  selector: 'bot-product-details',
+  templateUrl: './product-details.component.html',
+  styleUrls: ['./product-details.component.css']
+})
+export class ProductDetailsComponent  {
+
+  @Input() product! : IProduct;
+  @Output() buy = new EventEmitter();
+
+  getImageUrl(product : IProduct)
+   {
+    return '/assets/images/robot-parts/'+product.imageName;
+   }
+
+   buyButtonClicked(product: IProduct)
+   {
+      console.log(`Product ${product.name} added - product-details.component.ts`);
+      this.buy.emit(product);
+   }
+}
+
+
+
+
+
+
+## src\app\catalog\catalog.component.html
+<div class="container">
+  <div class="filters">
+    <a class="button " (click)="filter='Heads'">Heads</a>
+    <a class="button" (click)="filter='Arms'">Arms</a>
+    <a class="button" (click)="filter='Torsos'">Torsos</a>
+    <a class="button" (click)="filter='Bases'">Bases</a>
+    <a class="button" (click)="filter=''">All</a>
+  </div>
+
+  <ul class="products">
+    <li class="product-item" *ngFor = "let product of getFilteredProducts()" >
+      <bot-product-details
+      [product] = "product"
+      (buy)="addToCart(product)"
+      ></bot-product-details>
+    </li>
+  </ul>
+</div>
+
