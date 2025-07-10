@@ -5,3 +5,10 @@ Observables
 Proxy Setup 
 GET request
 POST Request
+
+
+<<h2>> Observables
+
+Callbacks
+Promises are better that callbacks
+Observables: has streams of data, better than promises
