@@ -321,4 +321,62 @@ export class ProductDetailsComponent  {
 </div>
 
 
-<<h2>> Communicating with Parent Components Using Outputs
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
+<<h2>> Communicating with Parent Components Using Outputs - Quick Example
+
+1. Child.Component.ts
+    - messageEvent is decorated with @Output indicates that data will be sent to parent component
+    - new EventEmitter<string>() EventEmitter is a class that allows you to emit custom events like <string> <int> <object>
+2. Parent.component.ts
+    - "receiveMessage($event)" $event is a special variable that represents the data emitted by an event
+    - $event contains the value emitted by the child — in this case, a string like "Hello from Child!".
+
+    
+
+
+##  child.component.ts
+import { Component, Output, EventEmitter } from '@angular/core';
+@Component({
+  selector: 'app-child',
+  template: `
+    <button (click)="sendMessage()">Send Message to Parent</button>
+  `
+})
+export class ChildComponent {
+  @Output() messageEvent = new EventEmitter<string>();
+
+  sendMessage() {
+    this.messageEvent.emit('Hello from Child!');
+  }
+}
+
+
+##  parent.component.ts
+import { Component } from '@angular/core';
+@Component({
+  selector: 'app-parent',
+  template: `
+    <app-child (messageEvent)="receiveMessage($event)"></app-child>
+    <p>Message from child: {{ message }}</p>
+  `
+})
+export class ParentComponent {
+  message = '';
+
+  receiveMessage(msg: string) {
+    this.message = msg;
+  }
+}
