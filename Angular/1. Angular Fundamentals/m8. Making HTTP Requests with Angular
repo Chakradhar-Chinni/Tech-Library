@@ -7,8 +7,44 @@ GET request
 POST Request
 
 
+
+
 <<h2>> Observables
 
 Callbacks
 Promises are better that callbacks
 Observables: has streams of data, better than promises
+
+
+
+
+
+<<h2>> Setting up the Proxy server
+from joes-robot-shop > m8 branch > download api-server folder
+paste the api-server folder in /src/
+cmd > cd api-server
+cmd > npm install 
+cmd > npm start
+
+backedn server starts listening on localhost:8081
+
+using this data server products will be displayed on web page
+
+
+## /src/proxy.conf.json (create)
+{
+  "/api":{
+    "target":"http://localhost:8081",
+    "secure":false
+  }
+}
+
+
+
+## /angular.json (update)
+
+"development": {
+              "browserTarget": "joes-robot-shop:build:development",
+              "proxyConfig": "src/proxy.conf.json"
+            }
+
