@@ -327,6 +327,16 @@ export class ProductDetailsComponent  {
 
 
 
+Notes:
+
+
+| **Syntax**   | **Purpose**         | **Direction**        | **Example**                    |
+|--------------|---------------------|-----------------------|--------------------------------|
+| `[prop]`     | Property Binding     | Component → View      | `[src]="imageUrl"`             |
+| `(event)`    | Event Binding        | View → Component      | `(click)="onClick()"`          |
+| `[(...)]`    | Two-Way Binding      | Both                  | `[(ngModel)]="username"`       |
+
+
 
 
 
@@ -389,8 +399,26 @@ export class ParentComponent {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 <<h2>> Communicating with Parent Components Using Outputs
 
+1. product-details.component.html
+    - buy button triggers buyButtonClicked()
+2. product-details.component.ts
+   - buy is @Output decorator and uses EventEmitter()
+   - this.but.emit() emits to parent component
+3. catalog.template.html
+   - (buy) listens to child component and renders data
 
 ## src\app\product-details\product-details.component.html
 <div class="product">
