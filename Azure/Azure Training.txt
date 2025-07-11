@@ -1,0 +1,13 @@
+<<h2>> Azure Dashboards
+
+Create a dashboard and pin any resources to it for quick access
+
+
+
+<<h2>> Azure Virtual Networks
+https://www.geeksforgeeks.org/devops/microsoft-azure-virtual-network/
+
+UseCase: Host website on Azure and its database on private subnet.
+In this way,  website is available on internet. database is not available on internet. Only website can talk to database on private network
+
+Using NSG's, Firewalls, rules private Vnet is secured.
