@@ -15,6 +15,15 @@ Callbacks
 Promises are better that callbacks
 Observables: has streams of data, better than promises
 
+Sync Vs Async : 
+Promise
+Data Streaming
+
+Promise vs observable
+
+observable pattern:
+observable ==> Observer ==> Handler
+
 
 
 
