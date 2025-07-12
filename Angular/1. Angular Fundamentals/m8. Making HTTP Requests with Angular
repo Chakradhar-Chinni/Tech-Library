@@ -11,19 +11,35 @@ POST Request
 
 <<h2>> Observables
 
-Callbacks
-Promises are better that callbacks
-Observables: has streams of data, better than promises
-
 Sync Vs Async : 
-Promise
-Data Streaming
+1. synchronous (sync) operations execute one after another, blocking further execution until completion. Asynchronous (async) operations, on the other hand, allow the program to continue executing other tasks while the async operation runs in the background, often using callbacks or promises to handle the result later. 
+2. On a HttpRequest main thread gets blocked till response is received from server on sync code. But on Async, main thread is not blocked as request is made using other thread
 
-Promise vs observable
+Promise: promises are Javascript way to handle async requests. on receiving response, promises return true or false
+
+Data Streaming: Server sends larger files in smaller chunks of data to client, so multiple data chunks should be captured by client. [Ex: large files, live streaming]
+
+Promise vs observable:
+1. Promise finishes execution on receiving first chunk of data. not suitable for handling remaining chunks of data. 
 
 observable pattern:
 observable ==> Observer ==> Handler
 
+1. Observable
+  - This is event emitter, which emits 
+  .Next()
+  .Error()
+  .Completion()
+
+2. Observer
+  - This is Event Listener i.e. subscriber to observable
+    .Subscribe()
+
+3. Handler
+  - This is Event Handler
+  .Next() 
+  .Error()
+  .Completion()
 
 
 
