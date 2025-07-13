@@ -266,3 +266,416 @@ export class CatalogComponent {
 }
 
 
+
+
+
+
+
+to learn: using snapshots with routing
+
+
+<<h2>> Defining and accessing Route parameters
+
+1. home.component.html
+   - After adding routerLink they respond.
+   - for example, after clicking robot arms website goes to catalog page & filters arms, url would be http://localhost:4200/catalog/Arms [Image: route: catalog/arms]
+   - filters in the catalog page donot update url because filters are using (click) event in catalog.component.html [Image: clicked Bases but url shows /Arms]
+   
+2. catalog.component.html
+   - to solve this routerLink should be used instead of (click) [Image: clicked Torsos and url also responds and shows Torsos]
+
+3. app-routing.module.ts
+   - catalog/:filter it accepts additional filters after catalog
+
+4. catalog.component.ts
+   - Activate route imported.
+   - subscribed to params
+
+## src\app\home\home.component.html
+<div class="container">
+  <div class="hero"></div>
+
+  <div class="promoted">
+    <img src="/assets/images/robot-parts/head-friendly.png" alt="Friendly Robot Head" />
+    <div class="promo-text">
+      <div class="promo-main-text">DISPELL THE ROBOT APOCALYPSE MYTH</div>
+      <div class="promo-sub-text cta">
+        <div>SAVE 20% ON OUR FRIENDLIEST</div>
+        <div>ROBOT HEADS</div>
+      </div>
+    </div>
+    <img src="/assets/images/robot-parts/head-big-eye.png" alt="Big Eye Head" />
+  </div>
+
+  <ul class="robot-parts-cta">
+    <li>
+      <a routerLink= "/catalog/Heads" class="part"> //new
+        <img src="/assets/images/robot-parts/head-shredder.png" alt="Robot Heads" />
+        <div>ROBOT HEADS</div>
+      </a>
+    </li>
+    <li> 
+      <a routerLink= "/catalog/Arms" class="part"> //new
+        <img src="/assets/images/robot-parts/arm-articulated-claw.png" alt="Robot Arms" />
+        <div>ROBOT ARMS</div>
+      </a>
+    </li>
+    <li>
+      <a routerLink= "/catalog/Torsos" class="part"> //new
+        <img src="/assets/images/robot-parts/torso-gauged.png" alt="Robot Torsos" />
+        <div>ROBOT TORSOS</div>
+      </a>
+    </li>
+    <li>
+      <a routerLink= "/catalog/Bases" class="part"> //new
+        <img src="/assets/images/robot-parts/base-spring.png" alt="Robot Bases" />
+        <div>ROBOT BASES</div>
+      </a>
+    </li>
+  </ul>
+
+  <div class="white-paper">
+    <img src="/assets/images/robot-apocalypse.png" alt="Robot Apocalyse" />
+    <div class="text">
+      <div>
+        <div class="header-text cta">Will they kill us all?</div>
+        <div class="sub-text">
+          <p>10 Myths About the</p>
+          <p>Robot Apocalyse</p>
+        </div>
+      </div>
+      <div class="large-text">WHITE PAPER</div>
+      <a href="" class="learn-more">Learn More</a>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+## src\app\catalog\catalog.component.html
+ <div class="container">
+  <div class="filters">
+    <a class="button " routerLink="/catalog/Heads">Heads</a> //new 
+    <a class="button"  routerLink="/catalog/Arms">Arms</a> //new
+    <a class="button"  routerLink="/catalog/Torsos">Torsos</a> //new
+    <a class="button"  routerLink="/catalog/Bases">Bases</a> //new
+    <a class="button"  routerLink="/catalog/Arms"  >All</a> //new
+  </div> 
+
+  <ul class="products">
+    <li class="product-item" *ngFor = "let product of getFilteredProducts()" >
+      <bot-product-details
+      [product] = "product"
+      (buy)="addToCart(product)"
+      ></bot-product-details>
+    </li>
+  </ul>
+</div>
+
+
+
+
+## src\app\app-routing.module.ts
+import { NgModule } from '@angular/core';
+import {RouterModule,Routes} from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import {CatalogComponent} from './catalog/catalog.component';
+import {CartComponent} from './cart/cart.component';
+
+const routes : Routes =[
+  {path: 'home',component:HomeComponent},
+  {path: 'catalog/:filter',component:CatalogComponent}, //new
+  {path: 'cart',component:CartComponent},
+  {path:'',redirectTo:'/home',pathMatch:'full'}
+];
+
+@NgModule({
+  declarations: [],
+  imports: [
+    RouterModule.forRoot(routes)
+  ],
+  exports:[RouterModule]
+})
+export class AppRoutingModule { }
+
+
+
+
+
+## src\app\catalog\catalog.component.ts
+import { Component, OnInit } from '@angular/core';
+import {IProduct } from './product.model';
+import { ProductService } from './product.service';
+import { CartService } from '../cart/cart.service';
+import {ActivatedRoute, Router} from '@angular/router';
+
+
+@Component({
+  selector: 'bot-catalog',
+  templateUrl: './catalog.component.html',
+  styleUrls: ['./catalog.component.css']
+})
+export class CatalogComponent {
+   products: any;
+   filter : string = '';
+   //cart : IProduct[] = [];
+    // private cartSvc: CartService = inject(CartService);
+
+   constructor(
+              private cartSvc: CartService,
+              private productSvc: ProductService,
+              private router: Router,
+              private route: ActivatedRoute //new
+              ) {  }
+
+
+   ngOnInit()
+   {
+    this.productSvc.getProducts().subscribe(products =>{
+      this.products = products;
+    })
+    this.route.params.subscribe((params)=>{ //new
+      this.filter = params['filter'] ?? '';
+    })
+   }
+
+   addToCart(product: IProduct)
+   {
+    this.cartSvc.add(product)
+    this.router.navigate(['/cart'])
+   }
+
+   getdiscountedClasses(product : IProduct)
+   {
+    return{ strikethrough:product.discount>0 };
+        /*
+        if(product.discount > 0)
+            {
+              return 'strikethrough';
+            }
+            else
+            {
+              return '';
+            }
+        */
+   }
+
+
+
+   getFilteredProducts()
+   {
+    return this.filter === ''
+    ? this.products
+    : this.products.filter((product:any) => product.category === this.filter)
+   }
+}
+
+
+
+
+
+<<h2>> Accessing QUery String Parameters
+
+enhancing routing using query parameters (previous module is enhanced very well using query parameters)
+
+1. app-routing.module.ts
+   - path:catalog. query paramaters are optional.
+
+2. home.component.html
+   - [queryParams] are added on <a> tag along with [routerLink]
+
+3. catalog.component.html
+  - [queryParams] are added on <a> tag along with [routerLink]
+  - for All button, [queryParams] are not added so this route navigates to /catalog page. 
+
+4. catalog.component.ts
+  - .subscribe() uses queryParams instead of Params  
+
+
+## src\app\app-routing.module.ts
+import { NgModule } from '@angular/core';
+import {RouterModule,Routes} from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import {CatalogComponent} from './catalog/catalog.component';
+import {CartComponent} from './cart/cart.component';
+
+const routes : Routes =[
+  {path: 'home',component:HomeComponent},
+  {path: 'catalog', component:CatalogComponent}, //new
+  {path: 'cart',component:CartComponent},
+  {path:'',redirectTo:'/home',pathMatch:'full'}
+];
+
+@NgModule({
+  declarations: [],
+  imports: [
+    RouterModule.forRoot(routes)
+  ],
+  exports:[RouterModule]
+})
+export class AppRoutingModule { }
+
+
+
+
+## src\app\home\home.component.html
+<div class="container">
+  <div class="hero"></div>
+
+  <div class="promoted">
+    <img src="/assets/images/robot-parts/head-friendly.png" alt="Friendly Robot Head" />
+    <div class="promo-text">
+      <div class="promo-main-text">DISPELL THE ROBOT APOCALYPSE MYTH</div>
+      <div class="promo-sub-text cta">
+        <div>SAVE 20% ON OUR FRIENDLIEST</div>
+        <div>ROBOT HEADS</div>
+      </div>
+    </div>
+    <img src="/assets/images/robot-parts/head-big-eye.png" alt="Big Eye Head" />
+  </div>
+
+  <ul class="robot-parts-cta">
+    <li>
+      <a routerLink= "/catalog" [queryParams]="{filter:'Heads'}" class="part"> //new
+        <img src="/assets/images/robot-parts/head-shredder.png" alt="Robot Heads" />
+        <div>ROBOT HEADS</div>
+      </a>
+    </li>
+    <li>
+      <a routerLink= "/catalog" [queryParams]="{filter:'Arms'}"  class="part"> //new
+        <img src="/assets/images/robot-parts/arm-articulated-claw.png" alt="Robot Arms" />
+        <div>ROBOT ARMS</div>
+      </a>
+    </li>
+    <li>
+      <a routerLink= "/catalog/Torsos" [queryParams]="{filter:'Torsos'}" class="part"> //new
+        <img src="/assets/images/robot-parts/torso-gauged.png" alt="Robot Torsos" />
+        <div>ROBOT TORSOS</div>
+      </a>
+    </li>
+    <li>
+      <a routerLink= "/catalog/Bases" [queryParams]="{filter:'Bases'}" class="part"> //new
+        <img src="/assets/images/robot-parts/base-spring.png" alt="Robot Bases" />
+        <div>ROBOT BASES</div>
+      </a>
+    </li>
+  </ul>
+
+  <div class="white-paper">
+    <img src="/assets/images/robot-apocalypse.png" alt="Robot Apocalyse" />
+    <div class="text">
+      <div>
+        <div class="header-text cta">Will they kill us all?</div>
+        <div class="sub-text">
+          <p>10 Myths About the</p>
+          <p>Robot Apocalyse</p>
+        </div>
+      </div>
+      <div class="large-text">WHITE PAPER</div>
+      <a href="" class="learn-more">Learn More</a>
+    </div>
+  </div>
+</div>
+
+ 
+
+## src\app\catalog\catalog.component.html
+<div class="container">
+  <div class="filters">
+    <a class="button " routerLink="/catalog" [queryParams]="{filter:'Heads'}">Heads</a>
+    <a class="button"  routerLink="/catalog" [queryParams]="{filter:'Arms'}">Arms</a>
+    <a class="button"  routerLink="/catalog" [queryParams]="{filter:'Torsos'}">Torsos</a>
+    <a class="button"  routerLink="/catalog" [queryParams]="{filter:'Bases'}">Bases</a>
+    <a class="button"  routerLink="/catalog" >All</a>
+  </div>
+
+  <ul class="products">
+    <li class="product-item" *ngFor = "let product of getFilteredProducts()" >
+      <bot-product-details
+      [product] = "product"
+      (buy)="addToCart(product)"
+      ></bot-product-details>
+    </li>
+  </ul>
+</div>
+
+
+ 
+## src\app\catalog\catalog.component.ts
+import { Component, OnInit } from '@angular/core';
+import {IProduct } from './product.model';
+import { ProductService } from './product.service';
+import { CartService } from '../cart/cart.service';
+import {ActivatedRoute, Router} from '@angular/router';
+
+
+@Component({
+  selector: 'bot-catalog',
+  templateUrl: './catalog.component.html',
+  styleUrls: ['./catalog.component.css']
+})
+export class CatalogComponent {
+   products: any;
+   filter : string = '';
+   //cart : IProduct[] = [];
+    // private cartSvc: CartService = inject(CartService);
+
+   constructor(
+              private cartSvc: CartService,
+              private productSvc: ProductService,
+              private router: Router,
+              private route: ActivatedRoute
+              ) {  }
+
+
+   ngOnInit()
+   {
+    this.productSvc.getProducts().subscribe(products =>{
+      this.products = products;
+    })
+    this.route.queryParams.subscribe((params)=>{ //new
+      this.filter = params['filter'] ?? '';
+    })
+   }
+
+   addToCart(product: IProduct)
+   {
+    this.cartSvc.add(product)
+    this.router.navigate(['/cart'])
+   }
+
+   getdiscountedClasses(product : IProduct)
+   {
+    return{ strikethrough:product.discount>0 };
+        /*
+        if(product.discount > 0)
+            {
+              return 'strikethrough';
+            }
+            else
+            {
+              return '';
+            }
+        */
+   }
+
+
+   getFilteredProducts()
+   {
+    return this.filter === ''
+    ? this.products
+    : this.products.filter((product:any) => product.category === this.filter)
+   }
+}
+
+
+
+<<h2>> Styling Active Links
+
+
+
+
+
+
