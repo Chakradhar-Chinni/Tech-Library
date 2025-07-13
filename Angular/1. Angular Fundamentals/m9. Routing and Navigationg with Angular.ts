@@ -69,7 +69,13 @@ export class AppRoutingModule { }
 
 
  <<h2>> Creating Routes for Navigation
+1. Order of routing matters, as Angular check the route one by one
+2. Routes are added to routes array
 
+Output images:
+route localhost:4200/home
+route localhost:4200/catalog
+route localhost:4200/cart
 
 
 ## src\app\app-routing.module.ts
@@ -94,3 +100,68 @@ const routes : Routes =[
   exports:[RouterModule]
 })
 export class AppRoutingModule { }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<<h2>> Creating Redirect Routes
+
+1. routes array has new route with 'redirectTo'
+2. pathMatch property
+    {path:'',redirectTo:'/home',pathMatch:'full'}
+      - http://localhost:4200/ → ✅ Redirects to /home
+      - URL: http://localhost:4200/abc → ❌ No redirect (because the full path is not empty)
+    {path:'',redirectTo:'/home',pathMatch:'prefix'}
+      - URL: http://localhost:4200/ → ✅ Redirects to /home
+      - URL: http://localhost:4200/anything → ✅ Also redirects to /home (which is usually not what you want)
+      - 'prefix' can cause infinite loops. Not Recommended. As order of routing matters, if this route is kept at top, everything would be re-directed to /home because it '' is prefix of every string in JS
+      
+Notes:
+   '/about'.startsWith('') // true
+    True because, The empty string is a valid prefix of any string and matches the position before first character
+
+## src\app\app-routing.module.ts
+import { NgModule } from '@angular/core';
+import {RouterModule,Routes} from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import {CatalogComponent} from './catalog/catalog.component';
+import {CartComponent} from './cart/cart.component';
+
+const routes : Routes =[
+  {path: 'home',component:HomeComponent},
+  {path: 'catalog',component:CatalogComponent},
+  {path: 'cart',component:CartComponent},
+  {path:'',redirectTo:'/home',pathMatch:'full'}
+];
+
+@NgModule({
+  declarations: [],
+  imports: [
+    RouterModule.forRoot(routes)
+  ],
+  exports:[RouterModule]
+})
+export class AppRoutingModule { }
+
+
+
+
+
+
+
+
+
+
+
+
+
