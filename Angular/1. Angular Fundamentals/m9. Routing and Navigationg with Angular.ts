@@ -476,8 +476,8 @@ export class CatalogComponent {
 
 
 
-<<h2>> Accessing QUery String Parameters
-
+<<h2>> Accessing Query String Parameters
+Output image: Heads Catalog using [queryParams]
 enhancing routing using query parameters (previous module is enhanced very well using query parameters)
 
 1. app-routing.module.ts
@@ -673,7 +673,57 @@ export class CatalogComponent {
 
 
 <<h2>> Styling Active Links
+Output Image: routerLink for styling
 
+1. in <a> tag use routerLinkActive="active"
+2. active is the css class name in styles.css (global styles)
+
+
+## src\app\catalog\catalog.component.html
+<div class="container">
+  <div class="filters">
+    <a routerLinkActive="active" class="button"  routerLink="/catalog" [queryParams]="{filter:'Heads'}">Heads</a> //new 
+    <a routerLinkActive="active" class="button"  routerLink="/catalog" [queryParams]="{filter:'Arms'}">Arms</a> //new
+    <a routerLinkActive="active" class="button"  routerLink="/catalog" [queryParams]="{filter:'Torsos'}">Torsos</a> //new
+    <a routerLinkActive="active" class="button"  routerLink="/catalog" [queryParams]="{filter:'Bases'}">Bases</a> //new
+    <a routerLinkActive="active" class="button"  routerLink="/catalog" >All</a> //new
+  </div>
+
+  <ul class="products">
+    <li class="product-item" *ngFor = "let product of getFilteredProducts()" >
+      <bot-product-details
+      [product] = "product"
+      (buy)="addToCart(product)"
+      ></bot-product-details>
+    </li>
+  </ul>
+</div>
+
+ 
+
+
+ ## src\app\site-header\site-header.component.html
+ <div class="container">
+  <div class="left">
+    <img class="logo" src="/assets/images/logo.png" alt="Logo" />
+    <a routerLinkActive="active" routerLink="/home">Home</a> //new
+    <a routerLinkActive="active" routerLink="/catalog">Catalog</a> //new
+    <div class="cart"> 
+      <a routerLinkActive="active" routerLink="/cart">Cart</a> //new
+    </div>
+  </div>
+  <div class="right">
+    <a href="">Sign In</a>
+    <a href="" class="cta">Register</a>
+  </div>
+</div>
+
+
+ ## styles.css
+a {
+  color: #444;
+  text-decoration: none;
+}
 
 
 
