@@ -51,3 +51,46 @@ const routes : Routes =[];
   exports:[RouterModule]
 })
 export class AppRoutingModule { }
+
+
+
+1. <router-outlet> tag navigates to different components and render HTML routes based on URL
+## src\app\app.component.html
+
+ <bot-site-header></bot-site-header>
+<router-outlet></router-outlet>
+
+
+
+
+
+
+
+
+
+ <<h2>> Creating Routes for Navigation
+
+
+
+## src\app\app-routing.module.ts
+import { NgModule } from '@angular/core';
+import {RouterModule,Routes} from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import {CatalogComponent} from './catalog/catalog.component';
+import {CartComponent} from './cart/cart.component';
+
+const routes : Routes =[
+  {path: 'home',component:HomeComponent},
+  {path: 'catalog',component:CatalogComponent},
+  {path: 'cart',component:CartComponent}
+
+];
+
+@NgModule({
+  declarations: [],
+  imports: [
+    RouterModule.forRoot(routes)
+  ],
+  exports:[RouterModule]
+})
+export class AppRoutingModule { }
