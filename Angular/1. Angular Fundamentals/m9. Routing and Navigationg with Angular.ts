@@ -164,7 +164,7 @@ export class AppRoutingModule { }
 
 
 
-<<h2>> Linking to Routes
+<<h2>> Linking to Routes on HTML pages
 1. html would have href, angular uses routerLink with in <a> tag
 
  ## src\app\site-header\site-header.component.html
@@ -185,5 +185,84 @@ export class AppRoutingModule { }
 
 
 
+
+
+
+
+
+
+
+
+<<h2>> Navigating to routes from .ts files
+
+Scenario: when Buy is clicked, user should be taken to carts page
+
+1. import {Router} from angular/router
+2. inject router as a service to the constructor
+3. router.navigate() to go to cart page
+
+
+## src\app\catalog\catalog.component.ts
+import { Component, OnInit } from '@angular/core';
+import {IProduct } from './product.model';
+import { ProductService } from './product.service';
+import { CartService } from '../cart/cart.service';
+import {Router} from '@angular/router'; //new
+
+
+@Component({
+  selector: 'bot-catalog',
+  templateUrl: './catalog.component.html',
+  styleUrls: ['./catalog.component.css']
+})
+export class CatalogComponent {
+   products: any;
+   filter : string = '';
+   //cart : IProduct[] = [];
+    // private cartSvc: CartService = inject(CartService);
+
+   constructor(private cartSvc: CartService,private productSvc: ProductService, private router: Router) //new
+   {
+
+   }
+
+
+   ngOnInit()
+   {
+    this.productSvc.getProducts().subscribe(products =>{
+      this.products = products;
+    })
+   }
+
+   addToCart(product: IProduct)
+   {
+    this.cartSvc.add(product)
+    this.router.navigate(['/cart']) //new
+   }
+
+   getdiscountedClasses(product : IProduct)
+   {
+    return{ strikethrough:product.discount>0 };
+        /*
+        if(product.discount > 0)
+            {
+              return 'strikethrough';
+            }
+            else
+            {
+              return '';
+            }
+        */
+   }
+
+
+
+   getFilteredProducts()
+   {
+    return this.filter === ''
+    ? this.products
+    : this.products.filter((product:any) => product.category === this.filter)
+   }
+}
 
 
