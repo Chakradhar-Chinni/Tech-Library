@@ -164,4 +164,26 @@ export class AppRoutingModule { }
 
 
 
+<<h2>> Linking to Routes
+1. html would have href, angular uses routerLink with in <a> tag
+
+ ## src\app\site-header\site-header.component.html
+<div class="container">
+  <div class="left">
+    <img class="logo" src="/assets/images/logo.png" alt="Logo" />
+    <a routerLink="/home">Home</a>
+    <a routerLink="/catalog">Catalog</a>
+    <div class="cart">
+      <a routerLink="/cart">Cart</a>
+    </div>
+  </div>
+  <div class="right">
+    <a href="">Sign In</a>
+    <a href="" class="cta">Register</a>
+  </div>
+</div>
+
+
+
+
 
