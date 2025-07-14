@@ -141,3 +141,97 @@ export class SignInComponent {
 <<h2>> Submitting a template driven form
 
 
+## src\app\user\sign-in\sign-in.component.html
+<div class="container">
+  <form class="form" (ngSubmit)="signIn()">
+    <img class="logo" src="/assets/images/logo.png" />
+    <div class="sign-in">Sign In</div>
+    <div class="sub-text">to acquire awesome bots</div>
+    <input
+      name="email"
+      [(ngModel)] = "credentials.email"
+      placeholder="Email Address"
+      type="text"
+    />
+    {{credentials.email}}
+    <input
+      name="password"
+      [(ngModel)] = "credentials.password"
+      placeholder="Password"
+      type="password"
+    />
+    <div class="buttons">
+      <button type="submit"class="button cta">
+        Sign In
+      </button>
+    </div>
+  </form>
+</div>
+
+
+
+
+
+## src\app\user\sign-in\sign-in.component.ts
+
+import { Component } from '@angular/core';
+import { IUserCredentials } from '../user.model';
+import { UserService } from '../user.service';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'bot-sign-in',
+  templateUrl: './sign-in.component.html',
+  styleUrls: ['./sign-in.component.css'],
+})
+export class SignInComponent
+{
+  credentials : IUserCredentials= {email:'',password:''};
+
+  constructor(private userService: UserService,private router: Router) { }
+
+  signIn(){
+    this.userService.signIn(this.credentials).subscribe({
+      next: () => this.router.navigate(['/catalog'])
+    });
+  }
+
+}
+
+
+
+## src\app\user\user.service.ts
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+
+import { IUser, IUserCredentials } from './user.model';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UserService {
+  private user: BehaviorSubject<IUser | null>;
+
+  constructor(private http: HttpClient) {
+    this.user = new BehaviorSubject<IUser | null>(null);
+  }
+
+  getUser(): Observable<IUser | null> {
+    return this.user;
+  }
+
+  signIn(credentials: IUserCredentials): Observable<IUser> {
+    return this.http
+      .post<IUser>('/api/sign-in', credentials)
+      .pipe(map((user: IUser) => {
+        this.user.next(user);
+        return user;
+      }));
+  }
+
+  signOut() {
+    this.user.next(null);
+  }
+}
+
