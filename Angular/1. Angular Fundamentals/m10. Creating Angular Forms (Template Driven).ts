@@ -235,3 +235,195 @@ export class UserService {
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+<<h2>> Providing Better user feedback from our sign-in events
+
+1. Sign In component files
+   - for invalid login, shows error message on login screen 
+  - output image: error message for invalid login
+2. Site header component files
+   - after login, shows profile image on top right corner with option to signout after clicking it
+   - output image: profile icon after user logged in
+
+## src\app\user\sign-in\sign-in.component.html
+<div class="container">
+  <form class="form" (ngSubmit)="signIn()">
+    <img class="logo" src="/assets/images/logo.png" />
+    <div class="sign-in">Sign In</div>
+    <div class="sub-text">to acquire awesome bots</div>
+    <input
+      name="email"
+      [(ngModel)] = "credentials.email"
+      placeholder="Email Address"
+      type="text"
+    />
+    {{credentials.email}}
+    <input
+      name="password"
+      [(ngModel)] = "credentials.password"
+      placeholder="Password"
+      type="password"
+    />
+    <div class="buttons">
+      <button type="submit"class="button cta">
+        Sign In
+      </button>
+    </div>
+    <div class="signInError" *ngIf="signInError">
+      Sign-In Failed. Please try again.
+    </div>
+  </form>
+</div>
+
+
+
+
+      
+## src\app\user\sign-in\sign-in.component.ts
+import { Component } from '@angular/core';
+import { IUserCredentials } from '../user.model';
+import { UserService } from '../user.service';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'bot-sign-in',
+  templateUrl: './sign-in.component.html',
+  styleUrls: ['./sign-in.component.css'],
+})
+export class SignInComponent
+{
+  credentials : IUserCredentials= {email:'',password:''};
+  signInError: boolean = false;
+
+  constructor(private userService: UserService,private router: Router) { }
+
+  signIn(){
+    this.signInError = false;
+    this.userService.signIn(this.credentials).subscribe({
+      next: () => this.router.navigate(['/catalog']),
+      error: () => (this.signInError = true)
+    });
+  }
+
+}
+
+
+
+
+## src\app\user\sign-in\sign-in.component.css
+.signInError {
+  margin: 25px 0;
+  color: red;
+  font-size: 18px;
+  text-align: center;
+}
+
+
+
+## src\app\site-header\site-header.component.html
+<div class="container">
+  <div class="left">
+    <img class="logo" src="/assets/images/logo.png" alt="Logo" />
+    <a routerLinkActive="active" routerLink="/home">Home</a>
+    <a routerLinkActive="active" routerLink="/catalog">Catalog</a>
+    <div class="cart">
+      <a routerLinkActive="active" routerLink="/cart">Cart</a>
+    </div>
+  </div>
+  <div class="right" *ngIf="!user">
+    <a routerLink="/sign-in" routerLinkactive="active">Sign In</a>
+    <a href="" class="cta">Register</a>
+  </div>
+  <div class="right" *ngIf="user">
+    <div>
+      <img src="/assets/images/profile.png" (click)="toggleSignOutMenu()" alt="profile" />
+      <div class="sign-out" *ngIf="showSignOutMenu">
+        <button (click)="signOut()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+## src\app\site-header\site-header.component.ts
+import { Component,OnInit } from '@angular/core';
+import { IUser } from '../user/user.model';
+import { UserService } from '../user/user.service';
+
+@Component({
+  selector: 'bot-site-header',
+  templateUrl: './site-header.component.html',
+  styleUrls: ['./site-header.component.css']
+})
+export class SiteHeaderComponent implements OnInit {
+  user: IUser | null = null;
+  showSignOutMenu: boolean = false;
+
+  constructor(private userService: UserService) { }
+
+  ngOnInit() {
+    this.userService.getUser().subscribe({
+      next: (user) => { this.user = user }
+    })
+  }
+
+  toggleSignOutMenu() {
+    this.showSignOutMenu = !this.showSignOutMenu;
+  }
+
+  signOut() {
+    this.userService.signOut();
+    this.showSignOutMenu = false;
+  }
+}
+
+
+
+<<h2>> Using Template Variables
+
+1. using # template variables can be accessed. ngmodel value can be assigned to template variables
+
+## src\app\user\sign-in\sign-in.component.html
+  
+<div class="container">
+  <form class="form" (ngSubmit)="signIn()">
+    <img class="logo" src="/assets/images/logo.png" />
+    <div class="sign-in">Sign In</div>
+    <div class="sub-text">to acquire awesome bots</div>
+    <input
+      name="email" #myInput="ngModel"  //new
+      [(ngModel)] = "credentials.email"
+      placeholder="Email Address"
+      type="text"
+    />
+    {{credentials.email}} <br>
+    {{myInput.value}}
+    <input
+      name="password"
+      [(ngModel)] = "credentials.password"
+      placeholder="Password"
+      type="password"
+    />
+    <div class="buttons">
+      <button type="submit"class="button cta">
+        Sign In
+      </button>
+    </div>
+    <div class="signInError" *ngIf="signInError">
+      Sign-In Failed. Please try again.
+    </div>
+  </form>
+</div>
+
+
