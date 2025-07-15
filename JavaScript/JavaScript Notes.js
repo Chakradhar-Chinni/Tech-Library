@@ -32,7 +32,7 @@ switch(num)
         document.write("Enter appropriate value");
 }
 
-/* Functions 
+Functions 
 Note: -> After a function is created the function
          needs to be called to execute the specific function
 //Type 1:
@@ -65,8 +65,35 @@ function Alpha()
 }
 Alpha();
 
+
+//understanding Nan, undefined
+1. f2 function gets called because js passes underfined by default - look at output
+2. NaN - Not a Number. When a arithmetic operation is tried to perform on a non-number this error is thrown
+
+function f1(param1,param2)
+{
+    console.log("Function f1 called");
+}
+function f2(param1,param2)
+{
+    console.log("Function f2 called",param1,param2,param1+param2);
+}
+function admin()
+{
+    f1(10,20);
+    f2(20);
+}
+
+admin();
+
+Output:
+Function f1 called
+Function f2 called 20 undefined NaN
+
+
+
 End of Functions
-*/
+
 
 /*
 //Array
