@@ -80,8 +80,8 @@ Alpha();
 
 
 
-<<h2>> understanding Nan, undefined
-1. f2 function gets called because js passes underfined by default - look at output
+<<h2>> understanding NaN, undefined
+1. f2 function gets called because js passes undefined by default - look at output
 2. NaN - Not a Number. When a arithmetic operation is tried to perform on a non-number this error is thrown
 3. use === undefined to check if value is available
     
