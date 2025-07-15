@@ -9,7 +9,11 @@ var a = 10 // variable declaration
 Comment blocks for para-graphs
 */
 
-// Switch case in Java Script
+
+    
+
+    
+<<h2>> Switch case in Java Script
 var num = 4;
 switch(num)
 {
@@ -32,7 +36,12 @@ switch(num)
         document.write("Enter appropriate value");
 }
 
-Functions 
+
+
+
+
+
+<<h2>>Functions 
 Note: -> After a function is created the function
          needs to be called to execute the specific function
 //Type 1:
@@ -66,9 +75,16 @@ function Alpha()
 Alpha();
 
 
-//understanding Nan, undefined
+
+
+
+
+
+<<h2>> understanding Nan, undefined
 1. f2 function gets called because js passes underfined by default - look at output
 2. NaN - Not a Number. When a arithmetic operation is tried to perform on a non-number this error is thrown
+3. use === undefined to check if value is available
+    
 
 function f1(param1,param2)
 {
@@ -76,6 +92,12 @@ function f1(param1,param2)
 }
 function f2(param1,param2)
 {
+    if (param1 === undefined && param2 === undefined)
+    {
+        console.log("values are not provided");
+        return;
+    }
+    
     console.log("Function f2 called",param1,param2,param1+param2);
 }
 function admin()
@@ -94,17 +116,24 @@ Function f2 called 20 undefined NaN
 
 End of Functions
 
+    
 
-/*
-//Array
+
+
+
+    
+<<h2>>Array
 var alpha = ["A","B","C","D"]; // array
 alpha.push(10);        //adding new element to array
 alpha.push("New Car"); //adding new element to array
 document.write(alpha); //printing array
-*/
 
-//Objects
-/*
+
+
+
+
+
+<<h2>> Objects
 //Type 1
 var cars =  //creating object cars
 {
@@ -127,8 +156,12 @@ cars.fuel = "Diesel"; //adding a new property to object
 delete cars.car_price; // deleting a property
 */
 
-//DOM Manipulations
-/*
+
+
+
+
+    
+<<h2>>DOM Manipulations
 <html>
      <head>
          <script type="text/javascript">
@@ -143,10 +176,11 @@ delete cars.car_price; // deleting a property
                  <button onclick="B()">Tap Here</button>
      </body>
 </html>
-*/
 
-//Taking input from text-box
-/*
+
+    
+<<h2>>Taking input from text-box
+
 <html>
     <head>
         <script type="text/javascript">
@@ -163,10 +197,14 @@ delete cars.car_price; // deleting a property
         <button onclick ="B()" id = "q" ">Submit</button>
     </body>
 </html>
-*/
 
-//Form Validations  part-1
-/*<html>
+
+
+
+
+    
+<<h2>> Form Validations  part-1
+<html>
     <head>
         <script type="text/javascript">
         <title>Form Validations Part-1</title>
@@ -198,8 +236,12 @@ delete cars.car_price; // deleting a property
 </html>
 */
 If validate function returns false then it stays on same page
-//Form Validations Working Part-2
-/*<html>
+
+
+            
+            
+<<h2>>Form Validations Working Part-2
+<html>
     <head>
         <title>Form Validations</title>
         <script type = "text/javascript">
