@@ -417,7 +417,17 @@ const fun1 = () => {
 <<h2>> Clear Timeout
 
 
+    
 <<h2>> SetInterval
 
+
+    
 <<h2>> Clear Interval
+
+
+
+
+
+
+<<h2>> const, var, let
 
