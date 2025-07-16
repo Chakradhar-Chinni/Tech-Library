@@ -353,10 +353,16 @@ function leave()
 </html>
 */
 
+
+
+
+            
+
             
 <<h2>> Arrow Functions
 1. introduced in ES6
 2. useful for inline function calls. 
+3. using arrow functions, traditional function syntax can be minimized
 
 function fun1()
 {
@@ -367,26 +373,51 @@ function fun2(num1,num2)
 {
     alert(num1+num2);
 }
-    
 
-
-using arrow functions, traditional function syntax can be minimized
+converting above traditional function synta to arrow function
 
 fun1 = () => alert("Heyyy");
 
 fun2 = (num1,num2) => alert(num1+num2);
 
 
-usecase
-<html>
-</html>
 
-function fun3()
+
+
+
+
+
+
+<<h2>> SetTimeout
+
+1. The setTimeout() method calls a function after a number of milliseconds.
+2. 5000 milliseconds = 5 seconds
+3. 
+
+function fun1()
 {
-    document.getElementById("value1").value;
+    const myTimer = setTimeout(fun2,5000);
+    function fun2()
+    {
+        console.log("HEYyy after 5 seconds");
+    }
 }
 
+fun1();
+    
+-- arrow function equivalent of same code
+const fun1 = () => { 
+    const myTimer = setTimeout(()=>{
+        console.log("hey after 5 seconds");
+    },5000);
+ }--
+    
 
 
+<<h2>> Clear Timeout
 
+
+<<h2>> SetInterval
+
+<<h2>> Clear Interval
 
