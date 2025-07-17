@@ -381,7 +381,11 @@ fun1 = () => alert("Heyyy");
 fun2 = (num1,num2) => alert(num1+num2);
 
 
-
+const admin = () => {
+    var1 = 10;
+    var2 = 20;
+    console.log("Sum =", var1+var2);
+}
 
 
 
