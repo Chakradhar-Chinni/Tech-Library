@@ -477,7 +477,8 @@ user address
 User orders
 
 
-Example 2: async approach to callback
+
+Example 2: async approach to callback - executing callback after timeout
 function userName(uname,callback)
 {
     setTimeout(()=>{
@@ -503,8 +504,25 @@ function admin()
 }
 
 
-
 output:
 User orders
 after 5 seconds- User name is:  Hulk
 user address
+
+
+
+
+Example 3: calling callback with params
+function myDisplayer(something) {
+  document.getElementById("demo").innerHTML = something;
+}
+
+function myCalculator(num1, num2, myCallback) {
+  let sum = num1 + num2;
+  myCallback(sum);
+}
+
+myCalculator(5, 5, myDisplayer);
+
+output:
+10
