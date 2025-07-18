@@ -391,6 +391,8 @@ const admin = () => {
 
 
 
+    
+
 
 <<h2>> SetTimeout
 
@@ -435,3 +437,74 @@ const fun1 = () => {
 
 <<h2>> const, var, let
 
+
+
+<<h2>> Call backs
+"I will call back later!"
+
+1. A callback is a function passed as an argument to another function
+2. This technique allows a function to call another function
+3. why not directly use another function inplace of callback?
+    - In Example1, userName("Hulk",userAddress); the function 'userAddress' is passed as an argument which is not poosible without callback
+
+
+Example1:
+function userName(uname,callback)
+{
+    console.log("User name",uname);
+    callback();
+}
+
+function userAddress()
+{
+    console.log("user address")
+}
+
+function userOrders()
+{
+    console.log("User orders");
+}
+
+function admin()
+{
+    userName("Hulk",userAddress);
+    userOrders();
+}
+
+Output:
+User name is:  Hulk
+user address
+User orders
+
+
+Example 2: async approach to callback
+function userName(uname,callback)
+{
+    setTimeout(()=>{
+        console.log("after 5 seconds- User name is: ",uname);
+        callback();
+    },5000);
+}
+
+function userAddress()
+{
+    console.log("user address")
+}
+
+function userOrders()
+{
+    console.log("User orders");
+}
+
+function admin()
+{
+    userName("Hulk",userAddress);
+    userOrders();
+}
+
+
+
+output:
+User orders
+after 5 seconds- User name is:  Hulk
+user address
