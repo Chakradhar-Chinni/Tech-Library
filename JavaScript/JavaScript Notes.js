@@ -526,3 +526,43 @@ myCalculator(5, 5, myDisplayer);
 
 output:
 10
+
+
+
+
+<<h2>> Promises
+
+1. Promise always returns a value, resolve or reject
+     - resolve: success  
+     - reject: error
+2. Waiting States:
+    - Pending: undefined
+    - Fulfilled: success
+    - Rejected: error
+3. Syntax: 
+    new Promise( (resolve,reject)=> {} );
+4. inside inline function, call either resolve or reject 
+5. .then() - promise resolved scenario
+   .error() - promise rejected scenario
+   .finally() → to run code regardless of success or failure
+6. (resolve, reject) are not fixed names, other param names can be used (pass,fail) (go,oops)
+    - 1st param triggers .then() and 2nd param triggers .catch()
+    - analogy: 2 buttons with any label, internally connected to .then() .catch()
+    
+
+function admin() {
+    let promise = new Promise((resolve, reject) => {
+        let success = true;
+        if (success) {
+            resolve("operation success");
+        } else {
+            reject("operation fail");
+        }
+    });
+    promise.then(result => console.log(result))
+    .catch(result => console.error(result));
+}
+
+Output:
+operation success
+
