@@ -38,7 +38,12 @@ Controller
 
 
 
+<<h2>>
 
+
+Domain
+1. Representation for our data - DTOs
+2. 
 
 
 
