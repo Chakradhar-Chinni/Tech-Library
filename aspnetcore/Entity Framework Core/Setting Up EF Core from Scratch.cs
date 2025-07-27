@@ -2,9 +2,9 @@
 <<h2>> Install Nuget Packages
 use latest stable version
 
-1. Microsoft.EntityFrameworkCore
-2. Microsoft.EntityFrameworkCore.Tools
-
+1. Microsoft.EntityFrameworkCore // to use ef if app
+2. Microsoft.EntityFrameworkCore.Tools // to use migrations
+3. Microsoft.EntityFrameworkCore.SqlServer // to use sql
 
 
 
