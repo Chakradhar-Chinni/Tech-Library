@@ -21,6 +21,15 @@ Model:
  - contains data & business logic
 
 
+Controller:
+    - .NET will look at classes which inherits from Controller
+      eg: public class PieController : Controller
+    - Every controller must be followed by the word Controller
+    - Controller Vs Controller Base
+       - controller can return views (HTML, Razor), used for apps that return views
+       - controllerBase cannot return views, used for RESTful API development
+
+View:
 
 Note: Implicit using
 1. Implicit using directives automatically include commonly used namespaces in your project, so you don’t have to manually add them at the top of every file
@@ -48,7 +57,10 @@ using Microsoft.Extensions.Hosting;
 
 
   
-  
+
+
+
+
 
  <<h2>> Creating the Model and Repository
 
@@ -64,7 +76,7 @@ using Microsoft.Extensions.Hosting;
 
 3. IPieRepository.cs
     - its a Repository Interface defining contracts without showing how operations are implemented
-    - 
+    - in short, repository pattern separates data access logic from business logic
 
 
 
@@ -72,3 +84,28 @@ using Microsoft.Extensions.Hosting;
 
 
 
+<<h2>> Creating the Controller
+
+
+using BethanysPieShop.Models;
+using Microsoft.AspNetCore.Mvc;
+namespace BethanysPieShop.Controllers
+{
+    public class PieController : Controller
+    {
+        private readonly MockPieRepository _PieRepository;
+        private readonly MockCategoryRepository _CategoryRepository;
+
+        public PieController(MockCategoryRepository mockCategoryRepository, MockPieRepository mockPieRepository)
+        {
+            _PieRepository = mockPieRepository;
+            _CategoryRepository = mockCategoryRepository;
+        }
+
+        [HttpGet]
+        public IActionResult List()
+        {
+            return View(_PieRepository.AllPies);
+        }
+    }
+}
