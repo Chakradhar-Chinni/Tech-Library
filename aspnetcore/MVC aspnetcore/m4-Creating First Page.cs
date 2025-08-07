@@ -248,3 +248,108 @@ namespace BethanysPieShop.Controllers
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<<h2>> Using a View Model
+1. Create folder /ViewModels
+2. create /ViewModels/PieListViewModel.cs
+3. ViewModel: To create a view with properties of data classes, all such properties to be kept in a class and passed to controller
+4. Here, PieListViewModel has data for Pies along with Category
+
+
+## /ViewModels/PieListViewModel.cs
+using BethanysPieShop.Models;
+namespace BethanysPieShop.ViewModels
+{
+    public class PieListViewModel
+    {
+
+        public IEnumerable<Pie> Pies { get; }
+        public string? CurrentCategory { get; }
+
+        public PieListViewModel(IEnumerable<Pie> pies,string? currentCategory)
+        {
+            Pies = pies;
+            CurrentCategory = currentCategory;
+        }
+
+    }
+}
+
+
+## /Controllers/PieController.cs
+using BethanysPieShop.Models;
+using BethanysPieShop.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+
+namespace BethanysPieShop.Controllers
+{
+    public class PieController : Controller
+    {
+        private readonly IPieRepository _pieRepository;
+        private readonly ICategoryRepository _categoryRepository;
+
+        public PieController(ICategoryRepository categoryRepository, IPieRepository pieRepository)
+        {
+            _pieRepository = pieRepository;
+            _categoryRepository = categoryRepository;
+        }
+
+        
+        public IActionResult List() //new
+        {
+            PieListViewModel pieListViewModel = new PieListViewModel(_pieRepository.AllPies,"Chesse Cakes");
+            return View(pieListViewModel);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
