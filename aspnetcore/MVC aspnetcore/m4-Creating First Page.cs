@@ -317,6 +317,29 @@ namespace BethanysPieShop.Controllers
     }
 }
 
+## /Views/Pie/List.cshtml
+@model BethanysPieShop.ViewModels.PieListViewModel
+
+<!DOCTYPE html>
+    <head>    
+        <meta name="viewport" content="width=device-width"/>
+        <title>Bethany's Pie Shop</title>    
+    </head>
+
+    <body>
+
+    <h2>@Model.CurrentCategory</h2>
+
+        @foreach(var pie in Model.Pies)
+        {
+            <div>
+                <h2>@pie.Name</h2>
+                <h1>@pie.Price.ToString("c")</h1>
+                <h1>@pie.Category.CategoryName</h1>
+            </div>
+        }
+    </body>
+</html>
 
 
 
@@ -325,8 +348,8 @@ namespace BethanysPieShop.Controllers
 
 
 
-
-
+<<h2>> Adding ExtraView files
+layout template, viewstart file, viewimports file
 
 
 
