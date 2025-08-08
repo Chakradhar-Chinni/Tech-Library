@@ -34,3 +34,52 @@ namespace StudentPortal.Web.Data
 
 
 
+<<h2>> Add Entities to DbContext class
+
+
+## \StudentPortal.Web\Data\ApplicationDbContext.cs
+
+using Microsoft.EntityFrameworkCore;
+namespace StudentPortal.Web.Data
+{
+    public class ApplicationDbContext : DbContext
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options) 
+        {
+            public DbSet<Students> StudentsTable { get; set; }
+            public DbSet<Courses> CoursesTable { get; set; }
+        }
+    }
+}
+
+
+
+
+
+
+
+<<h2>> Program.cs
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+   options.UseSqlServer(
+    builder.Configuration["ConnectionStrings: DefaultConnection"]);
+});
+
+
+
+
+
+<<h2>> appsettings.json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+  "ConnectionStrings": {
+    "DefaultConnection": " Initial Catalog=StudentsDB;Data Source=LocalSystem;persist security info=True;Integrated Security=SSPI; "
+  }
+}
