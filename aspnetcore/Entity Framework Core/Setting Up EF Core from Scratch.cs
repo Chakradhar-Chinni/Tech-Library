@@ -8,6 +8,10 @@ use latest stable version
 
 
 
+
+
+
+
 <<h2>> Create DbContext in Project
 
 1. Create new folder /data/ApplicationDbContext.cs
@@ -34,8 +38,14 @@ namespace StudentPortal.Web.Data
 
 
 
-<<h2>> Add Entities to DbContext class
 
+
+
+<<h2>> Add Entities to DbContext class
+1. Student represents entity in c# while StudentsTable represents table name in SQL
+2. 
+
+    
 
 ## \StudentPortal.Web\Data\ApplicationDbContext.cs
 
@@ -59,6 +69,7 @@ namespace StudentPortal.Web.Data
 
 
 <<h2>> Program.cs
+1. ASP.NET Core dependency injection setup for configuring the Entity Framework Core database context
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
