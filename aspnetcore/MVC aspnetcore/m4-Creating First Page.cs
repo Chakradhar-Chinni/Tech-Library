@@ -349,12 +349,74 @@ namespace BethanysPieShop.Controllers
 
 
 <<h2>> Adding ExtraView files
-layout template, viewstart file, viewimports file
+layout template
+1. Create Views/Shared/_Layout.cshtml
+    - used for commonly shared html templates
+2. List.cshtml
+   - remove static html code, it will be rendered in _layout file
+    - Layout = "_Layout" says to look at this file, full file path is not required to add. As its default thing for framework
+3. ViewStart.cshtml
+   This file sets the layout for all views in a folder and its subfolders unless overridden.
+   
+
+
+, viewstart file, viewimports file
+
+check out: view-source:https://localhost:7241/pie/list
+
+
+
+## Views/Shared/_Layout.cshtml
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+</body>
+</html>
 
 
 
 
-view-source:https://localhost:7241/pie/list
+
+
+
+
+## /views/List.cshtml
+@model BethanysPieShop.ViewModels.PieListViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<h2>@Model.CurrentCategory</h2>
+
+@foreach (var pie in Model.Pies)
+{
+    <div>
+        <h2>@pie.Name</h2>
+        <h1>@pie.Price.ToString("c")</h1>
+        <h1>@pie.Category.CategoryName</h1>
+    </div>
+}
+
+
+
+
+
+
+
+
+## Create /Views/_ViewStart.cshtml
+@{
+    Layout = "_Layout";
+}
 
 
 
@@ -364,6 +426,87 @@ view-source:https://localhost:7241/pie/list
 
 
 
+
+<<h2>> Styling the View
+1. BootStrap & JQuery are client side libraries, so they can be added using library manager. (Not Nuget packages)
+2. VS > Right click on project > Add > Client Side Library > Provider: cdnjs, Library: Bootstrap > TargetLocation: wwwroot/lib/ > Install
+3. from project resouces folder, copy css,images folders and paste under /wwwroot/
+
+
+ ## Views/Pie/List.cshtml
+ @model PieListViewModel
+
+<h1>@Model.CurrentCategory</h1>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+
+    @foreach (var pie in Model.Pies)
+    {
+        <div class="col">
+            <div class="card pie-card">
+                <img src="@pie.ImageThumbnailUrl" class="card-img-top" alt="@pie.Name">
+                <div class="card-body pie-button">
+                    <h4 class="d-grid">
+                    </h4>
+
+                    <div class="d-flex justify-content-between mt-2">
+                        <h2 class="text-start">
+                            <a class="pie-link">@pie.Name</a>
+                        </h2>
+                        <h5 class="text-nowrap">
+                            @pie.Price.ToString("c")
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+
+## /Views/Shared/_Layout.cshtml
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Bethany's Pie Shop</title>
+    <link href='https://fonts.googleapis.com/css?family=Work+Sans' rel='stylesheet' type='text/css'>
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+    <link href="~/css/site.css" rel="stylesheet" />
+    <base href="/" />
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary"
+                 aria-label="Bethany's Pie Shop navigation header">
+                <div class="container-xl">
+                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                        <img src="images/bethanys-pie-shop-logo_horiz-white.png" width="151" height="47" class="d-inline-block align-top mb-2 mt-1"
+                             alt="Bethany's Pie Shop Logo">
+                    </a>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarCollapse">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        @RenderBody()
+    </div>
+</body>
+</html>
 
 
 
