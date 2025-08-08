@@ -36,6 +36,10 @@ namespace StudentPortal.Web.Data
 }
 
 
+Tip:
+1. Use class name as ApplicationDbContext for POCs,short apps
+2. best practice: use Application Specific name like BlogDbContext, SchoolDbContext, IdentityDbContext
+
 
 
 
