@@ -12,6 +12,9 @@ Seeding data
 
 
 
+
+
+
 <<h2>> Adding EF Core to the Applciation
 
 Install Nuget Packages
@@ -38,6 +41,18 @@ namespace BethanysPieShop.Models
                 public DbSet<Pie> Pies { get; set; }
         }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -117,3 +132,37 @@ namespace BethanysPieShop.Models
 ##Progam.cs
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IPieRepository, PieRepository>();
+
+
+
+
+
+
+
+
+
+
+
+<<h2>> Creating the Database using Migrations
+Open Nuget Package Manager Console
+
+PM> Add-Migration InitialMigration
+(optional)PM> Remove-Migration // to remove the migration
+PM> update-database
+
+
+
+
+
+
+
+
+
+
+<<h2>> Seeding data 
+Seeding is to simply update database tables with data from .cs files
+
+copy DbInitializer.cs from course-resouces to /Models
+PM> update-database
+
+
