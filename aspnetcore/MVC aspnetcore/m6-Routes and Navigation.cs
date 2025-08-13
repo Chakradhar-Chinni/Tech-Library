@@ -6,7 +6,7 @@ Configuring Routes
 Navigating with Tag Helpers
 
 
-<<h2>> ROutes and Navigation
+<<h2>> Routes and Navigation - theory
 
  Traditional Web Request Handling
 A request is made for a physical file (e.g., index.html).
@@ -51,3 +51,81 @@ Summary:
 
 
   
+
+
+
+
+
+
+
+
+
+
+
+<<h2>> Routes and Navigation - Demo
+
+Output Image: Pie Details 
+
+1. /Controllers/Piecontroller.cs
+   created new action method Details
+2. /Views/Details.cshtml
+
+## /Controllers/PieController.cs
+
+using BethanysPieShop.Models;
+using BethanysPieShop.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+
+namespace BethanysPieShop.Controllers
+{
+    public class PieController : Controller
+    {
+        private readonly IPieRepository _pieRepository;
+        private readonly ICategoryRepository _categoryRepository;
+
+        public PieController(ICategoryRepository categoryRepository, IPieRepository pieRepository)
+        {
+            _pieRepository = pieRepository;
+            _categoryRepository = categoryRepository;
+        }
+
+        
+        public IActionResult List()
+        {
+            PieListViewModel pieListViewModel = new PieListViewModel(_pieRepository.AllPies,"Chesse Cakes");
+            return View(pieListViewModel);
+        }
+
+        public IActionResult Details(int id)
+        {
+            var pie = _pieRepository.GetPieById(id);
+                if(pie==null)
+                {
+                    return NotFound();
+                }
+            return View(pie);
+        }
+    }
+}
+
+## /Views/Pie/Details.cshtml
+@model Pie
+
+<h3 class="my-5">
+    @Model.Name
+</h3>
+
+<div class="row gx-5">
+    <img alt="@Model.Name" src="@Model.ImageUrl" class="img-fluid col-5" />
+    <div class="col-7">
+        <h4>@Model.ShortDescription</h4>
+        <p>@Model.LongDescription</p>
+        <h3 class="pull-right">@Model.Price.ToString("c")</h3>
+        <div class="addToCart">
+            <p class="button">
+
+            </p>
+        </div>
+    </div>
+</div>
+ 
