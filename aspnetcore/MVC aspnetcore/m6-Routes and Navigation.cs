@@ -50,11 +50,15 @@ Summary:
 6. **Attribute-based routing is ideal for APIs.**
 
 
-  
+
+
+ 
 
 
 
-
+<<h2>> Routes
+Output Image: Pie List
+https://localhost:7241/pie/list
 
 
 
