@@ -132,4 +132,39 @@ namespace BethanysPieShop.Controllers
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+<<h2>> Map Controller Route    
+(1)
+app.MapDefaultControllerRoute();
+ - Follows MVC Conventions
+ - BaseUrl/Controller/ActionMethod
+ - suitable for small, medium apps
+
+
+
+(2)
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Pie}/{action=List}"
+    );
+ - default: if controller or action segment is missing, default end point is hit
+ - error page shown for unknown controller or action method
+ - for valid controller or action segment, end point is hit accordingly
+ - allows custom routes
+ - define explicit route pattern 
+ - requires more config, highly customizable
+ - suitable for large apps with custom routing logic
+
+
  
