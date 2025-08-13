@@ -165,4 +165,7 @@ Seeding is to simply update database tables with data from .cs files
 copy DbInitializer.cs from course-resouces to /Models
 PM> update-database
 
+DbInitializer.Seed(app);
+app.Run();
+
 
