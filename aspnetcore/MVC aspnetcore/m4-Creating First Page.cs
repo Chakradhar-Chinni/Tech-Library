@@ -355,7 +355,9 @@ namespace BethanysPieShop.Controllers
 <<h2>> Adding ExtraView files
 layout template
 1. Create Views/Shared/_Layout.cshtml
-    - used for commonly shared html templates
+    - Instead of repeatng html code in every view, _layout acts a shared file, other views pulg their content into it
+    used for commonly shared html templates
+    - 
 2. List.cshtml
    - remove static html code, it will be rendered in _layout file
     - Layout = "_Layout" says to look at this file, full file path is not required to add. As its default thing for framework
