@@ -357,13 +357,22 @@ layout template
 1. Create Views/Shared/_Layout.cshtml
     - Instead of repeatng html code in every view, _layout acts a shared file, other views pulg their content into it
     used for commonly shared html templates
-    - 
-2. List.cshtml
+    - @RenderBody() - ontent of individual views (like your List view) will be injected.
+    - Maintability - update layout at one place
+    - Separation of concerns - layout logic is separate from page specific logic
+
+2. List.cshtml - ***to EDIT for accuracy***
    - remove static html code, it will be rendered in _layout file
-    - Layout = "_Layout" says to look at this file, full file path is not required to add. As its default thing for framework
+   - Layout = "_Layout" says to look at this file, full file path is not required to add. As its default thing for framework
+    - _layout is added to ViewStart file, so this is unwanted, this can be used to override the default _layout.cshtml
+    
 3. ViewStart.cshtml
-   This file sets the layout for all views in a folder and its subfolders unless overridden.
-   
+    - This file sets the layout for all views in a folder and its subfolders unless overridden.
+    - a special Razor file in ASP.NET Core MVC that sets up common view configuration for all Razor views in a folder 
+    - Layout = "_Layout"; tells to Razor Engine that “All views in this folder should use _Layout.cshtml as their layout unless they override it.”
+    - You don’t need to set Layout = "_Layout" in every view.
+
+
 
 
 , viewstart file, viewimports file
@@ -423,6 +432,8 @@ check out: view-source:https://localhost:7241/pie/list
 @{
     Layout = "_Layout";
 }
+
+
 
 
 
