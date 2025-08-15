@@ -33,6 +33,7 @@ Controller:
        - controllerBase cannot return views, used for RESTful API development
 
 View:
+    - Displays the data using Razor syntax.
 
 Note: Implicit using
 1. Implicit using directives automatically include commonly used namespaces in your project, so you don’t have to manually add them at the top of every file
@@ -268,7 +269,8 @@ namespace BethanysPieShop.Controllers
 <<h2>> Using a View Model
 1. Create folder /ViewModels
 2. create /ViewModels/PieListViewModel.cs
-3. ViewModel: To create a view with properties of data classes, all such properties to be kept in a class and passed to controller
+3. ViewModel: To create a view with properties of data classes, all such properties to be kept in a class and passed to controller. 
+              In short, Packages data for the view.
 4. Here, PieListViewModel has data for Pies along with Category
 
 
@@ -320,7 +322,7 @@ namespace BethanysPieShop.Controllers
 }
 
 ## /Views/Pie/List.cshtml
-@model BethanysPieShop.ViewModels.PieListViewModel
+@model BethanysPieShop.ViewModels.PieListViewModel //@model declares the type of model the view expects: PieListViewModel.
 
 <!DOCTYPE html>
     <head>    
