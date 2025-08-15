@@ -77,6 +77,8 @@ using Microsoft.Extensions.Hosting;
   why? avoid compile warning, 
   At compile time: No warning, because default! suppresses the nullability warning.
   At runtime: If you try to access Category without assigning it, you'll get a NullReferenceException.
+     for reference types, (classes) returns null
+     for value types, (int, bool) returns zero-equivalent
 
 2. Category.cs
 
