@@ -372,6 +372,16 @@ layout template
     - Layout = "_Layout"; tells to Razor Engine that “All views in this folder should use _Layout.cshtml as their layout unless they override it.”
     - You don’t need to set Layout = "_Layout" in every view.
 
+4. Individual Razor files, don't point to _Layout file, because when a razor view is rendered
+     - The Razor engine first executes _ViewStart.cshtml.
+     - It sets the Layout property to _Layout.cshtml.
+     - Then the actual view (e.g., Index.cshtml) is rendered within that layout.
+     - So unless a view explicitly sets a different layout or sets Layout = null, it will inherit the layout defined in _ViewStart.cshtml.
+
+5. When you navigate to /Home/Index, the Razor engine:
+     - Runs _ViewStart.cshtml → sets layout to _Layout.cshtml
+     - Renders Index.cshtml inside _Layout.cshtml
+     
 
 
 
