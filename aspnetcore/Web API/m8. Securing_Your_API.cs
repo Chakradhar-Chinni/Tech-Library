@@ -426,4 +426,117 @@ namespace CityInfo.API.Controllers
 
 
 
+
+
 <h2> Using Information from the token in Controller
+
+1.PointOfInterestController.cs
+  - User refers to the currently authenticated user making the request. It's an object of type ClaimsPrincipal, and it's available in controller actions and middleware.
+  - Extracts the "city" claim from the authenticated user:
+  - Validates that the city claim matches the requested city ID:
+2.ICityInfoRepository.cs
+   CityNameMatchesCityid is added as interface member
+3.CityInfoRepository.cs
+  implementation is provided for interface member CityNameMatchesCityid
+
+
+## CityInfo.API\Controllers\PointOfInterestController.cs
+
+ [HttpGet]
+ public async Task<ActionResult<IEnumerable<PointOfInterestDto>>> GetPointsOfInterest(int cityId)
+ {
+     var cityname = User.Claims.FirstOrDefault(c => c.Type == "city")?.Value; //**new**
+     if(! await _cityInfoRepository.CityNameMatchesCityid(cityname, cityId)) //**new**
+     {
+         return Forbid();
+     }
+
+     try
+     {
+         if (! await _cityInfoRepository.CityExistsAsync(cityId))
+         {
+             return NotFound();
+         }
+         var pointsOfInterestForCity = await _cityInfoRepository.GetPointsOfInterestForCityAsync(cityId);
+
+         return Ok(_mapper.Map<IEnumerable<PointOfInterestDto>>(pointsOfInterestForCity));
+     }
+     catch(Exception ex)
+     {
+         _logger.LogCritical($"Exception Occured while getting points of interest for city with id {cityId}");
+         return StatusCode(500, "A problem happened while handling your request");
+     }
+ }
+
+
+## CityInfo.API\Services\ICityInfoRepository.cs
+
+using CityInfo.API.Entities;
+using CityInfo.API.Models;
+namespace CityInfo.API.Services
+{
+    public interface ICityInfoRepository 
+    {
+        Task<IEnumerable<City>> GetCitiesAsync();
+        Task<(IEnumerable<City>, PaginationMetadata)> GetCitiesAsync(string? name,string? searchQuery, int pageNumber, int pageSize);
+        Task<City?> GetCityAsync(int cityId, bool includePointsOfInterest);
+        Task<IEnumerable<PointOfInterest>> GetPointsOfInterestForCityAsync(int cityId);
+        Task<PointOfInterest?> GetPointOfInterestForCityAsync(int cityId, int pointOfInterestId);
+        Task<bool> CityExistsAsync(int cityId);
+        Task AddPointOfInterestForCityAsync(int cityId, PointOfInterest pointOfInterest);
+        Task<bool> SaveChangesAsync();
+        void DeletePointOfInterest(PointOfInterest pointofInterest);
+        Task<bool> CityNameMatchesCityid(string? cityName, int cityId);  //**new**
+    }
+}
+
+
+
+## CityInfo.API\Services\CityInfoRepository.cs
+
+using CityInfo.API.DbContexts;
+using CityInfo.API.Entities;
+using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
+
+namespace CityInfo.API.Services
+{
+    public class CityInfoRepository : ICityInfoRepository
+    {
+        private readonly CityInfoContext _context;
+        
+        public CityInfoRepository(CityInfoContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
+        public async Task<bool> CityNameMatchesCityid(string? cityName, int cityId) //**new**
+        {
+            return await _context.Cities.AnyAsync(c => c.Id == cityId && c.Name == cityName);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+<h2> Working with Authorization Policies
+
+
+
+
+
+
+
+
+
+
+
+
+
