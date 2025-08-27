@@ -593,13 +593,15 @@ namespace CityInfo.API.Services
 
 1. In previous module, access is validated inside controller, a better way to do it is to use ASP.NET core authorization policies
 2. ABAC / CBAC / PBAC vs RBAC: Attribute-based (ABAC), claims-based (CBAC), and policy-based (PBAC) access control are modern alternatives to role-based access control (RBAC), allowing for more flexible and complex rules     using user attributes or claims.
- 3. ASP.NET Core supports creating and using policies to define rules like "users from country A, living in large cities, born between certain years can perform action X" — enabling fine-grained access control.     
+3. ASP.NET Core supports creating and using policies to define rules like "users from country A, living in large cities, born between certain years can perform action X" — enabling fine-grained access control.     
 
 
 
 
 
  <h2> Demo: Using Information from token in Authorization Policy
+
+ // API implementation same as <h2> Using Information from the token in Controller
 
  1. Program.cs
     - Authorizaiton policy is created
