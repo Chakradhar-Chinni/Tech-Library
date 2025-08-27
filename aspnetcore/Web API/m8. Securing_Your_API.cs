@@ -642,4 +642,18 @@ namespace CityInfo.API.Controllers
 
 
 
+<h2> Generating a token with dotnet user-jwts
+
+1. Centralized Authentication in Real Systems
+In large organizations, credential validation and token creation are usually handled by a central identity provider (e.g., Microsoft Entra ID, Okta, Ping, IdentityServer) rather than individual applications.
+
+2. Local Development Challenges
+During development, integrating with these external identity services can be difficult or restricted, yet developers still need to test API authentication locally.
+
+3. Solution: dotnet user-jwts Tool
+Microsoft provides the user-jwts CLI tool to create and manage local JSON Web Tokens (JWTs) for testing purposes, offering commands like create, remove, and list.
+
+
+
+
 
