@@ -430,6 +430,69 @@ namespace CityInfo.API.Controllers
 
 <h2> Using Information from the token in Controller
 
+
+/*
+Cities details in database:
+[
+  {
+    "id": 3,
+    "name": "Chicago",
+    "description": "The Windy City"
+  },
+  {
+    "id": 2,
+    "name": "Los Angeles",
+    "description": "The City of Angels"
+  },
+  {
+    "id": 1,
+    "name": "New York City",
+    "description": "The Big Apple"
+  }
+]
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+user details: ("Kevin", "Dockx", "Chicago");
+
+Uri: https://localhost:7167/api/cities/1/pointofinterest/
+Authorization-Bearer Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZ2l2ZW5fbmFtZSI6IktldmluIiwiZmFtaWx5X25hbWUiOiJEb2NreCIsImNpdHkiOiJDaGljYWdvIiwibmJmIjoxNzU2MzEzODYzLCJleHAiOjE3NTYzMTc0NjMsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcxNjciLCJhdWQiOiJjaXR5aW5mb2FwaSJ9.8TIm9x_XynsQuApHkxKKGdBvrcWhv6xJIw71kAOpJHM
+
+Response: 403 forbidden
+
+403 - not allowed to access resource. User's city is chicago /3. but requested /1 New york. So, access to /1 is restricted
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+user details: ("Kevin", "Dockx", "Chicago");
+
+uri: https://localhost:7167/api/cities/3/pointofinterest/
+Authorization-Bearer Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZ2l2ZW5fbmFtZSI6IktldmluIiwiZmFtaWx5X25hbWUiOiJEb2NreCIsImNpdHkiOiJDaGljYWdvIiwibmJmIjoxNzU2MzEzODYzLCJleHAiOjE3NTYzMTc0NjMsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcxNjciLCJhdWQiOiJjaXR5aW5mb2FwaSJ9.8TIm9x_XynsQuApHkxKKGdBvrcWhv6xJIw71kAOpJHM
+
+Response: 200 OK
+[
+  {
+    "id": 3,
+    "name": "Willis Tower",
+    "description": "A skyscraper in Chicago"
+  },
+  {
+    "id": 6,
+    "name": "Navy Pier",
+    "description": "A popular tourist destination in Chicago"
+  },
+  {
+    "id": 7,
+    "name": "Lincoln Park Zoo",
+    "description": "A free zoo in Chicago"
+  }
+]
+
+User's city is chicago /3. User also requested /3 in uri. So, APIs response is 200 OK
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+*/
+
 1.PointOfInterestController.cs
   - User refers to the currently authenticated user making the request. It's an object of type ClaimsPrincipal, and it's available in controller actions and middleware.
   - Extracts the "city" claim from the authenticated user:
@@ -528,9 +591,47 @@ namespace CityInfo.API.Services
 
 <h2> Working with Authorization Policies
 
+1. In previous module, access is validated inside controller, a better way to do it is to use ASP.NET core authorization policies
+2. ABAC / CBAC / PBAC vs RBAC: Attribute-based (ABAC), claims-based (CBAC), and policy-based (PBAC) access control are modern alternatives to role-based access control (RBAC), allowing for more flexible and complex rules     using user attributes or claims.
+ 3. ASP.NET Core supports creating and using policies to define rules like "users from country A, living in large cities, born between certain years can perform action X" — enabling fine-grained access control.     
 
 
 
+
+
+ <h2> Demo: Using Information from token in Authorization Policy
+
+ 1. Program.cs
+    - Authorizaiton policy is created
+ 2. PointOfInterestController.cs
+   - at controller level authorization policy is enabled. so, this policy is applicabel to every action method
+ 
+
+## Program.cs
+
+builder.Services.AddAuthorization(options => //**new**
+{
+    options.AddPolicy("MustBeFromChicago", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("City","Chicago");
+    });
+});
+
+
+var app = builder.Build(); // Build the app
+
+
+## CityInfo.API\Controllers\PointOfInterestController.cs
+
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    [Authorize(Policy= "MustBeFromChicago")] //**new**
+    [Route("/api/cities/{cityId}/pointofinterest")]
+    public class PointOfInterestController : ControllerBase
+    {
+    
 
 
 
