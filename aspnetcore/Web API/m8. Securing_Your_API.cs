@@ -657,3 +657,5 @@ Microsoft provides the user-jwts CLI tool to create and manage local JSON Web To
 
 
 
+<h2> Demo: Generating a token with dotnet user-jwts
+
