@@ -111,7 +111,7 @@ x-pagination	{"TotalItemCount":3,"TotalPageCount":1,"PageSize":10,"CurrentPage":
 api-supported-versions	1.0
 */
 
-## CitiesController.cs
+## /Controllers/CitiesController.cs
 using Asp.Versioning;
 namespace CityInfo.API.Controllers
 {
@@ -134,7 +134,7 @@ server	Kestrel
 api-supported-versions	2.0, 3.0
 */
 
-## PointOfInterestController.cs
+## /Controllers/PointOfInterestController.cs
 using Asp.Versioning;
 namespace CityInfo.API.Controllers
 {
@@ -159,7 +159,7 @@ content-disposition	attachment; filename=FSD-MERN-Stack-brochure.pdf; filename*=
 api-deprecated-versions	0.5
 */
 
-## FilesController.cs
+## /Controllers/FilesController.cs
 using Asp.Versioning;
 
 namespace CityInfo.API.Controllers
@@ -176,5 +176,43 @@ namespace CityInfo.API.Controllers
 
 
 
+
+
 <<h2>> Supporting Versioned Routes
+
+1. previous module api route is https://localhost:7167/api/files/1?api-version=0.5
+2. Instead of using api-version attribure, /api/v1 can be implemented which is modern and better approach
+3. [Route] is enhanced to include Version number, remaning things are same as previous module
+
+## /Controllers/CitiesController.cs
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    //[Route("api/cities")]
+    //[Authorize]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion(1)]
+    public class CitiesController : ControllerBase
+
+
+## /Controllers/PointOfInterestController.cs
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    //[Authorize(Policy= "MustBeFromChicago")]
+    [Route("/api/v{version:apiVersion}/cities/{cityId}/pointofinterest")]
+    [ApiVersion(2)]
+    [ApiVersion(3)]
+    public class PointOfInterestController : ControllerBase
+
+## /Controllers/FilesController.cs
+namespace CityInfo.API.Controllers
+{
+    [ApiController]
+    //[Authorize]
+    [Route("api/v{version:apiVersion}/files")]
+    [ApiVersion(0.5,Deprecated=true)]
+    public class FilesController : ControllerBase
+    {
+
 
