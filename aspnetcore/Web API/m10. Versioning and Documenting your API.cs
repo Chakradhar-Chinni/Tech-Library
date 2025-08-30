@@ -216,3 +216,24 @@ namespace CityInfo.API.Controllers
     {
 
 
+
+
+
+
+
+
+
+
+
+
+
+<<h2>> Documenting your API with API/Swagger
+
+1. OpenAPI (Swagger) Provides a Standardized Way to Describe APIs : OpenAPI is a specification format (JSON/YAML) that defines what an API does and how to interact with it. Swagger is a suite of tools built around       OpenAPI, including Swagger UI for documentation and Swagger Editor for creating specs.
+2. Swashbuckle.AspNetCore Automates OpenAPI Integration in ASP.NET Core : Swashbuckle generates the OpenAPI spec automatically and embeds Swagger UI into your project, fulfilling both the need for a spec and a documentation/testing interface.
+
+
+
+
+
+
