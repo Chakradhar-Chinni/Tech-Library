@@ -427,9 +427,65 @@ else
 
 
 
+<<h2>> Documenting API Authentication
+1. Purpose of Authentication in Documentation: Protected APIs (like those using Bearer Tokens) should reflect their security requirements in the OpenAPI spec so consumers know how to authenticate.
+2. Swagger UI Support: Swagger UI natively supports various authentication schemes, making it easier to interact with protected APIs directly from the documentation.
+3. Supported Security Schemes:
+    http for Basic, Bearer, and other HTTP auth
+    apiKey for API key and cookie-based auth
+    oauth2 for OAuth2
+    openidConnect for OpenID Connect
 
 
 
+1. uncomment [Authorize] attribute in all controllers
+2. Add Security Definition: Used AddSecurityDefinition in AddSwaggerGen to define a Bearer Token scheme named CityInfoApiBearerAuth, setting Type = Http and Scheme = Bearer.
+3. Authorize via Swagger UI: Demonstrated how to obtain a token using the Authenticate endpoint directly from Swagger UI, and how to use the "Authorize" button to input the token.
+4. Fix Unauthorized Requests: Added a SecurityRequirement using AddSecurityRequirement to mark operations as requiring authentication, referencing the previously defined security scheme.
+5. Successful Authenticated Request: After setup, authenticated requests (e.g., to get cities) worked correctly from Swagger UI, confirming that Bearer Token authentication was properly integrated.
+
+
+## Program.cs
+builder.Services.AddSwaggerGen(setupAction =>
+{
+    foreach(var description in ApiVersionDescriptionProvider.ApiVersionDescriptions)
+    {
+        setupAction.SwaggerDoc(
+            $"{description.GroupName}",
+            new()
+            {
+                Title="City Info API",
+                Version="description.ApiVersion.ToString()",
+                Description="Through this version you can access cities and their points of Interest"
+            });
+    }
+    var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+    setupAction.IncludeXmlComments(xmlCommentsFullPath);
+
+    //new from here
+    setupAction.AddSecurityDefinition("CityInfoBearerAuth", new() 
+    {
+       Type = SecuritySchemeType.Http,
+       Scheme = "Bearer",
+       Description = "Input a valid token to access this API"
+    });
+
+    setupAction.AddSecurityRequirement(new()
+    {
+        {
+            new()
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "CityInfoBearerAuth" }
+            },
+            new List<string>()
+        }
+    });
+
+}); //integrates Swagger
 
 
 
