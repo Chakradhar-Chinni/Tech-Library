@@ -236,4 +236,71 @@ namespace CityInfo.API.Controllers
 
 
 
+<<h2>> Incorporating XML Comments on Actions
+
+1. Program.cs
+  - support for xml comments added
+2. CityWithoutPointsOfInterestDto.cs
+  - enter 3 slashes /// 
+  - xml comments is auto generated with 3 slashes
+  - Swagger Documentation shows the comments at schemas
+3. CitiesController.cs
+  - XML comments are added usign 3 slashes on action method
+  - Swagger Documentation shows the comments at APIs
+
+
+##Program.cs
+using System.Reflection;
+builder.Services.AddSwaggerGen(setupAction =>
+{
+    var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+    setupAction.IncludeXmlComments(xmlCommentsFullPath);
+}); //integrates Swagger
+
+right click on Project Name > properties > Build > Output > enable check box on Documentation File > provide "CityInfo.API.xml" under XML documentation file path
+
+
+## /Models/CityWithoutPointsOfInterestDto.cs
+namespace CityInfo.API.Models
+{
+    /// <summary>
+    /// A city without its points of interest
+    /// </summary>
+    public class CityWithoutPointsOfInterestDto
+    {
+        /// <summary>
+        /// the id of the city
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// the name of the city
+        /// </summary>
+        public string Name { get; set; } = string.Empty;
+
+        /// <summary>
+        /// The description of the city
+        /// </summary>
+        public string? Description { get; set; }
+    }
+}
+
+
+## /Controllers/CitiesControllers.cs
+
+/// <summary>
+/// Get a city by id
+/// </summary>
+/// <param name="id">The id of the city to get</param>
+/// <param name="includePointOfInterest">Whether or not include PointsOfInterest</param>
+/// <returns>A city with or without pointsofinterest</returns>
+
+[HttpGet("{id}")]
+public async Task<ActionResult<IEnumerable<CityDto>>> GetCity(int id,bool includePointOfInterest)
+{
+    var cityEntity = await _cityInfoRepository.GetCityAsync(id, includePointOfInterest);
+     
+    return Ok(_mapper.Map<CityDto>(cityEntity));
+}
 
