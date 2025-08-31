@@ -339,3 +339,114 @@ public async Task<ActionResult<IEnumerable<CityDto>>> GetCity(int id,bool includ
       
      return Ok(_mapper.Map<CityDto>(cityEntity));
  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+<<h2>> Supporting Different documentation Versions
+1. Install Nuget Package Asp.Versioning.Mvc.ApiExplorer
+2. Enable Version Substitution in URIs: Configured AddApiExplorer with SubstituteApiVersionInUrl = true to automatically fill version numbers in URIs, removing the need for manual parameters.
+3. Support Multiple Swagger Specs: Used IApiVersionDescriptionProvider to dynamically generate Swagger specifications for each API version, ensuring all versions are documented.
+4. Configure Swagger UI for Versions: Updated UseSwaggerUI to include endpoints for each version using DescribeApiVersions, allowing users to switch between API versions in the UI.
+
+
+ ## Program.cs
+builder.Services.AddApiVersioning(setupAction =>
+{
+    setupAction.ReportApiVersions = true;
+    setupAction.AssumeDefaultVersionWhenUnspecified = true;
+    setupAction.DefaultApiVersion = new ApiVersion(1, 0);
+}).AddMvc()
+.AddApiExplorer(setupAction=>
+{
+    setupAction.SubstituteApiVersionInUrl = true;
+});
+
+var ApiVersionDescriptionProvider = builder.Services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
+
+builder.Services.AddSwaggerGen(setupAction =>
+{
+    foreach(var description in ApiVersionDescriptionProvider.ApiVersionDescriptions)
+    {
+        setupAction.SwaggerDoc(
+            $"{description.GroupName}",
+            new()
+            {
+                Title="City Info API",
+                Version="description.ApiVersion.ToString()",
+                Description="Through this version you can access cities and their points of Interest"
+            });
+    }
+    var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+    setupAction.IncludeXmlComments(xmlCommentsFullPath);
+}); //integrates Swagger
+
+
+
+
+var app = builder.Build(); // Build the app
+
+
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(setupAction =>
+    {
+        var descriptions = app.DescribeApiVersions();
+        foreach(var description in descriptions)
+        {
+            setupAction.SwaggerEndpoint(
+                $"/swagger/{description.GroupName}/swagger.json",
+                description.GroupName.ToUpperInvariant());
+        }
+    });
+   // app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandler();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
