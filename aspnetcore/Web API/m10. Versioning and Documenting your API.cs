@@ -246,7 +246,7 @@ namespace CityInfo.API.Controllers
   - Swagger Documentation shows the comments at schemas
 3. CitiesController.cs
   - XML comments are added usign 3 slashes on action method
-  - Swagger Documentation shows the comments at APIs
+  - Swagger Documentation shows the comments at API endpoints
 
 
 ##Program.cs
@@ -304,3 +304,38 @@ public async Task<ActionResult<IEnumerable<CityDto>>> GetCity(int id,bool includ
     return Ok(_mapper.Map<CityDto>(cityEntity));
 }
 
+
+
+
+
+
+
+
+
+
+<<h2>> Describing Response Types and Status Codes
+
+1. CitiesController.cs
+   - In Swagger documentation endpoints shows the below,
+   - [ProducesResponseType] attribute shows the possible status code that may be returend by the end point
+   - <response code> over-rides the default description to "Returns the requested city" from OK (this is optional)
+
+## /Controllers/CitiesControllers.cs
+ /// <summary>
+ /// Get a city by id
+ /// </summary>
+ /// <param name="id">The id of the city to get</param>
+ /// <param name="includePointOfInterest">Whether or not include PointsOfInterest</param>
+ /// <response code="200">Returns the requested city</response>
+ /// <returns>A city with or without pointsofinterest</returns>
+
+ [HttpGet("{id}")]
+ [ProducesResponseType(StatusCodes.Status404NotFound)]
+ [ProducesResponseType(StatusCodes.Status400BadRequest)]
+ [ProducesResponseType(StatusCodes.Status200OK)]
+ public async Task<ActionResult<IEnumerable<CityDto>>> GetCity(int id,bool includePointOfInterest)
+ {
+     var cityEntity = await _cityInfoRepository.GetCityAsync(id, includePointOfInterest);
+      
+     return Ok(_mapper.Map<CityDto>(cityEntity));
+ }
