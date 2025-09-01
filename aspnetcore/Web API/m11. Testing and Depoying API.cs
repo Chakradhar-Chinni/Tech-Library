@@ -173,6 +173,48 @@ Now that local deployment is understood, the next step is to explore external ho
 
 
 
+<<h2>> Considering Deployment and Hosting Options
+1.Wide Range of Hosting Options
+ASP.NET Core is cross-platform, allowing deployment on Windows, Linux, cloud platforms (Azure, AWS), containers (Docker), or even orchestrated environments like Kubernetes.
+
+2.Key Decision Factors
+When choosing a hosting option, consider scalability, maintenance effort, cost, infrastructure control, and organizational preferences.
+
+3.Deployment Models Vary
+Options range from simple file-based hosting to advanced containerized deployments with orchestration. You can go from non-scalable setups to auto-scaling, cloud-native architectures.
+
+4.Chosen Approach: Azure App Service
+For this course, the focus is on Azure App Service, a popular PaaS (Platform as a Service) that simplifies deployment by abstracting infrastructure concerns like security, reliability, and updates.
+
+5.Next Step: Code Preparation
+Before deploying to Azure, some code changes are required to make the application ready for cloud hosting.
+
+
+
+
+
+<<h2> Dealing with proxies and load balancers
+
+1.Why Forwarded Headers Are Needed
+When requests pass through proxies or load balancers, key information like the original scheme (HTTPS), client IP, and host can be lost. These are forwarded via headers like X-Forwarded-For, X-Forwarded-Proto, and X-Forwarded-Host.
+
+2.Purpose of the Middleware
+The Forwarded Headers Middleware reads these headers and updates the HttpContext so the application can behave correctly and securely, especially in cloud or containerized environments.
+
+3.Headers Processed
+
+X-Forwarded-For: sets the remote IP address
+X-Forwarded-Proto: sets the request scheme (HTTP/HTTPS)
+X-Forwarded-Host: sets the host name
+
+learn more: https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.builder.forwardedheadersextensions.useforwardedheaders?view=aspnetcore-8.0
+
+4.Automatic Behavior in Azure App Service
+In most cases, Azure App Service and similar platforms automatically add these headers, and the middleware can process them out of the box.
+
+5.Next Step: Adding the Middleware
+To ensure proper behavior, you’ll add the middleware in your application’s startup configuration before deploying to Azure.
+  
 
 
 
@@ -180,13 +222,18 @@ Now that local deployment is understood, the next step is to explore external ho
 
 
 
+<<h2>> Configuring the forwarded headers middleware
+
+## Program.cs
+
+builder.Services.Configure<ForwardedHeadersOptions>(options => {
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+});
 
 
+var app = builder.Build(); // Build the app
 
-
-
-
-
+app.UseForwardedHeaders(); //middleware to process X-Forwarded-For and X-Forwarded-Proto headers
 
 
 
