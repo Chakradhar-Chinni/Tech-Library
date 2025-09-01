@@ -145,3 +145,53 @@ View > Other Windows > EndPointsExplorer
 
 
 
+
+
+
+
+
+
+<<h2>> Hosting and Deploying
+1. Publishing the Application
+Publishing means generating the necessary files to run the application. This happens every time you rebuild the project, creating output files in the /bin/debug/net8.0 or /bin/release/net8.0 folder depending on the build configuration.
+
+2. Local Hosting Environment
+Locally, your machine acts as the host. The published files are copied to the appropriate folder, and the application is launched as a console app.
+
+3. Process Manager: Kestrel
+Kestrel is the default cross-platform HTTP server used to run ASP.NET Core apps locally. On Windows, IIS can be used for more advanced hosting features, but Kestrel is sufficient for most local development scenarios.
+
+4.Application Execution
+Once deployed locally, the application starts running and is ready to handle HTTP requests and send responses. This is managed by the process manager (Kestrel or IIS).
+
+5.Next Step: Deployment Options
+Now that local deployment is understood, the next step is to explore external hosting and deployment options such as cloud platforms (Azure, AWS), containers (Docker), or on-premise servers.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
