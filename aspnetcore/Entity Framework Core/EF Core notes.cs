@@ -247,8 +247,49 @@ EF Core can save changes to database even if they are not tracked, this can be d
 		await _context.SaveChangesAsync();
 
 (2)
+Migrations can be applied via CMD line
+Add-Migration MigrationName
+Update-database
+
+Add-Migration creates new C# class under the migrations folder
+Up()
+	- defines what changes to apply to the database.
+Down()
+	- defines how to revert those changes when roll back is hit
+	- If 10 Add Migrations are hit, 10 c# classes are created in Migrations Folder. To rollback a specific migration EF looks at Down() to undo changes
+
+Update-Database looks at newly created migrations file > translates Up() to SQL Statements > apply changes to database > log entry in _EFMigrationsHistory table
 
 
+(3)
+
+Scenario 1:  roll back the migration
+
+	cmd > Remove-Migration
+
+ - Suppose add-migration is done but update-database is not hit then use 
+ - If 10 add-migrations are hit wothout update-database then last migration will be removed
+ - Migration file is also deleted 
+	
+Scenario 2:  Suppose you have these migrations compelted with update-database.
+InitialCreate
+AddEmployeeTable
+AddDepartmentTable
+AddProjectTable
+
+Update-Database -Migration AddEmployeeTable
+
+This will: Undo AddDepartmentTable and Undo AddProjectTable
+
+Scenario 3: 
+To roll back all migrations (removes all EF-managed tables)
+cmd > Update-Database -Migration 0
+
+	
+(4)
+	Script-Migration
+- after hitting Add-Migrations use  Script-Migration  cmd to generate SQL statements in console 
+- these sql statements will hit database upon invoking update-database
 
 
 
