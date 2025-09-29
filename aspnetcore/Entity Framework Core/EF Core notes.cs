@@ -130,15 +130,63 @@ class Program
     }
 }
 
+
+
 - executing raw sql query directly in EF Core (complicated queries, temp tables in sql)
 1. FromSqlRaw() or ExecuteSqlRaw() methods to execute stored procedures that create and manipulate temporary tables.
+2. FromSqlRaw() - if SP returns rows. Result must be mapped to a DbSet<T> in DbContext
 
-var result = context.Database.ExecuteSqlRaw("EXEC YourStoredProcedure @param1, @param2", parameters);
+
+If SP returns data, the result can be mapped to a DTO and exposed via entity class
+without parameters:
+var summaries = await _context.CustomerSummaries
+								.FromSqlRaw("EXEC GetCustomerSummary")
+								.ToListAsync();								
+
+with parameters:
+var summaries = await _context.CustomerSummaries
+						      .FromSqlRaw("EXEC GetCustomerSummaryByRegion @RegionId",new SqlParameter("@RegionId", regionId))
+    						  .ToListAsync();
+
+DTO:
+public class CustomerSummaryDto
+{
+    public int CustomerId { get; set; }
+    public string Name { get; set; }
+    public int TotalOrders { get; set; }
+}
+
+DbContext:
+public class AppDbContext : DbContext
+{
+    public DbSet<CustomerSummaryDto> CustomerSummaries { get; set; }
+
+    public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options)
+    {
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // Since this DTO is not tied to a table, prevent EF from trying to create one
+        modelBuilder.Entity<CustomerSummaryDto>().HasNoKey();
+    }
+}
+
+
+
+
 var results = context.CustomEntity.FromSqlRaw("EXEC YourStoredProcedure @param1, @param2", parameters).ToList();
 
+3. ExecuteSqlRaw() - if SP doesnot return rows
+var result = context.Database.ExecuteSqlRaw("EXEC YourStoredProcedure @param1, @param2", parameters);
 
 
-- DbContext and Entity
+
+
+
+
+<<h2>> DbContext and Entity
 Entity: C# class that maps to a database table
 DbContext: Manages database operations and configurations. Acts as bridge between Sql and C# app
 DbSet: Represents a table in the database
