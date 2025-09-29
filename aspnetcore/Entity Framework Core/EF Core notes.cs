@@ -227,3 +227,28 @@ Entity instances are no longer tracked when:
 	The DbContext is disposed
 	The change tracker is cleared
 	The entities are explicitly detached
+
+
+
+
+
+
+
+
+<<h2>>
+(1)
+EF Core can save changes to database even if they are not tracked, this can be done by amnually attaching entities to DbContext
+		var customer = new Customer { CustomerId = 1, Name = "New Name" };
+		
+		// Attach and mark as modified
+		_context.Attach(customer);
+		_context.Entry(customer).State = EntityState.Modified;
+		
+		await _context.SaveChangesAsync();
+
+(2)
+
+
+
+
+
