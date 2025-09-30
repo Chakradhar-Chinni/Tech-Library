@@ -291,5 +291,15 @@ cmd > Update-Database -Migration 0
 - after hitting Add-Migrations use  Script-Migration  cmd to generate SQL statements in console 
 - these sql statements will hit database upon invoking update-database
 
+(5) EF Core Tracking
+- EF Core begins tracking entities as soon as they are loaded from the database or added to the context. It keeps a snapshot of their original values.
+- EF Core tracks all entities by default when you query them using methods like .ToList(), .First(), etc.
+- It detects changes when you modify properties of those tracked entities.
+- When you call SaveChanges(), EF Core compares the current values with the original snapshot and generates the appropriate SQL commands (INSERT, UPDATE, DELETE).
+- for read only queries, disable tracking to improve EF Performance	
+	var blogs = context.Blogs.AsNoTracking().ToList();
 
+(6)
+	
+	
 
