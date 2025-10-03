@@ -117,7 +117,3 @@ options.UseSqlServer("YourConnectionString")
        .LogTo(Console.WriteLine, LogLevel.Information)
        .EnableSensitiveDataLogging();
 ```
-
----
-
-Let me know if you'd like this saved as a markdown or PDF file for your documentation, or if you want help integrating this with your Angular frontend.
