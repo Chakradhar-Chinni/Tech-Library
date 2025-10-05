@@ -5,9 +5,39 @@
 2. Scoped `_ViewStart.cshtml`: Place a `_ViewStart.cshtml` inside folders like `/Views/Premium/` to automatically apply a specific layout (e.g., `_PremiumLayout`) to all views in that folder, overriding the global layout.
 
 
+
+
+  
 (2) Sections
 
 Purpose: Sections allow views to inject content (like scripts or styles) into specific placeholders in a shared layout, keeping layout structure clean and reusable.
 
 Scope: Sections are scoped to the view where they’re defined and only rendered when the layout includes a matching @RenderSection() — they are not shared across views.  
+
+
+
+
   
+(3) ModelState validation
+
+- When using the [ApiController] attribute on a controller, automatic model validation is enabled.
+- If the model state is invalid, ASP.NET Core automatically returns a 400 Bad Request response with a ProblemDetails object in the response body.
+- This behavior is ideal for APIs but not suitable for form-based web apps, because:
+   - The browser will show a serialized JSON error page instead of rendering validation messages in the view.
+   - You lose the ability to display field-level validation errors in Razor views.
+
+- Use Manual Model validation to Show Validation Messages in Razor Views
+[HttpPost]
+public IActionResult Create(UserViewModel viewModel)
+{
+    if (!ModelState.IsValid)
+    {
+        return View(viewModel); // Re-render the form with validation messages
+    }
+    // Proceed with valid data
+}
+
+
+
+
+(4)
