@@ -40,4 +40,42 @@ public IActionResult Create(UserViewModel viewModel)
 
 
 
-(4)
+(4) Learning during Update in CRUD
+Issue 1: Readonly ID fields became blank after validation failure
+Root Cause: Inputs used asp-for plus manual value="@TempData[...]". TempData is read-once; after first GET/POST cycle values vanished. Explicit value= suppressed Tag Helper fallback to ModelState values.
+Fix: Populate model in GET, remove manual value=, keep readonly (or hidden) so IDs post back.
+
+  
+Issue 2: InvalidOperationException creating EditSalesOrderDetailViewModel on POST
+Root Cause: View model lacked a public parameterless constructor; model binder could not instantiate the type.
+Fix: Add a public parameterless ctor alongside the convenience ctor taking IDs.
+
+  
+Issue 3: Using TempData for form field persistence
+Root Cause: TempData clears after it is read, unsuitable for retaining form field values across a failed POST where you return the same view.
+Fix: Rely on ModelState (return View(model)) and initialize IDs in the GET action; reserve TempData for PRG success messages.
+
+  
+Issue 4: Potential loss of key values if disabled were used instead of readonly (general pitfall)
+Root Cause: Disabled inputs are not posted, leading to missing IDs if changed later to disabled.
+Fix: Use readonly (submits value) or pair a hidden field with a plaintext display.
+
+  
+Issue 5: Missing anti-forgery protection on POST actions
+Root Cause: [ValidateAntiForgeryToken] attribute commented out and no @Html.AntiForgeryToken() in form, exposing CSRF risk.
+Fix: Add attribute to POST action and token helper in the form.
+
+  
+Issue 6: Duplicate property declarations (e.g., Product.Name, ProductNumber, SalesOrderDetail.CarrierTrackingNumber) in shown signatures
+Root Cause: Accidental duplicate lines (possibly merge/edit artifact) will cause compile errors or confusion.
+Fix: Remove duplicates; keep a single properly initialized definition.
+
+
+Issue 7: Nullable / uninitialized reference properties (risk of null)
+Root Cause: Properties like CarrierTrackingNumber not initialized; could cause null reference usage or validation confusion.
+Fix: Initialize to string.Empty or apply [Required] (already present) and ensure the binder sets a value; safer to initialize.
+
+  
+Issue 8: IDs initially nullable (earlier version) permitting invalid state
+Root Cause: Allowing nullable IDs when editing existing entities can produce unnecessary validation complexity.
+Fix: Make IDs non-nullable int when they must always exist on edit forms.
