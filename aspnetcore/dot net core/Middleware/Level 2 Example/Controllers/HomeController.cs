@@ -8,11 +8,18 @@ namespace Core.Features.Controllers
     public class HomeController : ControllerBase,IDisposable
     {
 
-        [HttpGet]
-        public IActionResult Index()
+        [HttpGet("success")]
+        public IActionResult Success()
         {
             //return Ok(result);
             return Ok("Success");
+        }
+
+        [HttpGet("error")]
+        public IActionResult Error()
+        {
+
+            throw new Exception("Simulated Exception");
         }
         public void Dispose()
         {
@@ -20,3 +27,31 @@ namespace Core.Features.Controllers
         }
     }
 }
+
+Output:
+
+Console logs:
+Exception Middleware before next()
+HomeController instance Destroyed
+Exception Middleware after next()
+Exception Middleware before next()
+HomeController instance Destroyed
+
+GET https://localhost:7093/api/home/success
+Success
+Request took: 2 ms
+
+GET https://localhost:7093/api/home/error
+{
+  "StatusCode": 200,
+  "Message": "Simulated Exception",
+  "Path": {
+    "Value": "/api/home/error",
+    "HasValue": true
+  },
+  "Method": "GET",
+  "Timestamp": "2025-10-13T15:54:26.8038624Z"
+}
+
+
+
