@@ -171,7 +171,7 @@ Full Join (= full outer join)
   Need unmatched rows from both sides
 
 1. Always prefer left join even by interchanging tables, to improve readability
-2. 
+2. use a,b for table names - standard practice
 
 shortcut notes:
 LEFT JOIN: “Take every row from A, add B data when it matches.”
