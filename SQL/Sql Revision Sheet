@@ -147,6 +147,41 @@ WHERE
 HAVING
 ORDER BY
 
+## SQL Joins
+Inner Join
+Left Join (= left outer join)
+Right Join (= right outer join)
+Full Join (= full outer join)
+
+**Inner Join**
+  when matches are needed
+
+**Left Join**
+  
+  FROM TableA AS a          -- preserved
+  LEFT JOIN TableB AS b     -- optional
+    ON a.Key = b.Key
+
+**Right Join**
+  FROM TableA AS a          -- optional
+  RIGHT JOIN TableB AS b    -- preserved
+    ON a.Key = b.Key
+
+**FULL Join**
+  Need unmatched rows from both sides
+
+1. Always prefer left join even by interchanging tables, to improve readability
+2. 
+
+shortcut notes:
+LEFT JOIN: “Take every row from A, add B data when it matches.”
+RIGHT JOIN: “Take every row from B, add A data when it matches.”
+LEFT keeps Left; RIGHT keeps Right.
+That’s all. Nothing about which side of = matters.
+
+Notes:
+1.
+
 Points
 # CHAR: Fixed-length storage. If the defined length is not fully used, it is padded with spaces.
 # VARCHAR2: Variable-length storage. Only the actual data is stored, saving space when the full length is not needed.
