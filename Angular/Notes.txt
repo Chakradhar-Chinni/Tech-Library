@@ -45,8 +45,9 @@ Visual Studio Code
 nodejs (nvm)
 Angular CLI
 
+
 install nodejs
-https://github.com/coreybutler/nvm-windows/releases - download nvm-setup.exe
+https://github.com/coreybutler/nvm-windows/releases - download nvm-setup.exe (under assets)
 cmd > nvm install 18.10.0
 after installing, 
 cmd > nvm use 18.10.0
@@ -55,11 +56,12 @@ check nodejsversion: node -v or node --version
 
 
 install angular
-npm install -g @angular/cli@16.0.0
+cmd > npm install -g @angular/cli@16.0.0
 
-create new project: ng new joes-robot-shop
+create new project:
+cmd > ng new joes-robot-shop
 
-open project in vs code and start the app using: npm start
+open project in VS code and start the app using: npm start
 
 website will be opened at localhost:4200 (or another port number)
 
