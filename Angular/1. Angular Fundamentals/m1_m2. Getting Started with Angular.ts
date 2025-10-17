@@ -82,3 +82,18 @@ export class AppComponent {
 ##/./app.component.html
 <h1> Hello World> 
 
+
+
+<<h2>> Setting up dev region
+
+Node.js → always global
+npm → global, but installs project-specific packages locally
+Angular CLI → usually global for convenience, can be local per project
+
+cmd to check version
+node js: node -v
+npm version: npm -v
+Angular : ng version
+If ng is not recognized, Angular CLI is not installed globally. Install it using:
+
+nvm: node version manager is used to switch versions between projects
