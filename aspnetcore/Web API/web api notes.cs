@@ -194,6 +194,8 @@ public IActionResult GetTime([FromServices] IDateTimeProvider dateTimeProvider)
 
 
 
+
+
 <<h2>> Content Negotiation
 1. Web Api by default uses JSON format to send HTTP Responses
 2. XML support is enabled using .AddXmlSerializerFormatters() in program.cs
@@ -249,6 +251,31 @@ public class ProductsController : ControllerBase
 
 
 
+
 <<h2>> APi Versioning
 1. Backward compatibility, add new features, serve different users
+2. Use semantic versioning - MAJOR.MINOR.PATCH (e.g., 2.5.1).
+
+MAJOR: Incremented for incompatible or breaking API changes
+MINOR: Incremented for backward-compatible feature additions
+PATCH: Incremented for backward-compatible bug fixes
+
+
+
+
+
+
+
+<<h2>> Rate limiting
+
+
+
+
+
+
+
+
+
+
+
 
