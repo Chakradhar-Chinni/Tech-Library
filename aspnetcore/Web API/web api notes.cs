@@ -266,7 +266,10 @@ PATCH: Incremented for backward-compatible bug fixes
 
 
 
-<<h2>> Rate limiting
+<<h2>> Rate limiting VS Throttling
+
+Ratelimiting: limits the requests a user can make in a time period and reject others (HTTP 429)
+Throttling: Controls the processing speed. Allow 1 request per second. If 5 requests arrive simultaneously → process 1/sec, queue others
 
 
 
