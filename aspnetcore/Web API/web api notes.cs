@@ -246,3 +246,9 @@ public class ProductsController : ControllerBase
         return Ok(product);
     }
 }
+
+
+
+<<h2>> APi Versioning
+1. Backward compatibility, add new features, serve different users
+
