@@ -194,4 +194,55 @@ public IActionResult GetTime([FromServices] IDateTimeProvider dateTimeProvider)
 
 
 
-<<h2>>
+<<h2>> Content Negotiation
+1. Web Api by default uses JSON format to send HTTP Responses
+2. XML support is enabled using .AddXmlSerializerFormatters() in program.cs
+3. Accept: application/xml or  Accept: application/json is now supported (content negotiation)
+4. [Produces("application/xml")] at action or controller level restricts to send response in xml format. 
+    - 406 Not Acceptable  http error is shown if client requests application/json
+    - this is same for [Produces("application/json")]
+
+//Product.cs
+public class Product
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+}
+
+
+//Program.cs
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers()
+    .AddXmlSerializerFormatters(); // Enable XML support
+
+var app = builder.Build();
+app.MapControllers();
+app.Run();
+
+//Controller
+using Microsoft.AspNetCore.Mvc;
+
+[ApiController]
+[Route("api/[controller]")]
+public class ProductsController : ControllerBase
+{
+    // JSON-only endpoint
+    [HttpGet("json/{id}")]
+    [Produces("application/json")] // Restrict to JSON
+    public IActionResult GetJsonProduct(int id)
+    {
+        var product = new Product { Id = id, Name = "Laptop", Price = 50000 };
+        return Ok(product);
+    }
+
+    // XML-only endpoint
+    [HttpGet("xml/{id}")]
+    [Produces("application/xml")] // Restrict to XML
+    public IActionResult GetXmlProduct(int id)
+    {
+        var product = new Product { Id = id, Name = "Book", Price = 250 };
+        return Ok(product);
+    }
+}
