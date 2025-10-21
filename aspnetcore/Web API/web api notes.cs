@@ -260,7 +260,7 @@ MAJOR: Incremented for incompatible or breaking API changes
 MINOR: Incremented for backward-compatible feature additions
 PATCH: Incremented for backward-compatible bug fixes
 
-
+default api version, deprecated apis
 
 
 
@@ -277,7 +277,17 @@ Throttling: Controls the processing speed. Allow 1 request per second. If 5 requ
 
 
 
+<h2>>
+Aliases for action methods
+[HttpPost]
+[ActionName("StudentAdd")]
+public void AddStudents(Student aStudent)
+{
+    StudentRepository.AddStudent(aStudent);
+}
 
+[Authorize] - controller, actionmethod level. only authenticated users can access the resource
+[AllowAnonymous] controller, actionmethod level. non-authenticated users can access. /signup /forgotpassword
 
 
 
