@@ -180,15 +180,109 @@ LEFT keeps Left; RIGHT keeps Right.
 That’s all. Nothing about which side of = matters.
 
 
+
+
+CTE - Common Table Expressions
+1. A CTE is a temporary named result set in SQL.
+2. Exists only during the execution of a single query.
+
+Syntax:
+    WITH CTE_Name AS (
+      -- Your query
+      SELECT column1, column2
+      FROM TableName
+      WHERE condition
+  )
+  SELECT *
+  FROM CTE_Name
+  WHERE another_condition;
+
+Example:
+  WITH HighSalary AS (
+      SELECT EmpName, Salary
+      FROM Employees
+      WHERE Salary > 50000
+  )
+  SELECT *
+  FROM HighSalary;
+
+
+REcursive CTE - Example - Employee Hierarchy
+    WITH EmpHierarchy AS (
+        SELECT EmpID, EmpName, ManagerID, 0 AS Level
+        FROM Employees
+        WHERE ManagerID IS NULL
+        UNION ALL
+        SELECT e.EmpID, e.EmpName, e.ManagerID, Level + 1
+        FROM Employees e
+        INNER JOIN EmpHierarchy eh
+        ON e.ManagerID = eh.EmpID
+    )
+    SELECT *
+    FROM EmpHierarchy;
+
+
 Window Functions
 (a) Aggregate Window Functions: SUM() AVG() COUNT() MAX() MIN()
 (b) Rankin Window Functions: 
   1. RANK()
-  2. DENSE RANK()
-  3. ROW NUMBER()
+  2. DENSE_RANK()
+  3. ROW_NUMBER()
   4. NTILE(n)
   5. LAG() / LEAD()
   6. FIRST_VALUE(column) / LAST_VALUE(column)
+
+RANK() / DENSE_RANK() / ROW_NUMBER() 
+   tip: ask interviewer for what to do in tie scenario and choose either of these functions
+   1. PARTITION BY is optional – if omitted, the function treats all rows as a single group; it’s used to restart ranking or aggregation within each partition.
+   2. ORDER BY is mandatory for ranking functions (RANK(), DENSE_RANK(), ROW_NUMBER()) – it defines the order for ranking; for aggregate window functions (SUM(), AVG()), it’s optional. 
+
+Syntax:
+   SELECT col1,col2
+   RANK() OVER(PARTITION BY colName ORDER BY colName DESC)
+   from tableName
+
+RANK() 
+ - Gives same rank for ties.
+ - Skips numbers after ties.
+ - Example:
+    SELECT EmpName, Salary,
+    RANK() OVER (ORDER BY Salary DESC) AS RankNo
+    FROM Employees;
+
+DENSE_RANK()
+ - Gives same rank for ties.
+ - Does not skip numbers after ties. (Ranks are continuous (no gap after tie))
+
+ROW_NUMBER()
+ - Assigns a unique sequential number to each row.
+ - No ties — even if values are same.
+
+
+Query: Rank Employees by Salary Within Each Department
+
+SELECT 
+    EmpID,
+    EmpName,
+    DeptID,
+    Salary,
+    ROW_NUMBER() OVER (PARTITION BY DeptID ORDER BY Salary DESC) AS RowNum,
+    RANK()       OVER (PARTITION BY DeptID ORDER BY Salary DESC) AS RankNum,
+    DENSE_RANK() OVER (PARTITION BY DeptID ORDER BY Salary DESC) AS DenseRankNum
+FROM Employees
+ORDER BY DeptID, Salary DESC;
+
+| EmpID | EmpName | DeptID | Salary | RowNum | RankNum | DenseRankNum |
+| ----- | ------- | ------ | ------ | ------ | ------- | ------------ |
+| 1     | Alice   | 10     | 90000  | 1      | 1       | 1            |
+| 2     | Bob     | 10     | 75000  | 2      | 2       | 2            |
+| 3     | Carol   | 10     | 75000  | 3      | 2       | 2            |
+| 5     | Emma    | 20     | 95000  | 1      | 1       | 1            |
+| 4     | David   | 20     | 85000  | 2      | 2       | 2            |
+| 6     | Frank   | 30     | 60000  | 1      | 1       | 1            |
+| 7     | Grace   | 30     | 60000  | 2      | 1       | 1            |
+
+
 
 
 Notes:
