@@ -179,6 +179,18 @@ RIGHT JOIN: “Take every row from B, add A data when it matches.”
 LEFT keeps Left; RIGHT keeps Right.
 That’s all. Nothing about which side of = matters.
 
+
+Window Functions
+(a) Aggregate Window Functions: SUM() AVG() COUNT() MAX() MIN()
+(b) Rankin Window Functions: 
+  1. RANK()
+  2. DENSE RANK()
+  3. ROW NUMBER()
+  4. NTILE(n)
+  5. LAG() / LEAD()
+  6. FIRST_VALUE(column) / LAST_VALUE(column)
+
+
 Notes:
 1.
 
