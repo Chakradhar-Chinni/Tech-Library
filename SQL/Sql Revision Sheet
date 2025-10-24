@@ -283,6 +283,36 @@ ORDER BY DeptID, Salary DESC;
 | 7     | Grace   | 30     | 60000  | 2      | 1       | 1            |
 
 
+LAG()
+  - to get value from previous row based on ordering
+  - used to compare historical records
+
+
+LEAD()
+  - to get value from next row based on ordering
+  - used to compare historical records
+
+Example query:SELECT 
+    SaleID,
+    Month,
+    Region,
+    SalesAmount,
+    LAG(SalesAmount) OVER(PARTITION BY Region ORDER BY Month) AS Prev_Month_Sale,
+    LEAD(SalesAmount) OVER(PARTITION BY Region ORDER BY Month) AS Next_Month_Sale,
+    SalesAmount - LAG(SalesAmount) OVER(PARTITION BY Region ORDER BY Month) AS GrowthPrev,
+    LEAD(SalesAmount) OVER(PARTITION BY Region ORDER BY Month) - SalesAmount AS GrowthNext
+FROM Sales;
+
+| SaleID | Month | Region | SalesAmount | Prev_Month_Sale | Next_Month_Sale | GrowthPrev | GrowthNext |
+| ------ | ----- | ------ | ----------- | --------------- | --------------- | ---------- | ---------- |
+| 1      | Jan   | South  | 12000       | NULL            | 15000           | NULL       | 3000       |
+| 2      | Feb   | South  | 15000       | 12000           | 17000           | 3000       | 2000       |
+| 3      | Mar   | South  | 17000       | 15000           | NULL            | 2000       | NULL       |
+| 4      | Jan   | North  | 10000       | NULL            | 13000           | NULL       | 3000       |
+| 5      | Feb   | North  | 13000       | 10000           | 9000            | 3000       | -4000      |
+| 6      | Mar   | North  | 9000        | 13000           | NULL            | -4000      | NULL       |
+
+
 
 
 Notes:
