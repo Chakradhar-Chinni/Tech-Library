@@ -334,5 +334,89 @@
 ---
 
 
+---
+
+### 🗄️ **ADO.NET Interview Preparation Checklist**
+
+1. ADO.NET architecture – disconnected vs connected model
+2. Namespaces – `System.Data`, `System.Data.SqlClient` (or `Microsoft.Data.SqlClient`)
+3. Connection objects – `SqlConnection`, connection strings, opening/closing connections
+4. Command objects – `SqlCommand` and command types (`Text`, `StoredProcedure`, `TableDirect`)
+5. Parameters – `SqlParameter`, parameterized queries to prevent SQL injection
+6. DataReader – `SqlDataReader`, forward-only, read-only, performance considerations
+7. DataAdapter – `SqlDataAdapter` and its role in filling `DataSet`
+8. DataSet – disconnected in-memory data representation
+9. DataTable – working with tables, rows, and columns
+10. DataRelation – parent-child table relationships in `DataSet`
+11. Command execution – `ExecuteReader`, `ExecuteNonQuery`, `ExecuteScalar`
+12. Transactions – `SqlTransaction`, commit, rollback
+13. Connection pooling – how it works and benefits
+14. Exception handling – `SqlException`, error codes
+15. CRUD operations – inserting, updating, deleting, selecting records
+16. Stored procedures – calling from ADO.NET
+17. Parameter direction – `Input`, `Output`, `InputOutput`, `ReturnValue`
+18. Using `using` statement for connections and commands
+19. Typed vs untyped DataSets
+20. Binding `DataSet`/`DataTable` to UI controls
+21. Updating database from DataSet – `DataAdapter.Update()`
+22. Handling concurrency – optimistic concurrency in disconnected model
+23. Transactions – local vs distributed
+24. Differences between `DataReader` and `DataSet`
+25. Performance considerations – connected vs disconnected, batch updates
+26. Asynchronous ADO.NET operations – `OpenAsync`, `ExecuteReaderAsync`
+27. Provider-independent data access – `DbConnection`, `DbCommand`, `DbDataAdapter`
+28. Exception handling and retry logic in database operations
+29. Handling nulls and DBNull in ADO.NET
+30. Differences between ADO.NET and Entity Framework
+
+---
+
+---
+
+### 🗄️ **SQL Interview Preparation Checklist**
+
+1. SQL basics – DDL, DML, DCL, TCL
+2. Data types – numeric, string, date/time, boolean
+3. Creating and altering tables – `CREATE TABLE`, `ALTER TABLE`, `DROP TABLE`
+4. Primary keys, foreign keys, unique constraints, default values
+5. Indexes – clustered vs non-clustered, unique indexes
+6. `SELECT` statements – projections, filtering (`WHERE`), sorting (`ORDER BY`)
+7. Aggregate functions – `COUNT`, `SUM`, `AVG`, `MIN`, `MAX`
+8. `GROUP BY` and `HAVING` clauses
+9. Joins – `INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN`, `FULL OUTER JOIN`, self join
+10. Subqueries – correlated and non-correlated
+11. Set operations – `UNION`, `UNION ALL`, `INTERSECT`, `EXCEPT`
+12. Aliases – column and table aliases
+13. `CASE` expressions and conditional logic
+14. Window functions – `ROW_NUMBER`, `RANK`, `DENSE_RANK`, `NTILE`
+15. Partitioning with `PARTITION BY`
+16. Common Table Expressions (CTE) – recursive and non-recursive
+17. Views – creating, updating, and using views
+18. Stored procedures – creation, parameters, execution
+19. Functions – scalar vs table-valued functions
+20. Triggers – `AFTER`, `INSTEAD OF`, `BEFORE`
+21. Transactions – `BEGIN TRAN`, `COMMIT`, `ROLLBACK`
+22. Isolation levels – `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, `SERIALIZABLE`
+23. Locks – shared, exclusive, deadlocks
+24. Normalization – 1NF, 2NF, 3NF, BCNF
+25. Denormalization – pros and cons
+26. Indexing strategies – covering index, composite index, filtered index
+27. Query optimization – execution plans, `EXPLAIN` / `SET STATISTICS IO`
+28. Stored procedure performance tuning
+29. Temp tables vs table variables
+30. Cursors – usage, types, and performance considerations
+31. Dynamic SQL – `EXEC`, `sp_executesql`
+32. Transactions and error handling – `TRY…CATCH`
+33. SQL functions – `ISNULL`, `COALESCE`, `CAST`, `CONVERT`, `DATEPART`, `DATEDIFF`
+34. Pivot and Unpivot
+35. Recursive queries – hierarchical data
+36. Full-text search basics
+37. Common errors and best practices
+38. Backup and restore basics – full, differential, transaction log backups
+39. Security – users, roles, permissions, schemas
+40. Differences between OLTP and OLAP
+
+---
+
 
 
