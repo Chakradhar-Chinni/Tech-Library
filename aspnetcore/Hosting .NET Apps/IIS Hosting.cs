@@ -153,30 +153,3 @@ iisreset /restart
   * Firewall blocking new port
   * App Pool not assigned / stopped
   * Host header without hosts file mapping
-
----
-
-## **11️⃣ Tips**
-
-* Avoid spaces in folder names (or use quotes when referencing path)
-* Multiple dots in DLL names are allowed
-* Always match DLL name in web.config exactly
-* For local dev, adding app under **Default Web Site** is simplest
-
----
-
-✅ **End-to-End Reference:**
-
-1. Install Hosting Bundle → Restart IIS
-2. Create App Pool (`No Managed Code`)
-3. Publish app to folder (D: drive)
-4. Add Application under Default Web Site
-5. Assign App Pool → Check permissions → Test
-6. Use web.config → Enable stdout logging for debugging
-7. Verify via browser → Adjust bindings/firewall if necessary
-
----
-
-If you want, I can also **convert this into a ready “PDF/Word style reference sheet”** for offline use.
-
-Do you want me to do that?
