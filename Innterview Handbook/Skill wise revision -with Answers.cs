@@ -163,7 +163,25 @@
 4. Project types – Console, Web API, MVC, Blazor, Worker Service
 5. Startup.cs / Program.cs structure (hosting, services, middleware)
 6. Dependency Injection – built-in IoC container
+  /*
+    Dependency Injection (DI) is a design pattern used to achieve loose coupling between classes.
+    In .NET Core, DI is built-in via its IoC (Inversion of Control) container. Services are registered in the Program.cs file and automatically injected where required.
+    Code Samples: aspnetcore/dotnetcore/dependenc injection/
+  */
 7. Service lifetimes – Singleton, Scoped, Transient
+  /*
+      Service lifetime defines how long an instance of a service is kept in memory.
+      | Lifetime      | Description                                           | Example                                               |
+      | ------------- | ----------------------------------------------------- | ----------------------------------------------------- |
+      | **Singleton** | Created once and shared throughout the app’s lifetime | `builder.Services.AddSingleton<IService, Service>();` |
+      | **Scoped**    | Created once per HTTP request                         | `builder.Services.AddScoped<IService, Service>();`    |
+      | **Transient** | Created each time it’s requested                      | `builder.Services.AddTransient<IService, Service>();` |
+  
+    Use Singleton for stateless, reusable components (like configuration or logging).
+    Use Scoped for request-specific services (like database contexts).
+    Use Transient for lightweight, stateless services.
+  */
+
 8. Middleware – request pipeline, custom middleware creation
 9. Routing – attribute routing vs conventional routing
 10. Controllers – API controllers vs MVC controllers
