@@ -195,6 +195,9 @@
     GC tracks references to each object.
     When no references remain → GC marks the object as collectible.
     GC removes those objects and compacts memory.
+    ----
+    Yes, we can explicitly call the garbage collector using GC.Collect(), but it’s generally not recommended.
+    The CLR automatically manages garbage collection more efficiently, and manual calls can degrade performance unless used in very specific cases.
 
   */
 ---
