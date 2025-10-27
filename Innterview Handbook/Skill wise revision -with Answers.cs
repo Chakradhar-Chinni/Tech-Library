@@ -55,6 +55,32 @@
       }
     */
 24. Interfaces – multiple inheritance and default interface methods
+  /*
+    Default interface methods:
+    Define a contract that classes can implement.
+    Contain only declarations of methods, properties, events, or indexers, without any implementation.
+    A class can implement multiple interfaces.
+    Provide a way to achieve multiple inheritance of type, as C# does not support multiple class inheritance due to ambiguity problem
+    
+    Benefits:
+    Loose Coupling: Reduces dependencies between different parts of a system.
+    Modularity: Promotes a structured and organized codebase.
+    Code Reusability: Allows common functionalities to be defined once and reused by multiple derived classes.
+    
+    Code Sample
+    interface IPrintable
+    {
+        void Print();
+    }
+
+    class Document : IPrintable
+    {
+        public void Print() // Implementation of interface method
+        {
+            Console.WriteLine("Printing document...");
+        }
+    }
+  */
 25. Polymorphism – compile-time and runtime
 26. Partial classes and methods
 27. Nested classes
