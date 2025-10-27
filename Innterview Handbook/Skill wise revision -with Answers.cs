@@ -153,7 +153,22 @@
 79. Deconstruction syntax
 80. Top-level statements (C# 9+)
 81. how to stop property from being inherited
-    Mark the property with Private keyword
+    /*
+    class Base
+    {
+        public virtual int Number { get; set; }
+        public int Value { get; set; }
+    }
+    class Derived : Base
+    {
+        public sealed override int Number { get; set; }
+        public new string Value { get; set; } // hides base property
+        private int Secret { get; set; } // not inherited
+    }
+    sealed -  prevents further over riding
+    new - Hides Base property
+    private - Not inherited at all
+    */
 
 ---
 
