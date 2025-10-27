@@ -152,6 +152,8 @@
 78. Discards (`_`) in pattern matching and tuples
 79. Deconstruction syntax
 80. Top-level statements (C# 9+)
+81. how to stop property from being inherited
+    Mark the property with Private keyword
 
 ---
 
