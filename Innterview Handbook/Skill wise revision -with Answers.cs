@@ -100,6 +100,49 @@
 41. Anonymous methods
 42. Lambda expressions
 43. Extension methods
+    /*
+    “Extension methods let you extend existing types like int or string with new functionality.
+    You can define multiple extension methods for different types inside the same static class — like int, string, DateTime, etc.
+      
+      The compiler links the correct extension method based on the parameter type.
+      this int number applies to int variables.
+      this string str applies to string variables.
+      Both can live in the same MyExtensions class.
+      Code Sample: 
+        public static class MyExtensions
+        {
+            // Extension method for int
+            public static bool IsEven(this int number)
+            {
+                return number % 2 == 0;
+            }
+        
+            // Extension method for string
+            public static bool IsCapitalized(this string str)
+            {
+                if (string.IsNullOrEmpty(str))
+                    return false;
+        
+                return char.IsUpper(str[0]);
+            }
+        }
+
+        ***Usage***
+        
+        class Program
+        {
+            static void Main()
+            {
+                int num = 10;
+                string name = "Chakri";
+        
+                Console.WriteLine(num.IsEven());        // Output: True
+                Console.WriteLine(name.IsCapitalized()); // Output: True
+            }
+        }
+
+
+  */
 44. LINQ – `Select`, `Where`, `OrderBy`, `GroupBy`, `Join`, `Aggregate`
 45. Deferred execution in LINQ
 46. Anonymous types
