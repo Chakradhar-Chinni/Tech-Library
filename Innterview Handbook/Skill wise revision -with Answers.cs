@@ -191,6 +191,11 @@
   | **Gen 1**  | Surviving objects from Gen 0.                             |
   | **Gen 2**  | Long-lived objects (collected rarely).                    |
 
+    Objects are created on the managed heap.
+    GC tracks references to each object.
+    When no references remain → GC marks the object as collectible.
+    GC removes those objects and compacts memory.
+
   */
 ---
 
