@@ -170,8 +170,33 @@
     private - Not inherited at all
     */
 
+82. CLR
+  /*
+    The CLR, or Common Language Runtime, is the execution engine of .NET.
+    It handles memory management, JIT compilation, garbage collection, type safety, and exception handling,
+    allowing developers to focus on code logic instead of low-level details.
+  process:
+      C# compiler (csc) → produces IL code inside an assembly (.exe or .dll).  
+      CLR → takes that IL, and JIT-compiles it into native machine code.  
+      Then, the CLR executes the program and manages it at runtime.
+  */
+83. Garbage Collector
+/*
+  Garbage Collector in .NET automatically manages memory by cleaning up objects that are no longer in use.
+  It improves performance using a generational approach (Gen 0, 1, and 2) and helps prevent memory leaks by reclaiming unused memory.
+  
+  | Generation | Description                                               |
+  | ---------- | --------------------------------------------------------- |
+  | **Gen 0**  | Newly created short-lived objects (collected frequently). |
+  | **Gen 1**  | Surviving objects from Gen 0.                             |
+  | **Gen 2**  | Long-lived objects (collected rarely).                    |
+
+  */
 ---
 
+
+
+  
 ### 🌐 **.NET Core / ASP.NET Core Interview Preparation Checklist**
 
 1. .NET Core vs .NET Framework – differences and advantages
