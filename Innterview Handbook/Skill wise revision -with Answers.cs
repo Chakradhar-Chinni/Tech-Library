@@ -117,6 +117,21 @@
 58. Value equality vs reference equality (`Equals`, `==`, `GetHashCode`)
 59. Immutable types and readonly fields
 60. Constant vs readonly difference
+  /* const vs readonly 
+
+  const:
+  - Value fixed at compile time
+  - Must be initialized where declared
+  - Implicitly static
+  - Example: const int X = 10;
+  
+  readonly:
+  - Value fixed at runtime (in constructor)
+  - Can have different values per instance
+  - Example: readonly int Y;
+              public MyClass(int val) { Y = val; }
+  */
+
 61. Operator overloading
 62. Indexer overloading
 63. Reflection basics – `Type`, `MethodInfo`, `PropertyInfo`
