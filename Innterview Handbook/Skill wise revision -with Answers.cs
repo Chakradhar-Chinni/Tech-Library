@@ -12,6 +12,45 @@
 10. Tuples and Deconstruction
 11. Records – immutability and value-based equality
 12. Nullable types and null-coalescing operators (`??`, `?.`)
+  /*
+    Nullable Types (?)
+      
+              Used to allow value types (like int, bool, DateTime) to store null.
+              
+              Syntax:
+              
+              int? age = null;   // valid
+              int normalAge = 0; // cannot be null
+              
+              
+              You can check if it has a value:
+              
+              if (age.HasValue)
+                  Console.WriteLine(age.Value);
+
+   Null-Coalescing Operator (??)
+
+                  Provides a default value when the left-hand side is null.
+                  
+                  int? age = null;
+                  int finalAge = age ?? 18; // if age is null, use 18
+                  Console.WriteLine(finalAge); // Output: 18
+                  
+                  
+                  ✅ Usage:
+                  x ?? y → returns x if not null, otherwise y.
+
+  Null-Conditional Operator (?.)
+
+            Safely accesses members without throwing NullReferenceException.
+            
+            Person person = null;
+            Console.WriteLine(person?.Name); // safely returns null instead of error
+            
+            
+            ✅ Usage:
+            object?.Property → returns null if object is null.
+  */
 13. Exception handling – `try`, `catch`, `finally`, `throw`, custom exceptions
 14. Namespaces and assemblies
 15. Access modifiers – `public`, `private`, `protected`, `internal`, `protected internal`
