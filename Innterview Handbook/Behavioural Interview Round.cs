@@ -31,8 +31,8 @@ With measurable impact (e.g., “reduced time by 30%”, “saved $90K/year”)
 Example of properly answering:
 
 Basic
-“We had an issue and fixed it.”
-
+“We had an issue and fixed it.
+  
 Good
 “I helped fix the issue by checking logs.”
 
@@ -40,4 +40,5 @@ Excellent
 “I identified the root cause using log analysis, fixed the issue, and implemented a retry mechanism reducing outages by 80%.”
 
 
+**Teamwork** 
 
