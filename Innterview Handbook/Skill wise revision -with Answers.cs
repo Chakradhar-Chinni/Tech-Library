@@ -123,6 +123,18 @@
 25. Polymorphism – compile-time and runtime
 26. Partial classes and methods
 27. Nested classes
+/*
+    “An indexer lets us access class objects like arrays using the [] operator.
+    It’s defined with this and an index parameter, providing get and set access to internal data.
+    For example, obj[0] = "A"; is shorthand for calling an indexer method inside the class.”
+    Code Sample:  
+      Sample s = new Sample();
+      s[0] = "Chakri";
+      s[1] = "Raj";
+      s[2] = "Kiran";      
+      Console.WriteLine(s[1]); // Output: Raj
+
+*/
 28. Properties – auto, read-only, computed properties
 29. Indexers
 30. `this` and `base` keywords
