@@ -278,6 +278,17 @@
 8. Middleware – request pipeline, custom middleware creation
 9. Routing – attribute routing vs conventional routing
 10. Controllers – API controllers vs MVC controllers
+/*
+  API Controllers:
+    - used in WebAPIs(REST APIs), inherits ControllerBase
+    - Automatic validation via [ApiController]
+    - returns Data - ActionResult<T>, IActionResult<T>
+  MVC Controllers:
+    - used in Web apps(UI based apps) - inherits Controller
+    - Manual model validation
+    - returns Views with View Result, RedirectResult
+    
+*/
 11. Action methods – parameters, model binding, model validation
 12. Filters – authorization, exception, action, result, resource filters
 13. Model validation – Data Annotations, Fluent Validation
