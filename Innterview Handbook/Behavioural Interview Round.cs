@@ -41,4 +41,11 @@ Excellent
 
 
 **Teamwork** 
-
+Describe a time when you had to handle a conflict at work.
+Can you share an instance where you went over and above to help a team member?
+Tell me about a time when your team achieved a significant goal.
+Share an example of when you had to adapt to a team member’s working style.
+How have you handled a situation where a team member was not pulling their weight?
+Can you give an example of a time when your team disagreed with your decision, and how did you manage it?
+How have you handled personality clashes in your team?
+Talk about a time when you had to motivate a demotivated team member.
