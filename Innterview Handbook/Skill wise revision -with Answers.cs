@@ -1,3 +1,57 @@
+## Migrating legacy .net app to .net core
+/*
+Here’s a concise, structured answer you can give for this question 👇
+
+---
+
+### **✅ Answer Structure:**
+
+> **Step 1: Assessment & Planning**
+>
+> * Analyze the current solution using **.NET Portability Analyzer** or **Upgrade Assistant**.
+> * Identify incompatible NuGet packages, APIs, and dependencies.
+> * Document third-party libraries — check if .NET 8-compatible versions exist.
+
+> **Step 2: Prepare the Codebase**
+>
+> * Upgrade to **.NET Framework 4.8** first (for smoother migration).
+> * Separate **business logic**, **data access**, and **UI layers** into independent projects (clean architecture).
+> * Remove obsolete APIs and web.config-based settings.
+
+> **Step 3: Create a New .NET 8 Project**
+>
+> * Create a fresh **.NET 8** Web API / MVC project using SDK-style csproj.
+> * Gradually **migrate one project at a time** — start with core libraries or services.
+> * Replace old packages (e.g., `System.Web` → `Microsoft.AspNetCore.*`).
+
+> **Step 4: Refactor for .NET Core Concepts**
+>
+> * Replace **Global.asax** with **Program.cs** and **Startup.cs**.
+> * Implement **Dependency Injection**, **appsettings.json**, and **Middleware** for cross-cutting concerns.
+> * Update **Entity Framework** to **EF Core**.
+
+> **Step 5: Modernize & Test**
+>
+> * Add **unit tests** for migrated modules.
+> * Optimize using **async/await**, **minimal APIs**, and **caching** where needed.
+> * Use **CI/CD pipelines (Azure DevOps/GitHub Actions)** for build and deploy.
+
+> **Step 6: Deploy & Monitor**
+>
+> * Host on **Azure App Service / IIS (with Hosting Bundle)**.
+> * Configure **logging (Serilog / Application Insights)** and monitor post-migration performance.
+
+---
+
+### **✨ Bonus Tip:**
+
+> “.NET 8 provides long-term support, better performance, cross-platform capability, modern APIs, and improved cloud readiness.”
+
+
+*/
+
+
+
 ### 🧩 **C# Language Interview Preparation Checklist**
 
 1. Data types – value types vs reference types
