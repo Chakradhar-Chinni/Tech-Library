@@ -16,7 +16,7 @@ With measurable impact (e.g., “reduced time by 30%”, “saved $90K/year”)
 
 
  Most behavioural questions are variants of the same 8–10 themes. 
-  | Category                | What They Look For               | Example Questions                                                                     |
+| Category                | What They Look For               | Example Questions                                                                     |
 | ----------------------- | -------------------------------- | ------------------------------------------------------------------------------------- |
 | **Teamwork**            | Collaboration, empathy           | “Tell me about a time you worked with a difficult teammate.”                          |
 | **Ownership**           | Accountability                   | “Describe a time you took full responsibility for a failure.”                         |
