@@ -41,7 +41,32 @@ Excellent
 
 
 **Teamwork** 
-Describe a time when you had to handle a conflict at work.
+Handling a Conflict Within the Team
+/*
+Situation:
+S1. During a high-priority automation project, two developers in my team disagreed on the approach — one wanted a script-based method while the other pushed for API integration.
+
+S2. During our project sprint, two teammates had conflicting opinions on how to handle data validation
+
+Task:
+S1. As the technical lead, it was my responsibility to resolve the conflict quickly without affecting delivery.
+
+S2. As the module owner, I had to resolve the conflict quickly while keeping both members engaged and ensuring the final solution was technically sound.
+
+
+Action:
+S1. I organized a short sync call where both explained their logic. We compared the pros and cons of each method, focusing on long-term maintainability instead of personal preference. I then proposed a hybrid approach: using API integration for core logic and scripts for quick configuration.
+
+S2. I scheduled a short discussion where both explained their perspectives. Instead of focusing on who was right, I redirected the conversation toward our project goals — maintainability, performance, and reusability. I then proposed that we prototype both approaches with sample data and compare performance metrics. After the quick test, we saw that doing validations at the database layer reduced response time by 15%.
+
+Result:
+S1. The conflict was resolved in under a day, the hybrid solution reduced development time by 20%, and both developers appreciated that their ideas were valued — improving team trust significantly./
+
+S2. We adopted the optimized solution, completed the module on time, and both teammates appreciated the fair decision-making approach. It also set a healthy precedent — later, the team started resolving disagreements through quick experiments instead of long debates.
+
+*/
+  Describe a time when you had to handle a conflict at work.
+  
 Can you share an instance where you went over and above to help a team member?
 Tell me about a time when your team achieved a significant goal.
 Share an example of when you had to adapt to a team member’s working style.
