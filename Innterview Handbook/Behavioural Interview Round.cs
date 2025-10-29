@@ -65,7 +65,8 @@ S1. The conflict was resolved in under a day, the hybrid solution reduced develo
 S2. We adopted the optimized solution, completed the module on time, and both teammates appreciated the fair decision-making approach. It also set a healthy precedent — later, the team started resolving disagreements through quick experiments instead of long debates.
 
 */
-  Describe a time when you had to handle a conflict at work.
+
+Describe a time when you had to handle a conflict at work.
   
 Can you share an instance where you went over and above to help a team member?
 Tell me about a time when your team achieved a significant goal.
