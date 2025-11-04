@@ -1,3 +1,5 @@
+url: https://resources.biginterview.com/behavioral-interviews/behavioral-interview-questions/
+
 Behavioural interviews assess how you’ve handled situations in the past to predict how you’ll act in the future.
 Past behaviour is the best predictor of future performance.
   
