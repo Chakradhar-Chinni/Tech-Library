@@ -66,12 +66,23 @@ S2. We adopted the optimized solution, completed the module on time, and both te
 
 */
 
-Describe a time when you had to handle a conflict at work.
   
 Can you share an instance where you went over and above to help a team member?
+  - team mate lacking tech skill, so trained him on weekends and helped to become upto speed. Since, outside of business hours we informed manager also.
 Tell me about a time when your team achieved a significant goal.
+   - migration from 3rd party tool to .net solution with in a 3 month time to avoid licensing cost.
+
 Share an example of when you had to adapt to a team member’s working style.
+  - clients/ Product owner preferred only meeting rather that email. so, scheduled recurring calls and demoed daily progress, updates. at end decreased re-work items as client is aware of end product.
+  
 How have you handled a situation where a team member was not pulling their weight?
+  - team mate not pulling due to lack of prioritization skill, I helped to stay organized & prioritized eventually he became back to normal.
+
 Can you give an example of a time when your team disagreed with your decision, and how did you manage it?
-How have you handled personality clashes in your team?
+  - I proposed to handling logic calculation at db, other team mates had proposed with in app. I suggested for POC. mine is 2s, team mate is 3s. We refined further, and picked hybrid       approach, & time is 1s. this way I maintained team morale & ensured others are heard.
+    
+How have you handled personality clashes in your team? or Junior vs Senior crash
+  - one member shares very strong opinions, 2nd member couldn't speak up as the 1st guy is making so strong gestures. I proposed round table approach so everyone speaks. Later, 1st member realized he was cutting off. becaused of shared discussions project issues have decreased by 30%
+    
 Talk about a time when you had to motivate a demotivated team member.
+    - because of ever changing requirements work of a dev1 was not used, he felt demotivated. I had private talk and said to store all work as future enhancements. In later sprints, it got used. team morale is also increased
