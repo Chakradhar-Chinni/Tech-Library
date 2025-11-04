@@ -41,8 +41,8 @@ Excellent
 
 
 **Teamwork** 
-Handling a Conflict Within the Team
 /*
+Handling a Conflict Within the Team
 Situation:
 S1. During a high-priority automation project, two developers in my team disagreed on the approach — one wanted a script-based method while the other pushed for API integration.
 
@@ -64,7 +64,7 @@ S1. The conflict was resolved in under a day, the hybrid solution reduced develo
 
 S2. We adopted the optimized solution, completed the module on time, and both teammates appreciated the fair decision-making approach. It also set a healthy precedent — later, the team started resolving disagreements through quick experiments instead of long debates.
 
-*/
+
 
   
 Can you share an instance where you went over and above to help a team member?
@@ -86,3 +86,17 @@ How have you handled personality clashes in your team? or Junior vs Senior crash
     
 Talk about a time when you had to motivate a demotivated team member.
     - because of ever changing requirements work of a dev1 was not used, he felt demotivated. I had private talk and said to store all work as future enhancements. In later sprints, it got used. team morale is also increased
+*/
+
+
+**Ownership**
+/*
+Can you provide an example of when a project or an idea you initiated benefited your team or organization?
+Describe a time when you volunteered to expand your knowledge at work, without being asked.
+Tell me about a time when you worked under close supervision or without supervision.
+Talk about a project or task you started on your own initiative.
+Tell me a situation when you saw some problem and took the initiative to correct it rather than waiting for someone else to do it.
+Can you detail a situation when you had to go above your normal duties to get a job done?
+Share an instance where your self-motivation helped you achieve a professional goal.
+Describe a time when you stayed motivated despite a challenging work situation or environment.
+*/
