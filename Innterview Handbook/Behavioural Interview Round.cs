@@ -135,3 +135,14 @@ Can you describe a time when you had to choose between two viable solutions?
     
 Share an instance where you relied on your analytical skills to solve a problem.
     - API response was slow, analysed logs, researched a lot and identified RCA with SQL. added index everything is solved
+
+
+** Leadership**
+Can you describe a situation where you led a project or a team to success?
+Tell me about a time when you needed to get a team to improve its performance.
+Share an experience of leading a team through a major organizational change.
+Discuss a situation when you had to lead under pressure or a tight deadline.
+How have you handled a non-performing team member?
+Can you give an example of a time when you had to address an angry client or customer?
+Describe how you have delegated tasks effectively in a past position.
+Tell me about a time when you mentored or coached someone.
