@@ -97,12 +97,14 @@ Can you provide an example of when a project or an idea you initiated benefited 
   - front end, back end team logging to different sources, backend team is logging to sql table. during prod issues, things are scattered because of multiple logs. I identified & proposed only notepad logs, improved efficiency & reduced issue ressolution time 
   
 Describe a time when you volunteered to expand your knowledge at work, without being asked.
-
+  - deployment is handled by DevOps team, I felt like I lack cloud knowledge. So, I upskilled & completed the Azure certification
 
 Tell me about a time when you worked under close supervision or without supervision.
   - backend sql issue, which is supervised until resoulution by DBA. Later, during issue I was not supervised as they liked my problem solving skills, maintaining docs., doing peer review.
     
 Talk about a project or task you started on your own initiative.
+ - developed custom middleware to track API response time, though no one asked
+ 
 Tell me a situation when you saw some problem and took the initiative to correct it rather than waiting for someone else to do it.
 Can you detail a situation when you had to go above your normal duties to get a job done?
 Share an instance where your self-motivation helped you achieve a professional goal.
