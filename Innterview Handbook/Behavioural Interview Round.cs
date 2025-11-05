@@ -111,3 +111,27 @@ Share an instance where your self-motivation helped you achieve a professional g
 Describe a time when you stayed motivated despite a challenging work situation or environment.
  - backend service is down, on-call had no knowledge about it. I joined the bridge and applied temp. fix. added to sprint planning for permanent fix.
 */
+
+
+  **Problem Solving**
+Describe a situation where you had to make a tough decision with limited information.
+   - on call issue, new change of API end point caused issue
+
+Tell me about a time when you solved a complex problem at work.
+  - .net legacy console app . HttpClient is .net legacy
+
+Can you share an instance where your initial solution to a problem didn’t work, and what did you do?
+  - implemented in-memory cache for a 3rd party API response. UAT worked fine, but failed in prod as live data refresh is happening on 3rd party API
+  
+Give an example of a decision you made that was a failure. What happened and why?
+How did you approach a situation where you had multiple problems to solve at the same time?
+    - prioritized, delegated, maintained stake holder comm. and docu.
+    
+Discuss a situation where you implemented a creative solution to an issue.
+    - infra team didn't allow to store huge log files because of space metrics. i developed config file to maitaing logs for only 7 days based on toggle., maitained logs detailed only when required/
+    
+Can you describe a time when you had to choose between two viable solutions?
+    - in memory cache vs redis. with team of devs. build POC and picked optimal one
+    
+Share an instance where you relied on your analytical skills to solve a problem.
+    - API response was slow, analysed logs, researched a lot and identified RCA with SQL. added index everything is solved
