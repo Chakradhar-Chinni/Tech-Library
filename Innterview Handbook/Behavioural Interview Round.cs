@@ -94,8 +94,11 @@ Talk about a time when you had to motivate a demotivated team member.
 **Ownership**
 /*
 Can you provide an example of when a project or an idea you initiated benefited your team or organization?
-
+  - front end, back end team logging to different sources, backend team is logging to sql table. during prod issues, things are scattered because of multiple logs. I identified & proposed only notepad logs, improved efficiency & reduced issue ressolution time 
+  
 Describe a time when you volunteered to expand your knowledge at work, without being asked.
+
+
 Tell me about a time when you worked under close supervision or without supervision.
   - backend sql issue, which is supervised until resoulution by DBA. Later, during issue I was not supervised as they liked my problem solving skills, maintaining docs., doing peer review.
     
