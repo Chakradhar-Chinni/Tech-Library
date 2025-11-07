@@ -1,3 +1,61 @@
+<<h2>> Eager vs lazy loading - simple example
+
+1. Both use navigation properties
+2. eager doesn't require virtual keyword on navigation property while lazy requires it
+3. Lazy Loading causes N+1 query problem, which can be solved using eager loading
+
+
+//Entities
+public class Department
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+
+    // Navigation Property
+    public List<Employee> Employees { get; set; } = new(); //eager
+  //public virtual List<Employee> Employees { get; set; } = new(); //lazy
+}
+
+public class Employee
+{
+    public int Id { get; set; }
+    public string FullName { get; set; }
+
+    public int DepartmentId { get; set; }
+    public Department Department { get; set; }
+}
+
+Lazyloading.cs //causes N+1 problem
+  var departments = context.Departments.ToList();
+
+foreach (var dept in departments)
+{
+    Console.WriteLine($"Department: {dept.Name}");
+    
+    // When you access dept.Employees here — new SQL query runs each time
+    foreach (var emp in dept.Employees)
+    {
+        Console.WriteLine($" - {emp.FullName}");
+    }
+}
+
+
+Eagerloading.cs
+var departments = context.Departments
+                         .Include(d => d.Employees)
+                         .ToList();
+
+foreach (var dept in departments)
+{
+    Console.WriteLine($"Department: {dept.Name}");
+    foreach (var emp in dept.Employees)
+    {
+        Console.WriteLine($" - {emp.FullName}");
+    }
+}
+
+
+
 <<h2>> Eager Loading 
 
 EF Core: Eager Loading with Filtering and Pagination
