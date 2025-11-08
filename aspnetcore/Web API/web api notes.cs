@@ -293,5 +293,17 @@ public void AddStudents(Student aStudent)
 
 */
 
+
 <<h2> Web API return types
 
+/*
+
+| Feature                 | `IActionResult`          | `IEnumerable<T>` | `ActionResult<T>` |
+| ----------------------- | ------------------------ | ---------------- | ----------------- |
+| Return type flexibility | ✅ Yes                    | ❌ No             | ✅ Yes             |
+| Strong typing           | ❌ No                     | ✅ Yes            | ✅ Yes             |
+| Custom HTTP codes       | ✅ Yes                    | ❌ No             | ✅ Yes             |
+| Swagger documentation   | Moderate                 | Poor             | Excellent         |
+| Best suited for         | APIs with logic & errors | Simple demos     | Real-world APIs   |
+
+*/
