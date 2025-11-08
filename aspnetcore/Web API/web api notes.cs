@@ -1,5 +1,5 @@
 <<h2>>
-
+/*
 Parameter Binding in ASP.NET Core Web API: [FromQuery], [FromBody], [FromRoute], [FromHeader], [FromForm], and [FromServices] Explained
 
 ---
@@ -191,12 +191,13 @@ public IActionResult GetTime([FromServices] IDateTimeProvider dateTimeProvider)
 5. `[FromForm]` → files or form fields
 6. `[FromServices]` → inject DI services
 
-
+*/
 
 
 
 
 <<h2>> Content Negotiation
+/*
 1. Web Api by default uses JSON format to send HTTP Responses
 2. XML support is enabled using .AddXmlSerializerFormatters() in program.cs
 3. Accept: application/xml or  Accept: application/json is now supported (content negotiation)
@@ -249,10 +250,11 @@ public class ProductsController : ControllerBase
     }
 }
 
-
+*/
 
 
 <<h2>> APi Versioning
+/*
 1. Backward compatibility, add new features, serve different users
 2. Use semantic versioning - MAJOR.MINOR.PATCH (e.g., 2.5.1).
 
@@ -261,24 +263,22 @@ MINOR: Incremented for backward-compatible feature additions
 PATCH: Incremented for backward-compatible bug fixes
 
 default api version, deprecated apis
-
-
-
+*/
 
 
 <<h2>> Rate limiting VS Throttling
-
+/*
 Ratelimiting: limits the requests a user can make in a time period and reject others (HTTP 429)
 Throttling: Controls the processing speed. Allow 1 request per second. If 5 requests arrive simultaneously → process 1/sec, queue others
 
+*/
 
 
 
 
 
-
-<h2>>
-Aliases for action methods
+<h2>> Aliases for action methods
+/*
 [HttpPost]
 [ActionName("StudentAdd")]
 public void AddStudents(Student aStudent)
@@ -291,4 +291,7 @@ public void AddStudents(Student aStudent)
 
 
 
+*/
+
+<<h2> Web API return types
 
