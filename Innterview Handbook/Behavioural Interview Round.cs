@@ -66,7 +66,7 @@ S1. The conflict was resolved in under a day, the hybrid solution reduced develo
 
 S2. We adopted the optimized solution, completed the module on time, and both teammates appreciated the fair decision-making approach. It also set a healthy precedent — later, the team started resolving disagreements through quick experiments instead of long debates.
 
-
+also add: My manager was convinced as he felt the reasons were good enough and we got his green signal to work on it. Client was very happy with this feature. I learned that effective and graceful communication is the ultimate key. Ideas should be respectfully conveyed to people when there are disagreements as we belong to a team and the collective vision of the team is to launch the project successfully. In case my manager’s idea was best for the project, then I would gracefully accept that too.
 
   
 Can you share an instance where you went over and above to help a team member?
