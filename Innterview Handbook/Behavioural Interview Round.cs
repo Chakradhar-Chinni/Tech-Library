@@ -146,3 +146,30 @@ How have you handled a non-performing team member?
 Can you give an example of a time when you had to address an angry client or customer?
 Describe how you have delegated tasks effectively in a past position.
 Tell me about a time when you mentored or coached someone.
+
+
+Q: Why are you leaving current job
+   - I'd like to learn more and feel ready to take on more responsibilities.
+   - I’ve spent the last few years in Fintech and now want to apply my technical experience to a different domain something more process- and data-driven, like manufacturing or industrial tech
+
+   Company specific
+Q19 : What are your thoughts about our firm?
+Q19.1: How can you help the company?
+   Consider the company's objectives, goals, and pillars when you respond to this question. "The goal of this company is to connect individuals with authorities and ensure that government institutions are transparent. It is a business that also works for the rights of society's outcasts. This is a good fit for my career path."
+
+
+Q: Have you ever held a position of leadership?
+  - I took ownership of a entire sprint planning, review, removing roadblocks, demos to client
+
+Q: Do you prefer the corner office or the one closest to the corridor? 
+  Either of them is fine as my focus is always to contribute to company growth with my skill set.
+
+Q: Best term to describe yourself
+  - Calm, solution oriented, collaborative
+  - I quick adopt to new tools, technologies, working environments
+  - calm but alert
+
+Q: How do you handle stress
+    - I avoid panicking, quickly re-organize things
+    - go for a walk, read a book
+
