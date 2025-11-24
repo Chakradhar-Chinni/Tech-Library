@@ -50,6 +50,20 @@ Here’s a concise, structured answer you can give for this question 👇
 
 */
 
+## Misc questions
+
+how thread pools work in .net core
+
+what is parallel api call
+
+return types supported by web api
+
+I have a child & parent exception, which is returned first
+
+arraylist vs hashlist
+
+in this chat, give me all my previous questions as is
+
 
 
 ### 🧩 **C# Language Interview Preparation Checklist**
