@@ -599,26 +599,410 @@ Code quality improved, defects reduced, and PR cycles became faster and cleaner.
 
 # ✅ **2. Technical Decision Making – 20 Questions**
 
-1. How do you decide between .NET API vs Azure Functions?
-2. Why would you choose EF Core over Dapper (or vice-versa)?
-3. When do you implement caching in .NET?
-4. How do you choose between SQL vs NoSQL for a project?
-5. Explain a time you converted a monolith to microservices.
-6. How do you decide what belongs in a controller vs service vs repository?
-7. What metrics do you consider before optimizing an API?
-8. How do you choose the right logging framework for a .NET project?
-9. What is your approach to designing scalable endpoints?
-10. When do you use asynchronous programming?
-11. Why would you choose Web API over gRPC or SignalR?
-12. When would you use stored procedures instead of LINQ?
-13. How do you decide when to introduce a message queue (RabbitMQ/Kafka)?
-14. How do you pick between vertical vs horizontal scaling?
-15. What is your approach to selecting retry policies or circuit breakers?
-16. What performance counters matter for .NET APIs?
-17. How do you pick between Redis vs MemoryCache?
-18. How do you decide if something needs DI or factory pattern?
-19. What do you check before approving a database schema change?
-20. How do you decide whether an issue is API-side or DB-side bottleneck?
+/*
+
+# 1. How do you decide between .NET API vs Azure Functions?
+
+ **Situation**
+
+We needed to choose a hosting model for a new service: always-on APIs vs event-driven serverless.
+
+ **Task**
+
+Select the model that meets latency, scale, cost, and operational needs.
+
+ **Action**
+
+Evaluated requirements: expected traffic pattern (steady vs spiky), cold-start tolerance, execution time, integration needs, and cost. For long-running or complex request/response flows I preferred .NET Web API; for event-driven, short-lived tasks triggered by queues/timers, I preferred Azure Functions. Also checked local development and deployment constraints.
+
+ **Result**
+
+Chose Azure Functions for short, sporadic background processing (reduced cost by ~60% in a PoC). Kept .NET API for user-facing endpoints to guarantee low latency and richer middleware control.
+
+---
+
+# 2. Why would you choose EF Core over Dapper (or vice-versa)?
+
+ **Situation**
+
+We needed a data access strategy for a mixed workload service: complex queries and many CRUD operations.
+
+ **Task**
+
+Pick the ORM/tool that balances productivity and performance.
+
+ **Action**
+
+Benchmarked typical queries, considered developer productivity, maintainability, and control. Chose EF Core where model mapping, change tracking, and migrations mattered; chose Dapper for high-performance, hand-tuned queries and reporting paths. Used both in different modules when appropriate.
+
+ **Result**
+
+Delivered faster development for CRUD endpoints using EF Core, while critical reporting endpoints using Dapper met latency SLAs (report queries improved by ~3×).
+
+---
+
+# 3. When do you implement caching in .NET?
+
+ **Situation**
+
+An API experienced repeated identical read requests causing DB load.
+
+ **Task**
+
+Reduce DB load and improve response times without breaking consistency.
+
+ **Action**
+
+Identified hot endpoints and data freshness requirements. Implemented MemoryCache for single-instance, low-latency cases and Redis for cross-instance distributed caching. Added appropriate TTLs and cache invalidation on writes.
+
+ **Result**
+
+Reduced DB read load by ~50% and cut average response time for cached endpoints from 400ms to ~60ms.
+
+---
+
+# 4. How do you choose between SQL vs NoSQL for a project?
+
+ **Situation**
+
+New feature required storing user events and transactional data.
+
+ **Task**
+
+Decide the database type that fits consistency, query patterns, scalability, and schema needs.
+
+ **Action**
+
+Analyzed access patterns: strong ACID transactions and joins → SQL; flexible schema, high write throughput, or document-centric queries → NoSQL. Considered scaling plan, operational complexity, and reporting needs. Chose hybrid where transactional data stayed in SQL and event logs used a NoSQL store.
+
+ **Result**
+
+Achieved transactional integrity for payments and scalable event storage for analytics, keeping reporting simple and costs controlled.
+
+---
+
+# 5. Explain a time you converted a monolith to microservices.
+
+ **Situation**
+
+A legacy .NET monolith caused long deployment cycles and impeded team autonomy.
+
+ **Task**
+
+Break the monolith into services without disrupting production.
+
+ **Action**
+
+Prioritized domain boundaries, extracted one bounded-context at a time starting with a low-risk module. Created APIs, added contract tests, introduced message-based integration for async flows, and set up independent CI/CD pipelines. Kept the monolith running and gradually cut over traffic.
+
+ **Result**
+
+Reduced deployment time for the extracted module from hours to minutes, enabled parallel team releases, and improved reliability during deployments.
+
+---
+
+# 6. How do you decide what belongs in a controller vs service vs repository?
+
+ **Situation**
+
+Codebase had fat controllers with business logic and DB calls mixed.
+
+ **Task**
+
+Refactor to improve separation of concerns and testability.
+
+ **Action**
+
+Defined boundaries: controllers handle HTTP, validation, and mapping; services contain business rules and orchestration; repositories handle data access. Applied dependency injection and added unit tests around services. Enforced rules in code reviews.
+
+ **Result**
+
+Controllers became thin, service logic was testable in isolation, and PR review speed increased while bugs from incorrect layering decreased.
+
+---
+
+# 7. What metrics do you consider before optimizing an API?
+
+ **Situation**
+
+An endpoint showed intermittent slow responses in production.
+
+ **Task**
+
+Identify whether to optimize and where to focus.
+
+ **Action**
+
+Collected metrics: p95/p99 latency, throughput (req/sec), CPU/memory, DB query times, error rates, and request traces. Used Application Insights and SQL Profiler to pinpoint hotspots, then prioritized fixes with highest impact.
+
+ **Result**
+
+Targeted optimization (index + query rewrite) reduced p99 latency by ~70% for that endpoint.
+
+---
+
+# 8. How do you choose the right logging framework for a .NET project?
+
+ **Situation**
+
+We needed centralized logging across services for diagnostics and monitoring.
+
+ **Task**
+
+Select a logging framework that supports structured logs, sinks, and performance.
+
+ **Action**
+
+Evaluated Serilog, NLog, and built-in ILogger: features, structured logging support, enrichers, sinks (Elasticsearch, App Insights), and community support. Chose Serilog for structured logs and rich sinks, integrated with correlation IDs and enrichment.
+
+ **Result**
+
+Improved troubleshooting speed (mean time to diagnose reduced) and enabled efficient log-based alerting and dashboards.
+
+---
+
+# 9. What is your approach to designing scalable endpoints?
+
+ **Situation**
+
+Service needed to handle rising traffic as user base grew.
+
+ **Task**
+
+Design endpoints that scale and remain maintainable.
+
+ **Action**
+
+Applied principles: stateless endpoints, pagination, limiting payload sizes, proper HTTP caching, and idempotency for write operations. Used async patterns, connection pooling, and partitioning strategies. Designed endpoints for graceful degradation and added load tests to validate.
+
+ **Result**
+
+System scaled horizontally with minimal changes; during a spike we handled ~3× traffic without service degradation.
+
+---
+
+# 10. When do you use asynchronous programming?
+
+ **Situation**
+
+API endpoints called external services and DB concurrently causing thread blocking.
+
+ **Task**
+
+Improve throughput and responsiveness.
+
+ **Action**
+
+Used async/await for IO-bound operations (DB calls, HTTP requests). Ensured proper ConfigureAwait usage in libraries, avoided blocking calls, and profiled thread pool usage under load.
+
+ **Result**
+
+Increased request throughput and decreased thread pool starvation, improving overall responsiveness under load.
+
+---
+
+# 11. Why would you choose Web API over gRPC or SignalR?
+
+ **Situation**
+
+We needed to expose services to multiple clients including web, mobile, and third-party integrations.
+
+ **Task**
+
+Select the appropriate communication protocol.
+
+ **Action**
+
+Considered client compatibility, latency, and communication model. Chose RESTful Web API for broad client compatibility and human-readable contracts; selected gRPC for high-performance internal RPC and SignalR for real-time push scenarios.
+
+ **Result**
+
+Delivered public APIs via Web API for easy consumption, used gRPC internally for low-latency microservice calls, and employed SignalR for live notifications — each chosen for its strengths.
+
+---
+
+# 12. When would you use stored procedures instead of LINQ?
+
+ **Situation**
+
+A reporting workload required complex joins and heavy aggregations.
+
+ **Task**
+
+Decide when to use SPs for performance versus maintainability with LINQ.
+
+ **Action**
+
+Benchmarked complex queries: if DB-side processing yields significant performance gains or reduces data transfer (heavy aggregations), used stored procedures; for typical CRUD and maintainable query composition, used EF Core/LINQ.
+
+ **Result**
+
+Critical reports executed faster with SPs while day-to-day features stayed maintainable with LINQ.
+
+---
+
+# 13. How do you decide when to introduce a message queue (RabbitMQ/Kafka)?
+
+ **Situation**
+
+Synchronous calls caused cascading failures during peak load.
+
+ **Task**
+
+Introduce async processing to decouple components and improve resilience.
+
+ **Action**
+
+Assessed need for durability, ordering, throughput, and consumer patterns. For high-throughput event streams and analytics used Kafka; for typical task queues and easy routing used RabbitMQ. Implemented retry and dead-lettering patterns.
+
+ **Result**
+
+Decoupling removed direct dependencies, smoothed traffic spikes, and reduced failure cascades during load events.
+
+---
+
+# 14. How do you pick between vertical vs horizontal scaling?
+
+ **Situation**
+
+Our service faced periodic load spikes and resource saturation.
+
+ **Task**
+
+Choose a cost-effective scaling approach that meets reliability needs.
+
+ **Action**
+
+Analyzed bottlenecks: CPU/memory bound vs stateful constraints. Preferred horizontal scaling (stateless instances behind load balancer) for web APIs; used vertical scaling for single-node DBs or when licensing/architecture limited horizontal options. Also considered autoscaling policies and cost.
+
+ **Result**
+
+Implemented horizontal scaling for the API layer (autoscale rules) and scaled DB vertically with read replicas, achieving target SLA at optimized cost.
+
+---
+
+# 15. What is your approach to selecting retry policies or circuit breakers?
+
+ **Situation**
+
+Inter-service transient failures caused increased latency and retries.
+
+ **Task**
+
+Improve resiliency without overwhelming failing services.
+
+ **Action**
+
+Applied Polly to implement retry with exponential backoff for transient faults and circuit breakers for sustained failures. Tuned retry counts, backoff intervals, and circuit thresholds based on SLA and observed failure rates. Added logging and metrics for visibility.
+
+ **Result**
+
+Reduced cascading retries, improved system stability, and provided clearer alerting when downstream systems failed.
+
+---
+
+# 16. What performance counters matter for .NET APIs?
+
+ **Situation**
+
+We needed to monitor and diagnose production performance.
+
+ **Task**
+
+Pick key telemetry for proactive monitoring.
+
+ **Action**
+
+Monitored request latency (p50/p95/p99), throughput, error rates, GC metrics (Gen 0/1/2 collections, heap size), thread pool usage, CPU, memory, and DB latency. Used these metrics to trigger alerts and guide optimization.
+
+ **Result**
+
+Early detection of GC pressure and DB slowdowns prevented major incidents and informed capacity planning.
+
+---
+
+# 17. How do you pick between Redis vs MemoryCache?
+
+ **Situation**
+
+Caching was required across services in a distributed deployment.
+
+ **Task**
+
+Choose caching that fits scale and persistence needs.
+
+ **Action**
+
+Used MemoryCache for simple, per-instance caching with extremely low latency and no cross-instance needs. Used Redis for distributed caching, session storage, and pub/sub across multiple instances. Considered eviction policies and TTLs.
+
+ **Result**
+
+Chosen caches reduced latency and DB load; Redis enabled consistent caching across instances while MemoryCache served low-latency local needs.
+
+---
+
+# 18. How do you decide if something needs DI or factory pattern?
+
+ **Situation**
+
+Component creation logic varied based on runtime parameters and dependencies.
+
+ **Task**
+
+Choose a pattern that keeps code testable and maintainable.
+
+ **Action**
+
+Used DI for standard dependency management and lifetime control; used factory pattern when creation required runtime parameters or polymorphic instantiation. Kept factories injectable to preserve testability.
+
+ **Result**
+
+Code remained decoupled and testable; factories handled complex instantiation without polluting design with service locator patterns.
+
+---
+
+# 19. What do you check before approving a database schema change?
+
+ **Situation**
+
+A schema change was proposed that could impact production performance.
+
+ **Task**
+
+Validate change for correctness, performance, and rollback safety.
+
+ **Action**
+
+Reviewed migration scripts for locking behavior, estimated migration time, validated indexes, checked backward compatibility, ran migration in staging, ensured backups, and prepared rollback/long-running migration strategies (online migrations or phased rollout).
+
+ **Result**
+
+Approved safe migrations that avoided long locks and prevented production outages.
+
+---
+
+# 20. How do you decide whether an issue is API-side or DB-side bottleneck?
+
+ **Situation**
+
+An endpoint showed high latency and unclear root cause.
+
+ **Task**
+
+Pinpoint whether the bottleneck is in the API code or the database.
+
+ **Action**
+
+Collected distributed traces and timings (API middleware, DB call durations), profiled application CPU and thread usage, examined query execution plans and DB wait stats. If DB queries consumed most time, focused on indexes/query fixes; if API CPU or serialization dominated, optimized code paths or caching.
+
+ **Result**
+
+Accurate diagnosis led to the correct fix: an index addition improved the same endpoint’s p99 by 70% versus an unnecessary application-level rewrite.
+
+
+
+
+*/
 
 ---
 
