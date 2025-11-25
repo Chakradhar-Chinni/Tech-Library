@@ -2,9 +2,74 @@ Managerial rounds are story-driven, not fact-driven.
 Interviewers look for how you behave, how you think, and how you solve problems, not just what you know.
 Follow STAR pattern: Situation, Task, Action, Result (pure tech. qns don't follow STAR format)
 
-What not to do
+What not to do in Manager or Techno Manager Round
 /*
 
+ 1. Don’t Give Generic or Vague Answers
+
+ Avoid lines like “I always give my best”, “I am a team player”, “I work hard”.
+ Always give a specific example (preferably STAR), even if question doesn’t explicitly ask.
+
+ 2. Don’t Bad-Mouth Your Current Company or Manager
+
+ No complaints about workload, politics, culture, etc.
+ Keep tone neutral and professional.
+
+ 3. Don’t Show Lack of Ownership
+
+ Avoid sentences like:
+
+   “That wasn’t my responsibility.”
+   “The other team delayed it.”
+ Even if others caused issues, focus on your corrective actions.
+
+ 4. Don’t Over-explain or Ramble
+
+ Managerial rounds value clarity + structure.
+ Keep answers structured; avoid story-telling without a point.
+
+ 5. Don’t Admit Skills You Can’t Defend
+
+ If you claim something (“I know microservices deeply”), you must be ready for follow-ups.
+
+ 6. Don’t Sound Like You Only Code
+
+ Manager wants:
+
+   Planning
+   Collaboration
+   Communication
+   Risk handling
+   Ownership
+ Avoid answers that only focus on coding tasks.
+
+ 7. Don’t Blame Teams or Processes
+
+ Instead of blame → talk about alignment, communication, and mitigation steps.
+
+ 8. Don’t Avoid Talking About Failures
+
+ Managers expect self-awareness.
+ You can discuss failures → but show what you learned and changed.
+
+ 9. Don’t Answer Without Business Reasoning
+
+ Show you understand:
+
+   Priorities
+   Impact
+   Value delivered
+ Not just technical execution.
+
+ 10. Don’t Skip STAR When It Matters
+
+ Behavioural + ownership + leadership questions → use STAR for clarity.
+ Technical decision + architecture reasoning → use CORED (Context → Options → Reasoning → Execution → Decision).
+
+ 11. Don’t Show Zero Curiosity
+
+ If asked, “How would you improve this process?” → don’t say “it looks fine”.
+ Managers want proactive mindset.
 */
 
 
