@@ -72,6 +72,58 @@ What not to do in Manager or Techno Manager Round
  Managers want proactive mindset.
 *//////////////
 
+STAR Format Tips and Tricks: 
+/*
+
+ ⭐ **All STAR Tips (Combined List)**
+
+ **A. Project Ownership – STAR Tips**
+
+* Show initiative: API contracts, architecture decisions, validations, logging.
+* Show responsibility: testing, deployment, monitoring.
+* Highlight end-to-end ownership across design → development → deployment → support.
+
+---
+
+ **B. Delivery & Planning – STAR Tips**
+
+* Mention root-cause analysis when delays occur.
+* Communicate early — don’t wait until the end of the sprint.
+* Break tasks into smaller deliverables.
+* Always describe your mitigation approach.
+* Show how you kept dependent teams unblocked.
+
+---
+
+ **C. Technical Decision Making – STAR Tips**
+
+* Show how you evaluated multiple options before choosing one.
+* Talk about trade-offs (performance, maintainability, scalability).
+* Show alignment with .NET best practices (Clean Architecture, EF Core, DI, SOLID).
+* Mention business impact of your technical decisions.
+
+---
+
+ **D. Production Issues – STAR Tips**
+
+* Focus on quick diagnosis: logs, Application Insights, SQL bottlenecks.
+* Mention communication cadence with managers during incidents.
+* Explain the temporary fix AND the permanent fix.
+* Emphasize stability and performance improvements.
+
+---
+
+ **E. Behaviour + Ownership – STAR Tips**
+
+* Never blame individuals or teams — stay neutral.
+* Show emotional maturity and professionalism.
+* Demonstrate conflict resolution and collaboration.
+* Show how you accepted responsibility and provided solutions.
+* Highlight proactive mindset (anticipating issues before they escalate).
+
+
+*/
+
 
 # ✅ **1. Project Ownership & Delivery – 20 Questions**
 
