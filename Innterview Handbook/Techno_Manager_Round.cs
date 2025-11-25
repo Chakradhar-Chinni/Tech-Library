@@ -3,7 +3,7 @@ Interviewers look for how you behave, how you think, and how you solve problems,
 Follow STAR pattern: Situation, Task, Action, Result (pure tech. qns don't follow STAR format)
 
 What not to do in Manager or Techno Manager Round
-/*
+/******
 
  1. Don’t Give Generic or Vague Answers
 
@@ -70,7 +70,7 @@ What not to do in Manager or Techno Manager Round
 
  If asked, “How would you improve this process?” → don’t say “it looks fine”.
  Managers want proactive mindset.
-*/
+*//////////////
 
 
 # ✅ **1. Project Ownership & Delivery – 20 Questions**
