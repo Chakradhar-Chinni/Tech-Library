@@ -749,7 +749,7 @@ We needed centralized logging across services for diagnostics and monitoring.
 
  **Task**
 
-Select a logging framework that supports structured logs, sinks, and performance.
+Select a logging framework that supports structured logs, sinks, and performance. (each sink is bucket ex. console, file, database, azure app insights, email)
 
  **Action**
 
