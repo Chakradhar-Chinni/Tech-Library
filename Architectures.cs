@@ -42,8 +42,9 @@ All Architecture in nut shell
 8. Microservices
 
 
-  Folder Structures
-  1. MVC
+Folder Structures
+
+1. MVC
   /src
   /MyApp
     /Controllers
