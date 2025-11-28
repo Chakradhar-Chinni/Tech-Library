@@ -29,7 +29,8 @@ With measurable impact (e.g., “reduced time by 30%”, “saved $90K/year”)
 | **Time Management**     | Prioritization                   | “How do you manage competing deadlines?”                                              |
 | **Communication**       | Clarity, tone, stakeholder mgmt. | “Give an example of how you explained a technical concept to a non-technical person.” |
 
-
+describe in 3 wrods: problem-solver, team player, proactive, self starter, organized, calm 
+  
 Example of properly answering:
 
 Basic
