@@ -15,7 +15,15 @@ namespace JwtAuthDemo.Controllers
         {
             _tokenService = tokenService;
         }
+/*
+Uri: [HttpPost} https://localhost:7048/api/Authentication/login
 
+Request Body:
+{
+    "Username": "testuser",
+    "Password":"password"
+}
+*/
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
@@ -40,4 +48,5 @@ namespace JwtAuthDemo.Controllers
             Console.WriteLine("AuthController - TokenService destroyed");
         }
     }
+
 }
