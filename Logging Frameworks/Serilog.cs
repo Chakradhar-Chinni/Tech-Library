@@ -8,6 +8,12 @@
 Nuget Package 1: Serilog
 Nuget Package 2: Serilog.Sinks.File
 
+.csproj
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="4.3.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+<ItemGroup>
+
 ##Program.cs
 using Serilog;
 namespace SP.OnPrem.Application
