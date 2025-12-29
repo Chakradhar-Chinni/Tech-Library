@@ -7,6 +7,9 @@ use latest stable version
 3. Microsoft.EntityFrameworkCore.SqlServer // to use sql
 
 
+<PackageReference Include="microsoft.entityframeworkcore" Version="8.0.0" />
+<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
+<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0"/>
 
 
 
