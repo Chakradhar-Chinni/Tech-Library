@@ -115,6 +115,10 @@ ProductController.cs
   For distributed caching → Use Redis or SQL Server cache
   For detailed statistics → Implement custom tracking or use Redis
   For persistent cache → Use distributed cache providers
+
+  cachekey action in memory 
+    - stored in heap memory, so cache is available to all threads
+    - if memory is not available, cannot cache - configure memory pressure, limits
   
   TESTING THE DEMO:
   ─────────────────────────────────────
