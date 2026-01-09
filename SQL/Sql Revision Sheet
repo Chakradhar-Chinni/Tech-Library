@@ -430,11 +430,13 @@ Normalization:
   A relation is in the third normal form, if there is no transitive dependency for non-prime attributes as well as it is in the second normal form. A relation is in 3NF if at least one of the following conditions holds in every non-trivial function dependency X –> Y.
   X is a super key.
   Y is a prime attribute (each element of Y is part of some candidate key).
+ Transitive dependency: A non-key column depends on another non-key column, instead of depending directly on the primary key.
 
 --Boyce-Codd Normal Form (BCNF)
-For BCNF the relation should satisfy the below conditions
-The relation should be in the 3rd Normal Form.
-X should be a super-key for every functional dependency (FD) X−>Y in a given relation. 
+   The relation should be in the 3rd Normal Form.
+  X should be a super-key for every functional dependency (FD) X−>Y in a given relation. 
+  - A functional dependency exists when one attribute (or set of attributes) uniquely determines another attribute in a table.
+  - A functional dependency exists when one attribute (or set of attributes) uniquely determines another attribute in a table.
 
 --Fourth Normal Form (4NF)
 A relation R is in 4NF if and only if the following conditions are satisfied: 
