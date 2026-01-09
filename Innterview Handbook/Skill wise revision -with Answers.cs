@@ -395,7 +395,31 @@ in this chat, give me all my previous questions as is
   */
 
 8. Middleware – request pipeline, custom middleware creation
+/*
+Middleware is a component that sits in the HTTP request–response pipeline and can inspect, modify, pass to next component, short circuit
+Middleware executes in the order registered so order of middleware matters
+Flow: HttpRequest - MiddleWare1 - MiddleWare2 - MiddleWare3 - Controller - Response
+InBuilt Middlewares with typical ordering
+
+app.UseExceptionHandler();
+app.UseSerilogRequestLogging();
+app.UseHttpsRedirection();
+app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+
+
+*/
 9. Routing – attribute routing vs conventional routing
+/*
+Attribute Routing: defined using [Route] attribute on top of controllers
+Conventional Routing: Routes are defined centrally using patterns.
+
+Always prefer attribute based as it offers good control, sutiable for API's, versioning
+conventional is for small apps or legacy apps
+*/
+
 10. Controllers – API controllers vs MVC controllers
 /*
   API Controllers:
@@ -409,7 +433,14 @@ in this chat, give me all my previous questions as is
     
 */
 11. Action methods – parameters, model binding, model validation
+/*
+Methods inside controllers that handle HTTP requests.
+*/
+Action methods: part of controllers, used for 
+
 12. Filters – authorization, exception, action, result, resource filters
+
+
 13. Model validation – Data Annotations, Fluent Validation
 14. Logging – `ILogger`, third-party logging (Serilog, NLog)
 15. Configuration – `appsettings.json`, environment variables, options pattern
