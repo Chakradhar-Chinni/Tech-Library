@@ -432,25 +432,158 @@ conventional is for small apps or legacy apps
     - returns Views with View Result, RedirectResult
     
 */
-11. Action methods – parameters, model binding, model validation
+
+11. Action methods – parameters, model binding
 /*
 Methods inside controllers that handle HTTP requests.
-*/
-Action methods: part of controllers, used for 
 
-12. Filters – authorization, exception, action, result, resource filters
+**Action methods**: Methods inside controllers that handle HTTP requests.
+Action Method Parameters: 
+
+[HttpGet("{id}")]
+public IActionResult GetOrder(int id)              // Route
+
+[HttpGet]
+public IActionResult GetOrders([FromQuery] int maxAmount)   // Query string
+
+[HttpPost]
+public IActionResult Create([FromBody] OrderDto dto)        // Request body
+
+[HttpGet]
+public IActionResult Get([FromHeader] string correlationId) // Headers
+
+[HttpGet]
+public IActionResult Get([FromServices] IOrderService svc)  // DI
+
+**Model binding** maps incoming HTTP data → .NET objects automatically.
+Binding Priority Order"  Route values > Query string > Request body > Headers  Note: (Explicit [FromX] overrides priority)
+
+*/
+
+
+12. Filters 
+/*
+Filters run before or after action methods and are used for cross-cutting concerns at the MVC level (not full pipeline like middleware).
+  flow: Middleware → Routing → Filters → Action → Filters → Response
+
+types: authorization, resource,  action, exception,result (todo: Implementation)
+  
+Filters can be scoped to Global, Controller, Action
+
+global:
+services.AddControllers(options =>
+{
+    options.Filters.Add<LoggingActionFilter>();
+});
+
+
+controller: 
+[ServiceFilter(typeof(LoggingActionFilter))]
+public class OrdersController : ControllerBase
+
+Action:
+[ServiceFilter(typeof(LoggingActionFilter))]
+public IActionResult GetOrders()
+*/
+  
+
 
 
 13. Model validation – Data Annotations, Fluent Validation
+/*
+**Model Validation** is done using Data Annotations
+for API's [ApiController] auto validates the model. returns 400 for Bad Request
+
+for MVC apps(razor pages), use explicit validation, as below (MVC apps don't inherit ControllerBase. they use Controller)
+if (!ModelState.IsValid)
+{
+    return BadRequest(ModelState);
+}
+
+CreateOrderRequest.cs (DTO)
+public class CreateOrderRequest
+{
+    [Required]
+    public int ProductId { get; set; }
+
+    [Range(1, 100)]
+    public int Quantity { get; set; }
+}
+
+productController.cs
+[ApiController]
+public class OrdersController : ControllerBase
+*/
+
 14. Logging – `ILogger`, third-party logging (Serilog, NLog)
+  
 15. Configuration – `appsettings.json`, environment variables, options pattern
+    appsettings.json - for storing application config details
+    environment variables - helps in auto using config file based on ASPNETCORE_ENVIRONMENT: Dev/ prod
+    options pattern: for injecting config file to c# class variables using IOptions interface
+
 16. Environment-based configuration (`Development`, `Staging`, `Production`)
+  use configuration file for each environment
+  
 17. Hosting – Kestrel vs IIS vs Nginx/Apache
+  Kestrel: cross platform, native cloud support, docker support, fast & ight weight, modern
+  IIS: Internet Information Services - windows only, legacy, works as reverse proxy
+
 18. Health checks
+ light weight end points that determines id app is alive or not
+
+  builder.Services.AddHealthChecks()
+      .AddSqlServer(builder.Configuration.GetConnectionString("Default"))
+      .AddRedis("localhost")
+      .AddUrlGroup(new Uri("https://api.payment.com/health"));
+
+ 
 19. Versioning – URL versioning, header versioning
+  
 20. CORS – configuration and security implications
+/*
+
+CORS is kind of middleware, it controls which front-end origins (Angular apps) are allowed to call your .NET Core Web API from the browser.
+
+Todo: CORS is enforced by the browser to decide whether JavaScript can access the API response, even though the API runs on the server.
+
+Register policy
+  builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AngularPolicy", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
+
+Enable middleware
+app.UseCors("AngularPolicy");
+
+
+*/
+
 21. Authentication – JWT, cookie, OAuth, OpenID Connect
+JWT (JSON Web Token): Stateless token-based authentication. No server session
+  used for angular/react, webapi
+
+cookie:
+Stateful authentication
+Browser automatically sends auth cookie
+Used for: MVC / Razor Pages, Server-rendered apps
+
+OAuth 2.0: An authorization framework for 3rd parties like Google/Github/any
+
+Open ID Connect: Auth layer on top of OAuth 2.0. used for enterprise login,(Azure AD)
+
+
 22. Authorization – role-based, policy-based, claims-based
+
+
 23. HTTPS redirection and HSTS
 24. Exception handling middleware
 25. Response caching, output caching
