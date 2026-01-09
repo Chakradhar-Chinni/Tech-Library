@@ -581,26 +581,177 @@ OAuth 2.0: An authorization framework for 3rd parties like Google/Github/any
 Open ID Connect: Auth layer on top of OAuth 2.0. used for enterprise login,(Azure AD)
 
 
-22. Authorization – role-based, policy-based, claims-based
+22. Authorization Types
+
+Role Based:
+[Authorize(Roles = "Admin")]
+public IActionResult GetAllUsers() { }
+
+Policy Based:
+services.AddAuthorization(options =>
+{
+    options.AddPolicy("MinOrderPolicy",
+        policy => policy.RequireClaim("OrderLimit", "1000"));
+});
+
+[Authorize(Policy = "MinOrderPolicy")]
+
+
+
+Claim Based:
+[Authorize]
+public IActionResult GetOrders()
+{
+    var country = User.FindFirst("country")?.Value;
+}
+
+
+
+Resource Based:
+if (order.CustomerId != User.GetCustomerId())
+    return Forbid();
+
+
+
+Custom Authorization Handler
+public class OrderOwnerHandler
+    : AuthorizationHandler<OrderOwnerRequirement, Order>
+{
+    protected override Task HandleRequirementAsync(
+        AuthorizationHandlerContext context,
+        OrderOwnerRequirement requirement,
+        Order order)
+    {
+        if (order.CustomerId == context.User.GetCustomerId())
+            context.Succeed(requirement);
+
+        return Task.CompletedTask;
+    }
+}
+
+
+
 
 
 23. HTTPS redirection and HSTS
+/*
+app.UseHttpsRedirection(); //middleware ensures that http request is re-directed to Https (I implemented netflix demo, if http request is sent, the browser )
+refreshes to https
+
+app.UseHsts();
+HSTS (HTTP Strict Transport Security)
+HSTS is a security mechanism that tells browsers to always use HTTPS for a website — even if the user types HTTP.
+
+
+*/
+
+
+
 24. Exception handling middleware
+/*
+app.UseExceptionMiddleware()
+
+Exception middleware catches all unhandled exceptions.
+Exceptions caught locally must be rethrown (throw;) for the middleware to handle them.
+note: avoid throw ex; as it resets stack trace
+  */
 25. Response caching, output caching
+/*
+Both are performace optimization techniques
+response caching: client side caching
+output caching: server side caching (caches entire HTTP Response)
+
+I implemented : https://github.com/Chakradhar-Chinni/Tech-Library/tree/main/aspnetcore/dot%20net%20core/Caching
+
+*/
 26. Rate limiting / throttling
+/*
+Rate limiting = “You can only call this API N times per window”
+Throttling = “We will slow you down so server doesn’t get overwhelmed”
+
+combined Example: API allows 100 req/min per user (rate limit), but server only processes 10 req/sec (throttle)
+
+Rate limiting code:
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("Fixed", limiterOptions =>
+    {
+        limiterOptions.PermitLimit = 10;       // max requests
+        limiterOptions.Window = TimeSpan.FromSeconds(60); // per minute
+        limiterOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        limiterOptions.QueueLimit = 0;
+    });
+});
+app.UseRateLimiter();
+
+Throttling code:
+to create custom middle ware & track timing using HttpContext
+
+*/
+
 27. Compression middleware (gzip, Brotli)
+  
 28. Dependency Injection patterns – repository, service layer, unit of work
+Repository Pattern: A design pattern for decoupling business logic with data access logic, Improves testing & maintenance
+Service Layer: helps to abstract business logic to interact with repositories
+Unit Of Work: (pattern) Coordinate multiple repository operations under a single transaction.
+
+
 29. Entity Framework Core – DbContext, DbSet, migrations
+DbContext: represents a session with the database
+DbSet: represents a sql table
+unit of work: work done in a session
+migrations: database versioning, Keeps database schema in sync with EF Core models
+
+
 30. EF Core – LINQ queries, eager/lazy/explicit loading
+  both use navigation properties
+  eager loading uses .Include() and loads related entities upfont
+  lazy loading: makes a DB call only when required
+  Lazy Loading causes N+1 query problem, which can be solved using eager loading
+
+  I implemented: https://github.com/Chakradhar-Chinni/Tech-Library/blob/main/aspnetcore/Entity%20Framework%20Core/Eager_Lazy_Loading.cs
+
 31. Transactions in EF Core
 32. Concurrency handling in EF Core
+
 33. Async programming in .NET Core (async/await in APIs)
+  /*
+  async keyword → marks method as asynchronous
+  await keyword → waits for a Task to complete without blocking the thread
+  await frees the thread while waiting for the result, but the next line of code executes only after the awaited Task completes.
+  awaited work is handed over to OS, so thread can be freed up 
+    
+  Example: 
+  [HttpGet("{customerId}")]
+  public async Task<IActionResult> GetOrders(string customerId)
+  {
+      var orders = await _orderService.GetOrdersAsync();
+      return Ok(orders);
+  }
+
+  */
+  
 34. Task-based asynchronous pattern
 35. Background services – `IHostedService`, `BackgroundService`
 36. SignalR basics (real-time communication)
 37. gRPC in .NET Core
 38. Minimal APIs – structure, routing, endpoints
 39. Content negotiation – JSON, XML
+  /* 
+Content negotiation = API automatically chooses response format (JSON, XML, etc.) based on client request headers.
+
+  content negotiation can be applied at controller level
+
+  Program.cs
+  builder.Services.AddControllers()
+    .AddXmlSerializerFormatters(); // Add XML support
+
+productcontroller.cs
+[Produces("application/json", "application/xml")] // endpoint-specific
+public async Task<IActionResult> GetOrder(int id){}
+*/
+   
 40. Versioning and Swagger/OpenAPI documentation
 41. API testing – Postman, Swagger UI, integration testing
 42. Middleware order and dependency injection order
