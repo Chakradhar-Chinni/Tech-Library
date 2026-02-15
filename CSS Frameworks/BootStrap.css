@@ -1,5 +1,36 @@
 
-<<h2>> Containers
+<<h2>> Containers (container, container-fluid, container padding pt-5, responsive containers) 
+
+The .container class provides a responsive fixed width container
+The .container-fluid class provides a full width container, spanning the entire width of the viewport
+
+<div class="container">
+  <h1>My First Bootstrap Page</h1>
+  <p>This is some text.</p>
+</div>
+
+
+<div class="container-fluid">
+  <h1>My First Bootstrap Page</h1>
+  <p>This is some text.</p>
+</div>
+
+
+---Containers Padding : By default, containers have left and right padding, with no top or bottom padding. Therefore, we often use spacing utilities, such as extra padding and margins to make them look even better. For example, .pt-5 means "add a large top padding":
+
+<div class="container pt-5"></div>
+
+
+---Responsive Containers
+
+You can also use the .container-sm|md|lg|xl classes to determine when the container should be responsive. The max-width of the container will change on different screen sizes/viewports:
+
+<div class="container-sm">.container-sm</div>
+<div class="container-md">.container-md</div>
+<div class="container-lg">.container-lg</div>
+<div class="container-xl">.container-xl</div>
+<div class="container-xxl">.container-xxl</div>
+
 
 
 
